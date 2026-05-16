@@ -1,5 +1,4 @@
 import threading
-from typing import Callable
 from algorithms import Algorithm
 from .managed_thread import ManagedThread
 
@@ -45,11 +44,11 @@ class AlgorithmThread(ManagedThread):
 
     def threadOnStart(self) -> None:  
         # Ensure various locks are released 
+        # TODO Delete Not Needed 
         if(self.hasThreadStopped()): self.clearThreadStopFlag()  
         if(self.isThreadPaused()): self.releasePauseLock() 
         if(self.__delayLock.locked()): self.releaseDelayLock()
-        
-        print("Starting Thread")
+        print("Starting Thread :)")
         
         
     def threadOnEnd(self) -> None: 

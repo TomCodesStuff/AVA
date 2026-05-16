@@ -51,6 +51,8 @@ class AlgorithmController(ABC, Generic[S, M, D]):
     def startAlgorithmThread(self, algorithmType : AlgorithmType, algorithmName : str) -> None:    
         if self.__algorithmThread is not None: self.stopAlgorithmThread()
         
+        # Stop Any Managed Threads -> preventing any issues 
+        self.stopManagedThreads()
         
         algorithmClass = self.getScreen().getWindow().getAlgorithmClass(algorithmType, algorithmName) 
         if algorithmClass is None: return 
@@ -83,11 +85,8 @@ class AlgorithmController(ABC, Generic[S, M, D]):
         if self.__algorithmThread is None: return
         self.cancelScheduledProcesses()
         self.__algorithmThread.stopAlgorithm()
+        self.__algorithmThread = None 
 
-        self.__algorithmThread.setThreadStopFlag() 
-        if self.__algorithmThread.isThreadPaused(): 
-            self.__algorithmThread.releasePauseLock() 
-    
 
     def resumeAlgorithm(self) -> None: 
         if self.__algorithmThread is None: return
@@ -152,9 +151,18 @@ class AlgorithmController(ABC, Generic[S, M, D]):
         self.__managedThreads.append(managedThread)
     
 
-    def stopThreads(self) -> None:
+    def startManagedThreads(self) -> None: 
+        for managedThread in self.__managedThreads: 
+            if not managedThread.isThreadAlive() and managedThread.ident is None: 
+                managedThread.start()
+            
+
+    def stopManagedThreads(self) -> None:
         for thread in self.__managedThreads: 
-            thread.stopThread()  
+            thread.stopThread()   
+        
+        # Clear all threads
+        self.__managedThreads.clear()
 
     
     def anyThreadsAlive(self) -> bool: 

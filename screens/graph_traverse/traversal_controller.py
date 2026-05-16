@@ -6,10 +6,11 @@ if(__name__ == "__main__"):
 
 
 from typing import TYPE_CHECKING, TypeVar
-from tkinter import Canvas, Event, BOTH 
+from tkinter import Canvas, Event 
 from data_structures import Graph
 from graph_visualisation import EventsHandler, CanvasGraph
 from ..algorithm_base import AlgorithmController
+from thread_handlers import PhysicsThread
 
 
 if TYPE_CHECKING: 
@@ -103,6 +104,10 @@ class TraversalController(AlgorithmController[S, M, D]):
         return (canvas.winfo_width() // 2, 
                 canvas.winfo_height() // 2)
  
+
+    def __initialisePhysicsThread(self) -> None:
+        self.addManagedThread(PhysicsThread())
+
 
     def centreEdge(self) -> tuple: 
         circleOffset = self.__model.getCircleSize() // 2 

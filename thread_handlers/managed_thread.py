@@ -27,7 +27,7 @@ class ManagedThread(ABC, threading.Thread):
 
 
     def stopThread(self) -> None:
-        if self.isThreadPaused(): self.releasePauseLock()
+        if self.isThreadPaused(): self.releasePauseLock() 
         self.setThreadStopFlag()  
         
         if self.isThreadAlive(): self.join(timeout=THREAD_TIMEOUT)
@@ -36,14 +36,10 @@ class ManagedThread(ABC, threading.Thread):
     
 
     def acquirePauseLock(self) -> None: self.__threadPauseLock.acquire()
-    
-
     def releasePauseLock(self) -> None: self.__threadPauseLock.release()  
-    
-
     def isThreadPaused(self) -> bool: return self.__threadPauseLock.locked() 
-
-
+    
+    
     def isThreadAlive(self) -> bool: return self.is_alive()
     
 
@@ -63,5 +59,6 @@ class ManagedThread(ABC, threading.Thread):
         self.threadOnStart() 
         self.threadOnExecute() 
         self.threadOnEnd()
-
+        
+        self.start()
 

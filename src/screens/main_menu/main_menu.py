@@ -59,7 +59,7 @@ class MainMenu(ScreenInterface):
                   command=lambda: self.getWindow().loadScreen(ScreenType.SORT)).pack(side = "left", padx = 100)  
         
         
-        tk.Label(self.__contentFrame, text = "Created by Thomas Gibson", bg = "white", justify = "left")\
+        tk.Label(self.__contentFrame, text = "Created by Tom.", bg = "white", justify = "left")\
             .pack(side = "bottom", anchor = "w", pady = 5, padx = 5) 
         
 # Listen to 99' Benz by A Story Told

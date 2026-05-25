@@ -61,17 +61,17 @@ class PhysicsCalculations():
         # Iterate through each pair of nodes 
         nodes = list(nodesSnapshot.items())
 
-        for i, (nodeAID, (nodeACoords, nodeAOffset)) in enumerate(nodes): 
+        for i, (srcNodeID, (srcNodeCoords, srcNodeOffset)) in enumerate(nodes): 
             for j in range(i + 1, len(nodes)):
-                nodeBID, (nodeBCoords, nodeBOffset) = nodes[j]
+                targetNodeID, (targetNodeCoords, targetNodeOffset) = nodes[j]
 
                 # X-Y coordinates of the nodes
-                x0, y0, _, _ = nodeACoords
-                x1, y1, _, _, = nodeBCoords   
+                x0, y0, _, _ = srcNodeCoords
+                x1, y1, _, _, = targetNodeCoords
                 
                 # X-Y coords of the centre of each circle
-                centreX0, centreY0 = x0 + nodeAOffset, y0 + nodeAOffset
-                centreX1, centreY1 = x1 + nodeBOffset, y1 + nodeBOffset
+                centreX0, centreY0 = x0 + srcNodeOffset, y0 + srcNodeOffset
+                centreX1, centreY1 = x1 + targetNodeOffset, y1 + targetNodeOffset
  
                 # Calculated pythagorean distance between the circles
                 dist = self.__calculateDistance(centreX0, centreY0, centreX1, centreY1)  
@@ -85,11 +85,11 @@ class PhysicsCalculations():
                     forceX, forceY = dx * force, dy * force
                     
                     # Update forces for each node
-                    fx, fy = nodes_to_forces[nodeAID]
-                    nodes_to_forces[nodeAID] = (fx - forceX, fy - forceY) 
+                    fx, fy = nodes_to_forces[srcNodeID]
+                    nodes_to_forces[srcNodeID] = (fx - forceX, fy - forceY) 
 
-                    fx, fy = nodes_to_forces[nodeBID]
-                    nodes_to_forces[nodeBID] = (fx + forceX, fy + forceY)
+                    fx, fy = nodes_to_forces[targetNodeID]
+                    nodes_to_forces[targetNodeID] = (fx + forceX, fy + forceY)
         
         return nodes_to_forces
 
@@ -102,7 +102,7 @@ class PhysicsCalculations():
             centreX1, centreY1 = x1 + endNodeOffset, y1 + endNodeOffset
             
             dist = self.__calculateDistance(centreX0, centreY0, centreX1, centreY1) 
-            # TODO reimplement screen length
+            # TODO reimplement screen length 
             displacement = dist - 100
 
             dx, dy = self.__calculateStandarisedVector((centreX0, centreY0, centreX1, centreY1), dist)  

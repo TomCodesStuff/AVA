@@ -174,7 +174,7 @@ class EventsHandler():
 
 
     def __editEdge(self, canvasEdge : CanvasEdge) -> None:
-        canvasEdge.setColour(self.__eventsModel.getEdgeEditColour())
+        canvasEdge.setColour(CanvasEdge.getEditColour())
         if self.__showEdgeOptions: self.__showEdgeOptions(canvasEdge)
         self.__edgeBeingEdited = canvasEdge
 
@@ -237,7 +237,7 @@ class EventsHandler():
 
     def finishEdgeEdit(self) -> float: 
         if self.__edgeBeingEdited: 
-            self.__edgeBeingEdited.setColour(self.__eventsModel.getDefaultEdgeColour())
+            self.__edgeBeingEdited.setColour(CanvasEdge.getDefaultColour())
         self.__edgeBeingEdited = None 
     
 

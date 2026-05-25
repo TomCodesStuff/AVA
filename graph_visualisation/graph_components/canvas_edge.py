@@ -8,13 +8,21 @@ from .canvas_node import CanvasNode
 
 
 class CanvasEdge(): 
-    def __init__(self, coords : tuple, weight : int, colour : str) -> None: 
+    # Static variables shared between each instance 
+    defaultWeight = 20
+    defaultColour = "black"
+    editColour = "red"
+    defaultSize = "3" 
+    hoverSize = "5"
+
+
+    def __init__(self, coords : tuple) -> None: 
         # On screen coords of the edge
         self.__coords = coords
         # Weight/cost
-        self.__weight = weight 
+        self.__weight = CanvasEdge.defaultWeight 
         # On screen colour
-        self.__colour = colour
+        self.__colour = CanvasEdge.defaultColour
         
         # ID used to identify edge on the canvas
         self.__canvasID = -1
@@ -67,5 +75,20 @@ class CanvasEdge():
     def setColour(self, colour : str) -> None: 
         self.__colour = colour
 
+
+    @staticmethod
+    def getDefaultWeight() -> int: return CanvasEdge.defaultWeight
+
+    @staticmethod
+    def getDefaultColour() -> int: return CanvasEdge.defaultColour
+
+    @staticmethod
+    def getEditColour() -> str: return CanvasEdge.editColour
+
+    @staticmethod
+    def getDefaultSize() -> str: return CanvasEdge.defaultSize
+
+    @staticmethod
+    def getHoverSize() -> str: return CanvasEdge.hoverSize
 
 # Listen to Live Forever by Oasis 

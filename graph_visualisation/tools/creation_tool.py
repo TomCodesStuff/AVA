@@ -39,7 +39,7 @@ class CreationTool():
     def renderEdge(self, canvas : Canvas, canvasEdge : CanvasEdge) -> None: 
         x0, y0, x1, y1 = canvasEdge.getCoords() 
         canvasID = canvas.create_line(x0, y0, x1, y1, fill=canvasEdge.getColour(), 
-                                      width = self.__eventsModel.getDefaultEdgeSize(), arrow=BOTH)
+                                      width = CanvasEdge.getDefaultSize(), arrow=BOTH)
         canvasEdge.setCanvasID(canvasID)
         canvas.tag_lower(canvasID)
             
@@ -47,9 +47,7 @@ class CreationTool():
     def createEdge(self, canvasNode : CanvasNode) -> CanvasEdge:
         nodeOffset = CanvasNode.getDefaultSize() // 2
         x0, y0, _, _ = canvasNode.getCoords()
-        canvasEdge = CanvasEdge((x0 + nodeOffset, y0 + nodeOffset, x0 + nodeOffset, y0 + nodeOffset), 
-                                self.__eventsModel.getDefaultEdgeWeight(), 
-                                self.__eventsModel.getDefaultEdgeColour()) 
+        canvasEdge = CanvasEdge((x0 + nodeOffset, y0 + nodeOffset, x0 + nodeOffset, y0 + nodeOffset))
         canvasEdge.setStartNode(canvasNode)  
         return canvasEdge  
 

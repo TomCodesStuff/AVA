@@ -28,6 +28,7 @@ class ScreenCreator():
 
     @classmethod
     def createScreen(cls, window : Window, screenType : ScreenType) -> ScreenInterface|None:
+        window.clearCustomExitFunc()
         match screenType:
             case ScreenType.MAIN_MENU: return MainMenu(window)  
             case ScreenType.SEARCH: 

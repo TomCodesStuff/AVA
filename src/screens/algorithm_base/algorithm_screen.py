@@ -58,6 +58,7 @@ class AlgorithmScreen(Generic[C, M ,D], ScreenInterface):
         self.__animationRunning = False
         self.__frameDelay = 0
 
+    
     # Abstract method, child screens will call before running an algorithm
     @abstractmethod
     def prepare(self) -> None: pass  
@@ -232,6 +233,8 @@ class AlgorithmScreen(Generic[C, M ,D], ScreenInterface):
 
     # Creates the layout all algorithms screens use
     def createBaseLayout(self) -> None:
+        # Override default behaviour when exiting GUI -> cleans up running threads
+        self.getWindow().setCustomExitFunc(self.__exitCleanUp)
         # Get content Frame to store all widgets
         contentFrame = self.getWindow().getContentFrame()
         # Get content frames width and height
@@ -360,6 +363,11 @@ class AlgorithmScreen(Generic[C, M ,D], ScreenInterface):
         # Cancel any scheduled function (mostly for traversal screen)
         self.getWindow().cancelScheduledFunctions()
         self.getWindow().loadScreen(ScreenType.MAIN_MENU)
+
+    # Halt running threads when user exits application 
+    def __exitCleanUp(self) -> None:
+        self.getController().stopAlgorithmThread()
+        self.getController().stopManagedThreads()
 
     # Setters
     def setController(self, controller : C) -> None: self.__controller = controller

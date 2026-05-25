@@ -28,6 +28,8 @@ class Window():
             self.__width = width
             self.__height = height  
     
+        self.__customExitFunc = None 
+
     def create(self) -> None:
         # Dimensions for the frame all widgets stored in
         # Stored as attributes so they can be accessed by other objects later
@@ -64,6 +66,10 @@ class Window():
         # Stops frame resizing to same size as widgets inside it 
         self.__contentFrame.pack_propagate(False) 
 
+        # Custom Exit 
+        self.__window.protocol('WM_DELETE_WINDOW', self.__exitOverride)
+
+        
     # Draws window
     def show(self) -> None:
         self.__window.mainloop() 
@@ -115,7 +121,16 @@ class Window():
         return self.__algorithmValidator.getAlgorithmNames(algorithmType)
 
     def getAlgorithmClass(self, algorithmType : AlgorithmType, algorithmName : str) -> Type[Algorithm]: 
-        return self.__algorithmValidator.getAlgorithmClass(algorithmType, algorithmName)
+        return self.__algorithmValidator.getAlgorithmClass(algorithmType, algorithmName) 
+    
+
+    def __exitOverride(self) -> None:
+        if self.__customExitFunc is not None: self.__customExitFunc()
+        self.__window.destroy() 
 
 
+    def setCustomExitFunc(self, customExitFunc : Callable) -> None: self.__customExitFunc = customExitFunc
+    
+    def clearCustomExitFunc(self) -> None: self.__customExitFunc = None
+    
 # Listen to Killing In The Name by Rage Against The Machine

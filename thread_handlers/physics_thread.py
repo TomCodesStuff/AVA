@@ -6,14 +6,12 @@ class PhysicsThread(ManagedThread):
         self.__panicKillSwitch = False
 
     
-
     # retool physics handler 
     # thread runs until stop flag set 
     # implement pause flag(?) -> not needed, thread is either running or stopped
-    #  
-
+    
     def threadOnExecute(self) -> None: 
         while(not self.hasThreadStopped() and not self.__panicKillSwitch): 
             if not self.isThreadPaused(): 
-                print("I would run the physics loop here :)")   
+                print(self.hasThreadStopped())   
             else: print("Thread is paused...") 

@@ -152,7 +152,8 @@ class AlgorithmController(ABC, Generic[S, M, D]):
     
 
     def startManagedThreads(self) -> None: 
-        for managedThread in self.__managedThreads: 
+        for managedThread in self.__managedThreads:
+            # ident check to prevent start() being called more than once  
             if not managedThread.isThreadAlive() and managedThread.ident is None: 
                 managedThread.start()
             

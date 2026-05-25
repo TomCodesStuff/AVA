@@ -11,9 +11,9 @@ class CreationTool():
 
     # TODO re-add max number nodes check 
     def canNodeBeSpawned(self, canvas : Canvas, nodeCoords : tuple) -> bool: 
-        if nodeCoords == (): nodeCoords = self.__eventsModel.getDefaultNodeCoords()
+        if nodeCoords == (): nodeCoords = CanvasNode.getDefaultCoords()
         x0, y0, x1, y1 = nodeCoords 
-        overlapOffset = self.__eventsModel.getOverlapOffset()
+        overlapOffset = CanvasNode.getMinSpawnDistance() + CanvasNode.getDefaultSize()
         overlapping_nodes = canvas.find_overlapping(x0 - overlapOffset, y0 - overlapOffset, 
                                                     x1 + overlapOffset, y1 + overlapOffset)
         return True if len(overlapping_nodes) == 0 else False
@@ -26,9 +26,8 @@ class CreationTool():
 
 
     def createNode(self, canvasGraph : CanvasGraph, coords : tuple) -> CanvasNode:
-        if coords == (): coords = self.__eventsModel.getDefaultNodeCoords()
-        canvasNode = CanvasNode(Node(self.__eventsModel.getDefaultNodeColour()), 
-                                coords, self.__eventsModel.getDefaultNodeSize()) 
+        if coords == (): coords = CanvasNode.getDefaultCoords()
+        canvasNode = CanvasNode(coords) 
         canvasGraph.addCanvasNode(canvasNode)
         return canvasNode
 
@@ -46,7 +45,7 @@ class CreationTool():
             
 
     def createEdge(self, canvasNode : CanvasNode) -> CanvasEdge:
-        nodeOffset = self.__eventsModel.getNodeOffset()  
+        nodeOffset = CanvasNode.getDefaultSize() // 2
         x0, y0, _, _ = canvasNode.getCoords()
         canvasEdge = CanvasEdge((x0 + nodeOffset, y0 + nodeOffset, x0 + nodeOffset, y0 + nodeOffset), 
                                 self.__eventsModel.getDefaultEdgeWeight(), 

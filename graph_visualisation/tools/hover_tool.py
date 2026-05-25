@@ -8,11 +8,11 @@ class HoverTool():
     
 
     def nodeOnHover(self, canvasNode : CanvasNode) -> None:
-        canvasNode.setColour(self.__eventsModel.getNodeHoverColour())
+        canvasNode.setColour(CanvasNode.getHoverColour())
 
 
     def nodeOnLeave(self, canvasNode : CanvasNode) -> None:
-        canvasNode.setColour(self.__eventsModel.getDefaultNodeColour())  
+        canvasNode.setColour(CanvasNode.getDefaultColour())  
     
 
     def edgeOnHover(self, canvas : Canvas, canvasEdge : CanvasEdge) -> None:

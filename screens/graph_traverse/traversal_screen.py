@@ -205,8 +205,7 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
     def render(self) -> None: 
         self.createBaseLayout()
         self.__createOptions()  
-        self.getController().createEventHandler(self.getCanvas()) 
-        self.getController().repeatCanvasRefresh()
+        self.getController().init()
     
 
     # TODO cancel any running functions before algorithm runs 

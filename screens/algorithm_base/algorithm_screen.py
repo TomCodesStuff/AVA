@@ -79,8 +79,7 @@ class AlgorithmScreen(Generic[C, M ,D], ScreenInterface):
         # Disable Buttons
         self.__runButton.config(state="disabled")
         self.__stateButton.config(state="disabled")
-        self.__homeButton.config(state="disabled")
-
+   
         self.animationSetup()
         self.__animationRunning = True
 
@@ -88,9 +87,8 @@ class AlgorithmScreen(Generic[C, M ,D], ScreenInterface):
     def __animationEnding(self) -> None:
         self.__runButton.config(state="active")
         self.__stateButton.config(state="active")
-        self.__homeButton.config(state="active")
+      
     
-
     def endAnimation(self) -> None: 
         self.__animationRunning = False  
     
@@ -393,10 +391,8 @@ class AlgorithmScreen(Generic[C, M ,D], ScreenInterface):
             # Tell the thread to stop
             self.__stopAlgorithm()   
         
-
         if self.__controller.anyThreadsAlive(): 
-            self.__controller.stopThreads()
-
+            self.__controller.stopManagedThreads()
 
         # Cancel any scheduled function (mostly for traversal screen)
         self.getWindow().cancelScheduledFunctions()

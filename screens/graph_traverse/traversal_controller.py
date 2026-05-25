@@ -36,14 +36,20 @@ class TraversalController(AlgorithmController[S, M, D]):
         # # Handles 'physics based' calculations 
         # self.__physicsHandler = PhysicsHandler(self.__model, self.__getCanvasCentreCoords())  
         # # Refreshes canvas periodically   
-        # self.__updateCanvas()
+
+
+    def init(self) -> None: 
+        self.createEventHandler(self.getScreen().getCanvas())
+        self.__repeatCanvasRefresh() 
+        # self.__initialisePhysicsThread() 
+       #  self.startManagedThreads()
 
 
     # NOTE temp function for testing 
-    def repeatCanvasRefresh(self) -> None:  
+    def __repeatCanvasRefresh(self) -> None:  
         # print("Refreshing canvas")
         self.refreshCanvas() 
-        self.getScreen().getWindow().scheduleFunctionExecution(self.repeatCanvasRefresh, 16)
+        self.getScreen().getWindow().scheduleFunctionExecution(self.__repeatCanvasRefresh, 16)
 
 
     def refreshCanvas(self, refreshColours:bool=False) -> None: 
@@ -170,23 +176,6 @@ class TraversalController(AlgorithmController[S, M, D]):
             newCoords = (x0 + circleOffset, y0 + circleOffset, x1, y1)
             # Updates the lines coordinates  
             canvas.coords(self.__edgeHandler.getCurrentEdgeID(), newCoords)
-
-
-    # Updates canvas to display nodes and edges interacting  
-    # Need way to stop this being called when screen moves 
-    def __updateCanvas(self) -> None: 
-        
-        self.__physicsHandler.applyPhysics()
-        
-        # Update positions updated of nodes onscreen 
-        self.__redrawNodes()   
-        # Update positions of edges onscreen
-        self.__redrawEdges()
-        # Update canvas 
-        self.__screen.getWindow().update()
-        # Schedule function to run after 50ms
-        self.__screen.getWindow().scheduleFunctionExecution(self.__updateCanvas,
-                                                            self.__model.getUpdateDelay())
 
 
 # Listen to Paranoid by Black Sabbath

@@ -60,5 +60,3 @@ class ManagedThread(ABC, threading.Thread):
         self.threadOnExecute() 
         self.threadOnEnd()
         
-        self.start()
-

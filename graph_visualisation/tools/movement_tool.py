@@ -1,6 +1,7 @@
 from ..events_model import EventsModel
 from ..graph_components import CanvasNode, CanvasEdge
 
+# TODO Make NodeOffset be based on nodes actual size not default
 
 class MovementTool(): 
     def __init__(self, eventsModel : EventsModel):
@@ -11,8 +12,8 @@ class MovementTool():
     # Could likely do wiht some refactoring but it just works 
     def __calculateCoords(self, x : int, y : int) -> tuple:  
         # Values needed for calculations
-        nodeSize = self.__eventsModel.getDefaultNodeSize()
-        nodeoffset = self.__eventsModel.getNodeOffset() 
+        nodeSize = CanvasNode.getDefaultSize()
+        nodeoffset = nodeSize // 2
         canvasWidth = self.__eventsModel.getCanvasWidth()
         canvasHeight = self.__eventsModel.getCanvasHeight()
 
@@ -42,7 +43,7 @@ class MovementTool():
 
 
     def connectEdgeToNodes(self, canvasEdge : CanvasEdge) -> None: 
-        nodeOffset = self.__eventsModel.getNodeOffset()
+        nodeOffset = CanvasNode.getDefaultSize() // 2
         startNode, endNode = canvasEdge.getNodes()
         
         x0, y0, _, _ = startNode.getCoords() 
@@ -52,7 +53,7 @@ class MovementTool():
 
 
     def moveEdge(self, canvasEdge : CanvasEdge, eventCoords : tuple) -> None:
-        nodeOffset = self.__eventsModel.getNodeOffset()
+        nodeOffset = CanvasNode.getDefaultSize() // 2
         x0, y0, _, _ = canvasEdge.getStartNode().getCoords()
         event_x, event_y = eventCoords
         canvasEdge.updateCoords((x0 + nodeOffset, y0 + nodeOffset, event_x, event_y)) 

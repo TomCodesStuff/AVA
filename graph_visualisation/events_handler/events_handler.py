@@ -53,7 +53,8 @@ class EventsHandler():
 
     def __spawnNodeDoubleClick(self, event : Event) -> None:
         if not self.__canSpawnEventTrigger(): return 
-        circleOffset = self.__eventsModel.getNodeOffset()
+
+        circleOffset = CanvasNode.getDefaultSize() // 2
         x0, y0 = event.x - circleOffset, event.y - circleOffset
         x1, y1 = event.x + circleOffset, event.y + circleOffset 
         self.spawnNode((x0, y0, x1, y1)) 
@@ -86,7 +87,7 @@ class EventsHandler():
         self.__isEdgeBeingDrawn = False 
         # Stops the node from only being partially rendered (not sure why this works, I forgot)
         self.__canvas.config(cursor="arrow")
-        canvasNode.setColour(self.__eventsModel.getNodeHoverColour())
+        canvasNode.setColour(CanvasNode.getHoverColour())
         # self.__canvas.itemconfig(canvasNode.getCanvasID(), fill=self.__eventsModel.getNodeHoverColour()) 
         self.__movementTool.moveNode(canvasNode, (event.x, event.y))
 

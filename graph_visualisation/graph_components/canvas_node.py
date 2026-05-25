@@ -13,16 +13,23 @@ if TYPE_CHECKING:
 
 
 class CanvasNode():
-    # Static variable shared between each instance 
-    nodeID = 1
+    # Static variables shared between each instance 
+    nodeID = 1 
+    defaultSize = 25
+    defaultX, defaultY = 5, 5
+    defaultCoords = (defaultX, defaultY, defaultX + defaultSize, defaultY + defaultSize)#
+    defaultColour = "blue" 
+    hoverColour = "red"
+    minSpawnDist = 10
 
-    def __init__(self, node : Node, coords : tuple, nodeSize : int) -> None: 
+
+    def __init__(self, coords : tuple) -> None: 
         # Reference to abstracted node object
-        self.__node = node
+        self.__node = Node(CanvasNode.defaultColour)
         # X-Y Coordindates of the node on screen
         self.__coords = coords
         # Size of the node 
-        self.__nodeSize = nodeSize
+        self.__nodeSize = CanvasNode.defaultSize
 
         self.__ID = CanvasNode.nodeID 
         CanvasNode.nodeID += 1 
@@ -102,5 +109,19 @@ class CanvasNode():
     def setDragged(self) -> bool: self.__isBeingDragged = True
     def resetDragged(self) -> bool: self.__isBeingDragged = False
 
+    @staticmethod
+    def getDefaultSize() -> int: return CanvasNode.defaultSize
+    
+    @staticmethod 
+    def getDefaultCoords() -> tuple: return CanvasNode.defaultCoords 
+
+    @staticmethod 
+    def getDefaultColour() -> str: return CanvasNode.defaultColour 
+
+    @staticmethod 
+    def getHoverColour() -> str: return CanvasNode.hoverColour
+
+    @staticmethod
+    def getMinSpawnDistance() -> int: return CanvasNode.minSpawnDist
 
 # Listen to Paralyzer by Finger Eleven     

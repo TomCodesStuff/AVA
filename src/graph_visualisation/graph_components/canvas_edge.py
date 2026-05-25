@@ -3,6 +3,8 @@ if(__name__ == "__main__"):
     print("This is file shouldn't be run on it's own. \nIt should be imported only.")
     exit() 
 
+
+import math
 from typing import Tuple
 from .canvas_node import CanvasNode
 
@@ -14,7 +16,6 @@ class CanvasEdge():
     editColour = "red"
     defaultSize = "3" 
     hoverSize = "5"
-
 
     def __init__(self, coords : tuple) -> None: 
         # On screen coords of the edge
@@ -35,7 +36,6 @@ class CanvasEdge():
         # Size edge should be onscreen 
         self.__screenLen = 0 
 
-
     # Getters
     def getCanvasID(self): return self.__canvasID
     def getWeight(self) -> int: return self.__weight 
@@ -46,7 +46,6 @@ class CanvasEdge():
     def getScreenLen(self) -> int: return self.__screenLen
     def getColour(self) -> str: return self.__colour
     
-
     # Setters
     def setWeight(self, weight : int) -> None: 
         if weight > 0: self.__weight = weight
@@ -57,7 +56,31 @@ class CanvasEdge():
     # TODO error handling and adjustment for screen size
     def setscreenLen(self, val : int): self.__screenLen = val
     def setCanvasID(self, val : int) -> None: self.__canvasID = val  
-    def setColour(self, colour : str) -> None: self.__colour = colour
+    def setColour(self, colour : str) -> None: self.__colour = colour 
+
+
+    # Stole from ChatGPT would take me way to long to find an acceptable solution :/
+    # I dislike using AI as I think it's kinda cheating but I'll make an exception to finish this project
+    # Makes arrows indicating edge direction visible rather than just being hidden behind each node
+    def showDirectionArrows(self) -> tuple:
+        x0, y0, x1, y1 = self.__coords 
+
+        r0 = self.__startNode.getOffset()
+        r1 = self.__endNode.getOffset()
+
+        dx = x1 - x0 
+        dy = y1 - y0
+
+        dist = math.sqrt(dx ** 2 + dy ** 2)
+
+        if dist == 0: return (x0, y0, x1, y1)
+
+        startX = math.ceil(x0 + (dx / dist) * r0)
+        startY = math.ceil(y0 + (dy / dist) * r0)
+        endX = math.ceil(x1 - (dx / dist) * r1)
+        endY = math.ceil(y1 - (dy / dist) * r1)
+
+        return (startX, startY, endX, endY)
 
 
     @staticmethod

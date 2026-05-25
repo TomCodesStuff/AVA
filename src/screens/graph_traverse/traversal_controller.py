@@ -64,10 +64,9 @@ class TraversalController(AlgorithmController[S, M, D]):
             x1, y1, _, _ = y.getCoords()    
 
             canvasEdge.updateCoords((x0 + x.getOffset(), y0 + x.getOffset(), 
-                                     x1 + x.getOffset(), y1 + x.getOffset()))
-
-
-            self.getScreen().getCanvas().coords(canvasEdge.getCanvasID(), canvasEdge.getCoords())
+                                     x1 + x.getOffset(), y1 + x.getOffset())) 
+            
+            self.getScreen().getCanvas().coords(canvasEdge.getCanvasID(), canvasEdge.showDirectionArrows())
             self.getScreen().getCanvas().itemconfig(canvasEdge.getCanvasID(), fill=canvasEdge.getColour())
         
         self.getScreen().getWindow().update_idle_tasks()  

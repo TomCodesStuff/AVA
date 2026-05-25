@@ -45,7 +45,7 @@ class CreationTool():
             
 
     def createEdge(self, canvasNode : CanvasNode) -> CanvasEdge:
-        nodeOffset = CanvasNode.getDefaultSize() // 2
+        nodeOffset = canvasNode.getOffset()
         x0, y0, _, _ = canvasNode.getCoords()
         canvasEdge = CanvasEdge((x0 + nodeOffset, y0 + nodeOffset, x0 + nodeOffset, y0 + nodeOffset))
         canvasEdge.setStartNode(canvasNode)  

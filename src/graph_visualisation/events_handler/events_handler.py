@@ -88,8 +88,12 @@ class EventsHandler():
         # Stops the node from only being partially rendered (not sure why this works, I forgot)
         self.__canvas.config(cursor="arrow")
         canvasNode.setColour(CanvasNode.getHoverColour())
+        canvasNode.setDragged()
         # self.__canvas.itemconfig(canvasNode.getCanvasID(), fill=self.__eventsModel.getNodeHoverColour()) 
-        self.__movementTool.moveNode(canvasNode, (event.x, event.y))
+        self.__movementTool.moveNode(canvasNode, (event.x, event.y)) 
+    
+    def __resetDragged(self, canvasNode : CanvasNode): 
+        canvasNode.resetDragged()
 
 
     def deleteNode(self, canvasNode : CanvasNode) -> None:   
@@ -106,6 +110,8 @@ class EventsHandler():
 
         self.__canvas.delete(canvasNode.getCanvasID())
         self.__creationTool.deleteNode(self.__canvasGraph, canvasNode)
+
+        self.__isNodeBeingDeleted = False
         
 
     def __drawEdge(self, eventCoords : tuple, canvasEdge : CanvasEdge) -> None: 
@@ -207,7 +213,7 @@ class EventsHandler():
         self.__canvas.tag_bind(canvasNode.getCanvasID(), "<B1-Motion>", lambda event: self.__moveNode(event, canvasNode))    
         
         # Add event listener to detect when mouse button released 
-        # self.__canvas.tag_bind(canvasNode.getCanvasID(), "<ButtonRelease-1>", lambda _: self.__resetDragged(canvasNode))
+        self.__canvas.tag_bind(canvasNode.getCanvasID(), "<ButtonRelease-1>", lambda _: self.__resetDragged(canvasNode))
         
         # Add event listener to add an edge when a node is clicked 
         self.__canvas.tag_bind(canvasNode.getCanvasID(), "<Button-1>", lambda _: self.__nodeOnClick(canvasNode))

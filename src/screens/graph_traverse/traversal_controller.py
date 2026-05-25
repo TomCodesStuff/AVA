@@ -8,7 +8,7 @@ if(__name__ == "__main__"):
 from typing import TYPE_CHECKING, TypeVar
 from tkinter import Canvas, Event 
 from src.data_structures import Graph
-from src.graph_visualisation import EventsHandler, CanvasGraph
+from src.graph_visualisation import EventsHandler, CanvasGraph, PhysicsCalculations
 from ..algorithm_base import AlgorithmController
 from src.thread_handlers import PhysicsThread
 
@@ -27,22 +27,20 @@ class TraversalController(AlgorithmController[S, M, D]):
 
         self.__eventHandler = None
         self.__canvasGraph = CanvasGraph(self.getDataStructure())
-
-        # # Handles creation and deletion of edges 
-        # self.__edgeHandler = EdgeHandler(self.__screen.getCanvas(), self, model) 
-        # # Handles creation and deletion of nodes 
-        # self.__nodeHandler = NodeHandler(self.__screen.getCanvas(), self, 
-        #                                  model, self.__edgeHandler)   
-        # # Handles 'physics based' calculations 
-        # self.__physicsHandler = PhysicsHandler(self.__model, self.__getCanvasCentreCoords())  
-        # # Refreshes canvas periodically   
+        self.__physicsCalculations = None  
 
 
     def init(self) -> None: 
         self.createEventHandler(self.getScreen().getCanvas())
         self.__repeatCanvasRefresh() 
-        # self.__initialisePhysicsThread() 
-       #  self.startManagedThreads()
+        self.__createPhysicsThread() 
+        self.startManagedThreads()
+
+
+    def __getCanvasCentre(self) -> tuple: 
+        canvas = self.getScreen().getCanvas()
+        return (canvas.winfo_width() // 2, canvas.winfo_height() // 2)
+
 
 
     # NOTE temp function for testing 
@@ -53,7 +51,14 @@ class TraversalController(AlgorithmController[S, M, D]):
 
 
     def refreshCanvas(self, refreshColours:bool=False) -> None: 
-        for canvasNode in self.__canvasGraph.getNodes(): 
+        latestResults = {}
+        if self.__physicsCalculations is not None: 
+            latestResults = self.__physicsCalculations.getLatestResults()
+
+        for canvasNode in self.__canvasGraph.getNodes():  
+            if canvasNode.getID() in latestResults:
+                canvasNode.applyForces(latestResults[canvasNode.getID()])
+
             x0, y0, _, _ = canvasNode.getCoords()
             self.getScreen().getCanvas().moveto(canvasNode.getCanvasID(), round(x0), round(y0))
             self.getScreen().getCanvas().itemconfig(canvasNode.getCanvasID(), fill=canvasNode.getColour())
@@ -65,7 +70,6 @@ class TraversalController(AlgorithmController[S, M, D]):
         self.getScreen().getWindow().update_idle_tasks()  
 
         
-
     def createEventHandler(self, canvas : Canvas) -> None: 
         self.__eventHandler = EventsHandler(canvas, self.__canvasGraph) 
         # Update screen to show edge options 
@@ -111,8 +115,9 @@ class TraversalController(AlgorithmController[S, M, D]):
                 canvas.winfo_height() // 2)
  
 
-    def __initialisePhysicsThread(self) -> None:
-        self.addManagedThread(PhysicsThread())
+    def __createPhysicsThread(self) -> None:
+        self.__physicsCalculations= PhysicsCalculations(self.__canvasGraph, self.__getCanvasCentre()) 
+        self.addManagedThread(PhysicsThread(self.__physicsCalculations))
 
 
     def centreEdge(self) -> tuple: 

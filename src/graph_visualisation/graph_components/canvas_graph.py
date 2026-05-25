@@ -10,8 +10,6 @@ class CanvasGraph():
         self.__edges = []
         self.__nodesToEdges = {} 
 
-        self.__edgeBeingDrawn = None
-
 
     def addCanvasNode(self, canvasNode : CanvasNode) -> None: 
         self.__nodes.append(canvasNode) 
@@ -66,6 +64,9 @@ class CanvasGraph():
  
     def getNodes(self) -> List[CanvasNode]: return self.__nodes  
     def getEdges(self) -> List[CanvasEdge]: return self.__edges
+
+    def getNodeAt(self, index : int) -> None: 
+        return self.__nodes[min(index, len(self.__nodes) - 1)]
 
 
 # Listen to Hertz by Amyl and the Sniffers 

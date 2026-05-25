@@ -9,7 +9,7 @@ class MovementTool():
     
 
     # This prevents nodes from being dragged off canvas 
-    # Could likely do wiht some refactoring but it just works 
+    # Could likely do with some refactoring but it just works 
     def __calculateCoords(self, x : int, y : int) -> tuple:  
         # Values needed for calculations
         nodeSize = CanvasNode.getDefaultSize()
@@ -43,17 +43,16 @@ class MovementTool():
 
 
     def connectEdgeToNodes(self, canvasEdge : CanvasEdge) -> None: 
-        nodeOffset = CanvasNode.getDefaultSize() // 2
         startNode, endNode = canvasEdge.getNodes()
         
         x0, y0, _, _ = startNode.getCoords() 
         x1, y1, _, _ = endNode.getCoords() 
-        canvasEdge.updateCoords((x0 + nodeOffset, y0 + nodeOffset, 
-                                x1 + nodeOffset, y1 + nodeOffset))
+        canvasEdge.updateCoords((x0 + startNode.getOffset(), y0 + + startNode.getOffset(), 
+                                x1 + endNode.getOffset(), y1 + endNode.getOffset()))
 
 
     def moveEdge(self, canvasEdge : CanvasEdge, eventCoords : tuple) -> None:
-        nodeOffset = CanvasNode.getDefaultSize() // 2
+        nodeOffset = canvasEdge.getStartNode().getOffset()
         x0, y0, _, _ = canvasEdge.getStartNode().getCoords()
         event_x, event_y = eventCoords
         canvasEdge.updateCoords((x0 + nodeOffset, y0 + nodeOffset, event_x, event_y)) 

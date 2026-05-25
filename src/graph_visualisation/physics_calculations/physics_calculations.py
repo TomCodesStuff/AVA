@@ -40,11 +40,11 @@ class PhysicsCalculations():
 
     # Calculates force that drags nodes towards centre of the canvas 
     # Acts as way to stop nodes going offscreen 
-    def __calculateGravity(self):  
-        for node in self.__canvasGraph.getNodes():  
-            x0, y0, _, _ = node.getCoords() 
-            circleCentreX = x0 + node.getOffset()
-            circleCentreY = y0 + node.getOffset()
+    def __calculateGravity(self, nodesSnapshot : dict, nodes_to_forces : dict) -> None:   
+        for nodeID, (nodeCoords, nodeOffset) in nodesSnapshot.items():   
+            x0, y0, _, _ = nodeCoords
+            circleCentreX = x0 + nodeOffset
+            circleCentreY = y0 + nodeOffset
             
             dist = self.__calculateDistance(circleCentreX, circleCentreY, 
                                             self.__canvasCentreX, self.__canvasCentreY)
@@ -54,17 +54,20 @@ class PhysicsCalculations():
                                                             self.__canvasCentreX, self.__canvasCentreY), dist)
 
                 forceX = dx * self.__gravityConstant 
-                forceY = dy * self.__gravityConstant 
-         
+                forceY = dy * self.__gravityConstant  
+
+                nodes_to_forces[nodeID] = (forceX, forceY)
+            else: nodes_to_forces[nodeID] = (0, 0) 
+        
                 
     # Calculates node-node repulsion
-    def __calculateNodeRepulsion(self, nodes : tuple): 
-        nodeRepulsionForces = {id : (0, 0) for (id, *_) in nodes}
-
+    def __calculateNodeRepulsion(self, nodesSnapshot : dict, nodes_to_forces) -> None: 
         # Iterate through each pair of nodes 
-        for i, (nodeAID, nodeACoords, nodeAOffset) in enumerate(nodes): 
+        nodes = list(nodesSnapshot.items())
+
+        for i, (nodeAID, (nodeACoords, nodeAOffset)) in enumerate(nodes): 
             for j in range(i + 1, len(nodes)):
-                nodeBID, nodeBCoords, nodeBOffset = nodes[j]
+                nodeBID, (nodeBCoords, nodeBOffset) = nodes[j]
 
                 # X-Y coordinates of the nodes
                 x0, y0, _, _ = nodeACoords
@@ -86,13 +89,13 @@ class PhysicsCalculations():
                     forceX, forceY = dx * force, dy * force
                     
                     # Update forces for each node
-                    fx, fy = nodeRepulsionForces[nodeAID]
-                    nodeRepulsionForces[nodeAID] = (fx - forceX, fy - forceY) 
+                    fx, fy = nodes_to_forces[nodeAID]
+                    nodes_to_forces[nodeAID] = (fx - forceX, fy - forceY) 
 
-                    fx, fy = nodeRepulsionForces[nodeBID]
-                    nodeRepulsionForces[nodeBID] = (fx + forceX, fy + forceY)
+                    fx, fy = nodes_to_forces[nodeBID]
+                    nodes_to_forces[nodeBID] = (fx + forceX, fy + forceY)
         
-        return nodeRepulsionForces
+        return nodes_to_forces
 
 
     def __calculateEdgeRestoration(self) -> None: 
@@ -138,20 +141,19 @@ class PhysicsCalculations():
     # Caclulate and apply forces to each object drawn on screen
     def applyPhysics(self) -> None:  
         # Snapshot of node coords and offset
-        nodes = [(x.getID(), x.getCoords(), x.getOffset()) for x in self.__canvasGraph.getNodes()]
-        nodeRepulsionForces = self.__calculateNodeRepulsion(nodes)
+        nodesSnapshot = {x.getID() : (x.getCoords(), x.getOffset()) for x in self.__canvasGraph.getNodes()}
+        edgesSnapshot = {x.getCanvasID() : (x.getStartNode().getID(), x.getEndNode().getID()) 
+                          for x in self.__canvasGraph.getEdges()}
+
+        nodes_to_forces = {}
         
+        self.__calculateGravity(nodesSnapshot, nodes_to_forces)
+        self.__calculateNodeRepulsion(nodesSnapshot, nodes_to_forces)
         
-        # self.__applyForces()
+        self.__calculationResults = nodes_to_forces
+        
 
-
-        # self.__calculateGravity()
-        # self.__calculateEdgeRestoration() 
-
-        self.__calculationResults = nodeRepulsionForces
-    
-
-    def getLatestResults(self) -> dict: return self.__calculationResults.copy()
+    def getLatestResults(self) -> dict: return self.__calculationResults
 
 
 # Listen to Yesterday by The Beatles  

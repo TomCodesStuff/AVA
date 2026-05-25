@@ -1,5 +1,5 @@
-from app_window import Window
-from enums import ScreenType
+from src.app_window import Window
+from src.enums import ScreenType
 
 WIDTH = 700
 HEIGHT = 500

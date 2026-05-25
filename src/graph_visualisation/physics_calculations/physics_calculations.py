@@ -27,16 +27,13 @@ class PhysicsCalculations():
 
         self.__calculationResults = {}
 
-
     # Calculates distance between passed coords (pythagoras) 
     def __calculateDistance(self, x0 : float, y0 : float, x1 : float, y1 : float) -> float: 
         return math.sqrt(math.pow(x1 - x0, 2) + math.pow(y1 - y0, 2)) 
     
-
     def __calculateStandarisedVector(self, coords : tuple, dist : float) -> tuple:
         x0, y0, x1, y1 = coords 
         return ((x1 - x0) / max(dist, 0.1), (y1 - y0) / max(dist, 0.1))
-
 
     # Calculates force that drags nodes towards centre of the canvas 
     # Acts as way to stop nodes going offscreen 
@@ -59,7 +56,6 @@ class PhysicsCalculations():
                 nodes_to_forces[nodeID] = (forceX, forceY)
             else: nodes_to_forces[nodeID] = (0, 0) 
         
-                
     # Calculates node-node repulsion
     def __calculateNodeRepulsion(self, nodesSnapshot : dict, nodes_to_forces) -> None: 
         # Iterate through each pair of nodes 
@@ -97,7 +93,6 @@ class PhysicsCalculations():
         
         return nodes_to_forces
 
-
     def __calculateEdgeRestoration(self, edgesSnapshot : set, nodesSnapshot : dict, nodes_to_forces : dict) -> None: 
         for (startNodeID, endNodeID) in edgesSnapshot: 
             (x0, y0, _, _), startNodeOffset = nodesSnapshot[startNodeID]
@@ -121,7 +116,6 @@ class PhysicsCalculations():
             fx, fy = nodes_to_forces[endNodeID]
             nodes_to_forces[endNodeID] = (fx - forceX, fy - forceY)
 
-
     # Caclulate and apply forces to each object drawn on screen
     def applyPhysics(self) -> None:  
         # Snapshot of node coords and offset
@@ -137,7 +131,6 @@ class PhysicsCalculations():
         
         self.__calculationResults = nodes_to_forces
         
-
     def getLatestResults(self) -> dict: return self.__calculationResults
 
 

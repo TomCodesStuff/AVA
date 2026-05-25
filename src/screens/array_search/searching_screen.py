@@ -25,7 +25,6 @@ class SearchScreen(ArrayAlgorithmScreen[C, M, D]):
     def __init__(self, window):
         super().__init__(window) 
 
-
     # Creates a slider that lets users decide if the target is in the array, not in the array or randomly generated
     def __createTargetAdjuster(self) -> None:
         # Creates a slider that goes from 0 to 1 to 2
@@ -42,10 +41,8 @@ class SearchScreen(ArrayAlgorithmScreen[C, M, D]):
     def updateDisplayedText(self, value : str) -> None: 
         self.__targetSlider.config(label = self.getController().updateSliderText(value)) 
 
-
     def prepare(self):         
         self.getController().generateTarget(self.getModel().getTargetSetting())
-
 
     def render(self) -> None: 
         self.createBaseArrayLayout()  

@@ -23,17 +23,14 @@ class AlgorithmValidator():
             x.value : {} for x in AlgorithmType 
         }
 
-
     def __isFileNameValid(self, x : Path) -> None: 
         return True if re.match(FILE_NAME_REGEX, x.name) else False
-
 
     def __getPotentialAlgorithms(self, algorithmType : str) -> List[str]: 
         srcDir = Path(__file__).parent.parent.resolve()
         algorithmsDir = srcDir / "algorithms" / algorithmType 
         if not algorithmsDir.exists(): return []
         return [x.stem for x in algorithmsDir.iterdir() if self.__isFileNameValid(x)]
-
 
     def __importModule(self, algorithmType : str, algorithmName : str) -> ModuleType|None:
         try:
@@ -43,7 +40,6 @@ class AlgorithmValidator():
             print(f"FAILED: Unable to import module: algorithms.{algorithmType}.{algorithmName}.\nException: {e}")
             return None
 
-
     def __getAlgorithmClassName(self, algorithmModule : ModuleType, algorithmName : str) -> str|None:
         moduleClasses = [name for name, _ in inspect.getmembers(algorithmModule)] 
         algorithmClassName = "".join(map(str.capitalize, algorithmName.split("_")))
@@ -51,7 +47,6 @@ class AlgorithmValidator():
             print("FAILED: Algorithm class not name not in correct format.")
             return None 
         return algorithmClassName   
-
 
     def __getAlgorithmClass(self, algorithmModule : ModuleType, algorithmClassName : str) -> Algorithm|None:
         try:
@@ -61,14 +56,12 @@ class AlgorithmValidator():
             print(f"FAILED: Unable to create instance of {algorithmClassName}.\nException: {e}")
             return None
 
-
     def __isAlgorithmSubclass(self, algorithmClassName : str, obj : object) -> bool: 
         if(not issubclass(obj, Algorithm)):
             print(f"FAILED: {algorithmClassName} is not a child of `Algorithm` class.") 
             return False 
         return True 
         
-
     def __isGetNameCorrect(self, algorithm : Algorithm) -> bool:  
         algorithmName = algorithm.getName() 
         if(not isinstance(algorithmName, str)): 
@@ -78,7 +71,6 @@ class AlgorithmValidator():
             print("FAILED: `getName()` method returns an invalid value.")
             return False
         return True 
-
 
     def __validateAlgorithm(self, algorithmType, algorithmName : str) -> Algorithm|None:
         algorithmModule = self.__importModule(algorithmType, algorithmName) 
@@ -101,11 +93,9 @@ class AlgorithmValidator():
         if not self.__isGetNameCorrect(algorithmInstance): return None
         return algorithmClass
 
-
     def __addValidAlgorithm(self, algorithmType : str, algorithmClass : type[Algorithm]) -> None: 
         algorithmInstance = algorithmClass()
         self.__algorithmsByType[algorithmType][algorithmInstance.getName()] = algorithmClass
-
 
     def findValidAlgorithms(self) -> None:
         for algorithmType in self.__algorithmsByType.keys():
@@ -114,11 +104,9 @@ class AlgorithmValidator():
                 algorithmClass = self.__validateAlgorithm(algorithmType, algorithm)
                 if algorithmClass is not None: self.__addValidAlgorithm(algorithmType, algorithmClass) 
 
-
     def getAlgorithmNames(self, algorithmType : AlgorithmType) -> Tuple:
         if algorithmType.value not in self.__algorithmsByType: return ()
         return tuple(self.__algorithmsByType[algorithmType.value].keys()) 
-
 
     def getAlgorithmClass(self, algorithmType : AlgorithmType, algorithmName : str) -> Algorithm:  
         if algorithmType.value not in self.__algorithmsByType: return None 

@@ -26,14 +26,11 @@ class SearchModel(ArrayAlgorithmModel):
             2: "Target: Not in array"
         } 
 
-
     def setTargetSetting(self, value : int) -> None: 
         if value in self.__numbersToText: self.__targetSetting = value
 
-
     def getTargetSetting(self) -> int: 
         return self.__targetSetting
-
 
     # Returns the text to be displayed above the target slider 
     def getSliderText(self, sliderValue : int) -> str: 

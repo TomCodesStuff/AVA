@@ -48,7 +48,6 @@ class CanvasNode():
     def updateCoords(self, coords : tuple) -> None: 
         self.__coords = coords
 
-
     # Getters 
     def getCanvasID(self) -> int: return self.__canvasID 
     def getXCoord(self) -> int: return self.__coords[0]
@@ -64,14 +63,11 @@ class CanvasNode():
     def setColour(self, colour : str) -> None: self.__node.setColour(colour)   
     def getOffset(self) -> int: return self.__size // 2 
     
-
     # Adds a CanvasEdge Object to the list 
     def addEdge(self, canvasEdge : CanvasEdge) -> None: self.__edges.add(canvasEdge) 
 
-
     def removeEdge(self, canvasEdge : CanvasEdge) -> None: 
         if canvasEdge in self.__edges: self.__edges.remove(canvasEdge)
-
 
     def applyForces(self, forces : tuple) -> None:  
         # Don't update if node is being dragged by the user here 
@@ -90,7 +86,6 @@ class CanvasNode():
         # Update coords 
         self.__coords = (newX0, newY0, newX0 + self.__size, newY0 + self.__size)  
     
-
     # Function for dragging objects
     def isBeingDragged(self) -> bool: return self.__isBeingDragged
     def setDragged(self) -> bool: self.__isBeingDragged = True

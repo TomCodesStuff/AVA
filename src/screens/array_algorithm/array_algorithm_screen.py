@@ -28,9 +28,7 @@ NUM_BAR_FLASHES = 3
 class ArrayAlgorithmScreen(AlgorithmScreen[C, M, D]):
     def __init__(self, window):
         super().__init__(window) 
-
         self.__animationIndex = 0
-
 
     # Creates a slider that allows users to alter an arrays size
     def __createArrayAdjuster(self) -> None:
@@ -39,7 +37,6 @@ class ArrayAlgorithmScreen(AlgorithmScreen[C, M, D]):
             orient = "horizontal", bg = "white", highlightbackground = "white", command = lambda x: self.getController().adjustArray(int(x)))
         self.__arraySizeSlider.pack(pady = (10, 0))
         self.addToggleableWidget(self.__arraySizeSlider)
-
 
     # Creates buttons the allow algorithms to be sorted and shuffled
     def __createSortShuffleButtons(self) -> None: 
@@ -55,38 +52,32 @@ class ArrayAlgorithmScreen(AlgorithmScreen[C, M, D]):
         self.addToggleableWidget(self.__sortButton)
         self.addToggleableWidget(self.__shuffleButton)
     
-    
     # Sorts and displays the array
     def __sortArray(self) -> None:
         self.getDataStructure().sort()
         self.getController().refreshCanvas() 
     
-
     # Shuffles and displays the array
     def __shuffleArray(self) -> None:
         self.getDataStructure().shuffle()
         self.getController().refreshCanvas() 
-
 
     # This functions handles creating and displaying the options the user is presented with
     def createArrayOptions(self) -> None: 
         self.__createArrayAdjuster()
         self.__createSortShuffleButtons()
 
-         
     def createBaseArrayLayout(self):
         self.createBaseLayout()
         self.getController().calculateArrayBounds()
         self.createArrayOptions() 
         self.getController().adjustArray(1)
     
-
     def animationSetup(self) -> None: 
         # Reset bar colours
         self.getDataStructure().resetBarColours() 
         self.getController().refreshCanvas()
         self.__animationIndex = 0 
-
 
     def coolAnimationFrame(self) -> None:  
         array = self.getDataStructure() 
@@ -94,30 +85,6 @@ class ArrayAlgorithmScreen(AlgorithmScreen[C, M, D]):
         self.__animationIndex += 1
         self.setFrameDelay(TINY_DELAY_MS)
         if self.__animationIndex == array.size(): self.endAnimation()
-
-        # time.sleep(BRIEF_DELAY)
-        # array = self.getDataStructure()
-        # array.resetBarColours() 
-        # self.getController().refreshCanvas()
-        # time.sleep(TINY_DELAY)
-        
-        # for i in range(len(array)): 
-        #     array.resetBarColours()
-        #     array.setColourAt(i, "green")
-        #     self.getController().refreshCanvas(refreshColours=False)
-        #     time.sleep(0.01)
-        
-        # for _ in range(NUM_BAR_FLASHES): 
-        #     array.resetBarColours() 
-        #     self.getController().refreshCanvas(refreshColours=False)
-        #     time.sleep(TINY_DELAY)
-        #     array.setAllColours("green")
-        #     self.getController().refreshCanvas(refreshColours=False)
-        #     time.sleep(TINY_DELAY) 
-        
-        # array.resetBarColours()
-        # self.getController().refreshCanvas()
-   
 
 # Listen to Almost by Bowling For Soup
    

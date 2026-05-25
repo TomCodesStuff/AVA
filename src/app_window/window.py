@@ -64,17 +64,14 @@ class Window():
         # Stops frame resizing to same size as widgets inside it 
         self.__contentFrame.pack_propagate(False) 
 
-
     # Draws window
     def show(self) -> None:
         self.__window.mainloop() 
 
-    
     # Removes every widget from the passed frame
     def removeScreen(self) -> None: 
         for widget in self.__contentFrame.winfo_children():
             widget.destroy()
-
 
     # Clears current screen and loads new one
     def loadScreen(self, screenType : ScreenType) -> None:  
@@ -83,49 +80,39 @@ class Window():
         newScreen = ScreenCreator.createScreen(self, screenType)
         if newScreen is not None: newScreen.render()
 
-
     # Refreshes the screen, so any changes can be displayed
     def update(self) -> None:
         self.__window.update() 
     
-    
     def update_idle_tasks(self) -> None:
         self.__window.update_idletasks()
     
-
     # Schedule the passed function to be executed after the passed amount of time
     # Assumes function has no parameters
     def scheduleFunctionExecution(self, function : Callable, delay : int) -> None:
         self.__window.after(delay, function)
     
-
     def getNumScheduledFunctions(self) -> int:
         return len(self.__window.tk.call('after', 'info'))
-
 
     def cancelScheduledFunctions(self) -> None:
         for functionID in self.__window.tk.call('after', 'info'): 
             self.__window.after_cancel(functionID)
 
-
     # Returns the frame widgets are displayed in
     def getContentFrame(self) -> tk.Frame:
         return self.__contentFrame
-
 
     # Returns the content frames height
     def getContentFrameHeight(self) -> int:
         return self.__contentFrameHeight 
 
-
     # Returns the content frames width
     def getContentFrameWidth(self) -> int:
         return self.__contentFrameWidth 
     
-
     def getAlgorithmNames(self, algorithmType : AlgorithmType) -> Tuple:
         return self.__algorithmValidator.getAlgorithmNames(algorithmType)
-
 
     def getAlgorithmClass(self, algorithmType : AlgorithmType, algorithmName : str) -> Type[Algorithm]: 
         return self.__algorithmValidator.getAlgorithmClass(algorithmType, algorithmName)

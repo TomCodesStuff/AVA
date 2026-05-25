@@ -8,7 +8,6 @@ class PhysicsThread(ManagedThread):
         self.__panicKillSwitch = False
         self.__physicsCalulcations = physicsCalculations
 
-    
     # retool physics handler 
     # thread runs until stop flag set 
     # implement pause flag(?) -> not needed, thread is either running or stopped

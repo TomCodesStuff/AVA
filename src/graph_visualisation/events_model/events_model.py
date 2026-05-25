@@ -8,13 +8,14 @@ class EventsModel():
 
         self.__canvasWidth = 0
         self.__canvasHeight = 0
-
-
+    
+    # Getters
     def getCanvasLowerBoundOffset(self) -> tuple: return self.__canvasLowerBoundOffset
     def getCanvasUpperBoundOffset(self) -> tuple:return self.__canvasUpperBoundOffset
     def getCanvasWidth(self) -> int: return self.__canvasWidth
     def getCanvasHeight(self) -> int: return self.__canvasHeight
     
+    # Setters 
     def setCanvasWidth(self, width : int) -> None: self.__canvasWidth = width
     def setCanvasHeight(self, height : int) -> None: self.__canvasHeight = height 
     

@@ -23,7 +23,6 @@ class TraversalModel(AlgorithmModel):
         self.setMinDelay(MIN_DELAY)
         self.setMaxDelay(MAX_DELAY)
 
-
         # Number of nodes that can be on screen at once
         self.__maxNumNodes = 20
         
@@ -50,29 +49,22 @@ class TraversalModel(AlgorithmModel):
 
         self.__arrowsFont = "Courier New"
 
-
     # Getters for distances between nodes on screen 
     def getMinScreenDist(self) -> int: return self.__minScreenDist
     def getMaxScreenDist(self) -> int: return self.__maxScreenDist
-
-
     def getMaxNumNodes(self) -> int: return self.__maxNumNodes
 
-#
     # Getters for edge weight 
     def getMinWeight(self) -> int: return self.__minWeight
     def getMaxWeight(self) -> int: return self.__maxWeight 
     def getDefaultWeight(self) -> int: return self.__defaultWeight
     def getWeightSliderResolution(self) -> int: return self.__weightSliderResolution 
 
-
     # Getter for delay used when updating the canvas
     def getUpdateDelay(self) -> int: return self.__updateDelay 
 
-
     def getEdgeMinScreenLen(self) -> int: return self.__edgeMinScreenLen
     def getEdgeMaxScreenLen(self) -> int: return self.__edgeMaxScreenLen 
-
 
     def getArrowFont(self) -> str: return self.__arrowsFont 
 

@@ -7,22 +7,17 @@ class SortArray(Array):
         super().__init__()
         self.__sortDirection = SortDirection.ASCENDING 
     
-
     def setSortingDirecion(self, value : SortDirection) -> None:
         self.__sortDirection = value 
     
-
     def getSortingDirection(self) -> SortDirection:
         return self.__sortDirection 
     
-
     def isSortAcending(self) -> bool: 
         return True if self.__sortDirection == SortDirection.ASCENDING else False   
-
     
     def isSortDescending(self) -> bool: 
         return True if self.__sortDirection == SortDirection.DESCENDING else False  
-
 
     # Swaps the elements at the specified indexes
     def swapAt(self, i : int, j : int) -> None:  
@@ -31,7 +26,6 @@ class SortArray(Array):
         if i >= len(array) or j >= len(array): return 
         array[i], array[j] = array[j], array[i]
     
-
     # TODO implement better checking
     # Swaps the colour values of the two indexes specified
     def swapColoursAt(self, i : int, j : int) -> None:   
@@ -40,7 +34,6 @@ class SortArray(Array):
         if i >= len(barColoursArray) or j >= len(barColoursArray): return 
         barColoursArray[i], barColoursArray[j] =\
             barColoursArray[j], barColoursArray[i]
-    
 
     # Checks if elements need to be swapped 
     def isSwapNeeded(self, i : int, j : int) -> bool: 
@@ -48,7 +41,6 @@ class SortArray(Array):
             return self.getAt(i) > self.getAt(j) 
         else: return self.getAt(i) < self.getAt(j) 
     
-
     def areElementsEqual(self, i : int, j : int) -> bool:
         return self.getAt(i) == self.getAt(j)
 

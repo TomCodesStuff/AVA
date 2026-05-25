@@ -51,29 +51,13 @@ class CanvasEdge():
     def setWeight(self, weight : int) -> None: 
         if weight > 0: self.__weight = weight
     
-
-    def updateCoords(self, coords : tuple) -> None: 
-        self.__coords = coords 
-    
-
-    def setStartNode(self, canvasNode : CanvasNode) -> None:
-        self.__startNode = canvasNode 
-
-
-    def setEndNode(self, canvasNode : CanvasNode) -> None:
-        self.__endNode = canvasNode 
-
-
+    def updateCoords(self, coords : tuple) -> None: self.__coords = coords 
+    def setStartNode(self, canvasNode : CanvasNode) -> None: self.__startNode = canvasNode 
+    def setEndNode(self, canvasNode : CanvasNode) -> None: self.__endNode = canvasNode 
     # TODO error handling and adjustment for screen size
     def setscreenLen(self, val : int): self.__screenLen = val
-
-
-    def setCanvasID(self, val : int) -> None: 
-        self.__canvasID = val  
-
-    
-    def setColour(self, colour : str) -> None: 
-        self.__colour = colour
+    def setCanvasID(self, val : int) -> None: self.__canvasID = val  
+    def setColour(self, colour : str) -> None: self.__colour = colour
 
 
     @staticmethod

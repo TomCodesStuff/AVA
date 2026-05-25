@@ -14,11 +14,9 @@ class BubbleSort(Algorithm[SortArray]):
     def __init__(self):
         super().__init__()
 
-
     # Returns algorithms name -> user sees this when selecting algorithm
     def getName(self) -> str:
         return "Bubble Sort" 
-
 
     # Bubble Sort Algorithm
     def run(self) -> int: 

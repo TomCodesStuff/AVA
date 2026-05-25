@@ -14,12 +14,10 @@ class BogoSort(Algorithm[SortArray]):
     def __init__(self):
         super().__init__()
 
-
     # Returns algorithms name -> user sees this when selecting algorithm
     def getName(self) -> str:
         return "Bogo Sort" 
     
-
     # Bogo Sort Algorithm
     def run(self) -> int: 
         array = self.getDataStructure() 

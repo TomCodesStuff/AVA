@@ -14,12 +14,10 @@ class QuickSort(Algorithm[SortArray]):
     def __init__(self):
         super().__init__()
 
-
     # Returns algorithms name -> user sees this when selecting algorithm
     def getName(self) -> str:
         return "Quick Sort"  
     
-
     # Quick Sort Algorithm
     # Pivot selection using median of three 
     def run(self) -> int:  
@@ -27,7 +25,6 @@ class QuickSort(Algorithm[SortArray]):
         self.__quickSortHelper(0, len(array) - 1)
         self.invokeDelay()
         return 0
-    
     
     # Recusive implementation of quick sort 
     def __quickSortHelper(self, start, end):   
@@ -37,7 +34,6 @@ class QuickSort(Algorithm[SortArray]):
         self.__quickSortHelper(start, pivotIndex - 1) 
         self.__quickSortHelper(pivotIndex + 1, end)
       
-
     def __partition(self, start, end):  
         array = self.getDataStructure()
         # Middle of the array 
@@ -81,7 +77,6 @@ class QuickSort(Algorithm[SortArray]):
             else: i+=1
         return pivotIdx
     
-
     def __shiftRight(self, start, end): 
         array = self.getDataStructure()
         index = end 

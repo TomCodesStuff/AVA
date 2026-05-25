@@ -23,42 +23,27 @@ class Algorithm(Generic[D], ABC):
     @abstractmethod
     def getName(self): pass 
 
-
     @abstractmethod 
     def run(self) -> int: pass
-
 
     def setDataStructure(self, dataStructure : D) -> None: 
         if self.__dataStructure is not None: raise Exception("ERROR: Data Structure has already been set")
         self.__dataStructure = dataStructure 
     
-
     def setMediator(self, mediator : "Mediator") -> None: 
         if self.__mediator is not None: raise Exception("ERROR: Mediator has already been set")
         self.__mediator = mediator 
     
-
     def invokeBriefDelay(self) -> None: self.__mediator.briefDelay()
+    
     def invokeDelay(self) -> None: self.__mediator.delay()
     
-
     def getDataStructure(self) -> D: 
         return self.__dataStructure
 
     # Checks if elements at the specified indexes are equal
     # def areElementsEqual(self, i : int, j : int) -> bool: 
     #     return self.getElement(i) == self.getElement(j)
-
-
-    # Plays a cool animation when the array is sorted
-    # It alternates between colouring the bars green and black
-    # def coolEndingAnimation(self):
-    #     for _ in range(3):
-    #         self.updateArrayOnScreen() 
-    #         self.__haltAlgorithm(0.5, 0.5) 
-    #         self.__setAllBarColoursGreen() 
-    #         self.updateArrayOnScreen() 
-    #         self.__haltAlgorithm(0.5, 0.5)
 
 
 # Listen to American Idiot by Green Day

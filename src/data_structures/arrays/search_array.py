@@ -13,11 +13,9 @@ class SearchArray(Array):
         super().__init__()
         self.__target = 0 
 
-
     # Sets the element being looked for to the passed value
     def setTarget(self, value : int) -> None:
         self.__target = value   
-
 
     # Returns the target (the element being looked for)
     def getTarget(self) -> int: return self.__target

@@ -1,5 +1,6 @@
 from ..algorithm_base import AlgorithmModel
 
+
 class ArrayAlgorithmModel(AlgorithmModel):
     def __init__(self) -> None: 
         super().__init__()
@@ -38,7 +39,6 @@ class ArrayAlgorithmModel(AlgorithmModel):
         self.__arraySize = 0
 
     #Getters 
-
     # Returns width of the bars drawn on screen
     def getBarWidth(self) -> int: return self.__barWidth 
     # Sets width of bars drawn on screen to passed value
@@ -73,7 +73,6 @@ class ArrayAlgorithmModel(AlgorithmModel):
     def getArraySize(self) -> int: return self.__arraySize
 
     # Setters
-
     # Sets the minimum distance between the first/last bars and the edges of the canvas 
     # to the passed value
     def setMinPadding(self, value : int) -> None: self.__minPadding = value

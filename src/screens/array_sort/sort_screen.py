@@ -25,7 +25,6 @@ class SortScreen(ArrayAlgorithmScreen[C, M, D]):
     def __init__(self, window):
         super().__init__(window)   
     
-
     # Creates the buttons that lets userr change between sorting by ascending or descending order
     def __createSortOptionButtons(self):
         self.__radioButtonsFrame = tk.Frame(self.getOptionsWidgetFrame(), background="white")
@@ -33,13 +32,11 @@ class SortScreen(ArrayAlgorithmScreen[C, M, D]):
         self.__createSortAscendingButton()
         self.__createSortDescendingButton() 
 
-
     # Creates the button to toggle ascending order
     def __createSortAscendingButton(self):
         self.__ascendingOption = tk.Button(self.__radioButtonsFrame, text="Sort Ascending.", width = self.getModel().getButtonWidth(), 
                                            relief = "solid", font = (self.getFont(), self.getFontSize()), state="disabled", command=self.getController().toggleSortDirection)
         self.__ascendingOption.pack() 
-
 
     # Creates the button to toggle descending order
     def __createSortDescendingButton(self):
@@ -47,7 +44,6 @@ class SortScreen(ArrayAlgorithmScreen[C, M, D]):
                                             relief = "solid", font = (self.getFont(), self.getFontSize()), command=self.getController().toggleSortDirection)
         self.__descendingOption.pack(pady=(5, 0))
         self.addToggleableWidget(self.__descendingOption)
-
 
     # Disable and enables the sort direction buttons when one is pressed 
     def toggleSortDirection(self): 
@@ -62,10 +58,8 @@ class SortScreen(ArrayAlgorithmScreen[C, M, D]):
             self.addToggleableWidget(self.__ascendingOption)
             self.removeToggleableWidget(self.__descendingOption)
 
-
     def prepare(self): 
         self.getDataStructure().setSortingDirecion(self.getModel().getSortDirection())
-
 
     def render(self) -> None: 
         self.createBaseArrayLayout() 

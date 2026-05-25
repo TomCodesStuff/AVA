@@ -17,10 +17,8 @@ class ScreenInterface(ABC):
     def __init__(self, window : Window):
         self.__window = window
 
-
     @abstractmethod
     def render(self): pass 
-
 
     def getWindow(self) -> Window: 
         return self.__window

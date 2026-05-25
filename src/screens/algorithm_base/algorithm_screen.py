@@ -26,6 +26,7 @@ D = TypeVar("D", bound="DataStructure")
 FRAME_HEIGHT = 50
 START_DELAY_MS = 500
 
+
 # All screens that visualise the algorithms have the same fundamental layout
 # This class delegates the reponsiblity of creating the basic layout
 class AlgorithmScreen(Generic[C, M ,D], ScreenInterface):
@@ -57,23 +58,18 @@ class AlgorithmScreen(Generic[C, M ,D], ScreenInterface):
         self.__animationRunning = False
         self.__frameDelay = 0
 
-        
     # Abstract method, child screens will call before running an algorithm
     @abstractmethod
     def prepare(self) -> None: pass  
 
-
     @abstractmethod
     def render(self) -> None: pass 
-
 
     @abstractmethod 
     def animationSetup(self) -> None: pass 
 
-
     @abstractmethod 
     def coolAnimationFrame(self) -> None: pass  
-
 
     def __animationStarting(self) -> None: 
         # Disable Buttons
@@ -83,19 +79,15 @@ class AlgorithmScreen(Generic[C, M ,D], ScreenInterface):
         self.animationSetup()
         self.__animationRunning = True
 
-
     def __animationEnding(self) -> None:
         self.__runButton.config(state="active")
         self.__stateButton.config(state="active")
       
-    
     def endAnimation(self) -> None: 
         self.__animationRunning = False  
     
-
     def setFrameDelay(self, delay : int) -> None: 
         self.__frameDelay = max(0, delay)
-
 
     def coolEndingAnimation(self) -> None: 
         if(self.__animationRunning): 
@@ -106,15 +98,12 @@ class AlgorithmScreen(Generic[C, M ,D], ScreenInterface):
             self.getController().refreshCanvas(refreshColours=True)
             self.__animationEnding()
 
-
     def runCoolEndingAnimation(self) -> None:
         self.__animationStarting()  
         self.getWindow().scheduleFunctionExecution(self.coolEndingAnimation, START_DELAY_MS)
         
-    
     def displayAlgorithmOptions(self) -> None: 
         self.__algorithmOptions["values"] = self.getWindow().getAlgorithmNames(self.__algorithmType) 
-
 
     # Creates frame to display the border
     def __createBorderFrame(self, root : tk.Frame, frameWidth : int, frameHeight : int) -> tk.Frame:
@@ -123,7 +112,6 @@ class AlgorithmScreen(Generic[C, M ,D], ScreenInterface):
         borderFrame.pack()
         borderFrame.grid_propagate(False)    
         return borderFrame     
-
 
     # Creates frame to display the options
     def __createOptionsFrame(self, root : tk.Frame, frameWidth : int, frameHeight : int) -> tk.Frame:
@@ -135,7 +123,6 @@ class AlgorithmScreen(Generic[C, M ,D], ScreenInterface):
         optionsFrame.pack_propagate(False) 
         return optionsFrame
 
-
     # Creates frame to display the home button
     def __createHomeButtonFrame(self, root : tk.Frame, frameWidth : int, frameHeight : int) -> tk.Frame:
         # Frame to store button to redirect user back to Introduction Screen
@@ -145,7 +132,6 @@ class AlgorithmScreen(Generic[C, M ,D], ScreenInterface):
         homeButtonFrame.pack_propagate(False)
         return homeButtonFrame 
     
-
     # Creates widget to store options, prevents formatting from breaking on different devices 
     def __createOptionWidget(self, root : tk.Frame, frameWidth : int, frameHeight : int) -> None:
         # This is the frame where the actual option widgets are stored
@@ -155,7 +141,6 @@ class AlgorithmScreen(Generic[C, M ,D], ScreenInterface):
         self.__optionsWidgetsFrame.pack()
         self.__optionsWidgetsFrame.pack_propagate(False)
     
-
     # Creates the button to let the user navigate back to the main menu
     def __createHomeButton(self, root : tk.Frame) -> None: 
         # Creates and places button in the centre of the frame
@@ -163,7 +148,6 @@ class AlgorithmScreen(Generic[C, M ,D], ScreenInterface):
                                       relief = "solid", command = self.__loadHomeScreen)
         self.__homeButton.place(relx = 0.5, rely = 0.5, anchor = "center") 
     
-
     # Creates the frame to store the canvas
     def __createCanvasFrame(self, root : tk.Frame, frameWidth : int, frameHeight : int) -> tk.Frame:
         # This frame stores the canvas that displays array
@@ -172,7 +156,6 @@ class AlgorithmScreen(Generic[C, M ,D], ScreenInterface):
         canvasFrame.pack_propagate(False)
         return canvasFrame
     
-
     # Creates canvas to display the array
     def __createCanvas(self, root : tk.Frame, canvasWidth : int, canvasHeight : int) -> None:
          # This canvas will be where the array is displayed.    
@@ -180,14 +163,12 @@ class AlgorithmScreen(Generic[C, M ,D], ScreenInterface):
         self.__canvas.pack()
         self.__canvas.pack_propagate(False)
     
-
     # Creates frame to store the algorithm information
     def __createAlgorithmIntoFrame(self, root : tk.Frame, frameWidth : int, frameHeight : int) -> None:
         # This frame will be where information on the algorithm will be displayed 
         self.__algorithmInfoFrame = tk.Frame(root, width = frameWidth, height = frameHeight, bg = "white")
         self.__algorithmInfoFrame.grid(row = 1, column = 1, pady = (2,0), padx = (2,0)) 
         self.__algorithmInfoFrame.pack_propagate(False) 
-
 
     # Creates a combo box which displays all algorithms 
     def __createAlgorithmSelect(self) -> None:
@@ -201,16 +182,13 @@ class AlgorithmScreen(Generic[C, M ,D], ScreenInterface):
         self.__algorithmOptions.pack(pady = (10,0))  
         self.addToggleableWidget(self.__algorithmOptions)
 
-
     # When the slider has changed value a label is added with the relevant speed 
     def __updateDelay(self, value : str) -> None: 
         self.__speedSlider.config(label = f"Delay: {value} {self.__sliderUnitsText}")  
 
-
     # Sets the delay that pauses algorithms during execution     
     def __setDelay(self) -> None:   
         self.getController().updateAlgorithmDelay(float(self.__speedSlider.get()))
-
 
     # Creates a slider that allows users to adjust an algorithms speed
     def __createSpeedSlider(self) -> None:
@@ -230,7 +208,6 @@ class AlgorithmScreen(Generic[C, M ,D], ScreenInterface):
             self.__sliderUnitsText = "Milliseconds"
         else: self.__sliderUnitsText = "Seconds"  
 
-
     # Creates buttons that lets user execute algorithms or stop them
     def __createRunButton(self) -> None:
         # Frame to store stop and solve buttons in a grid layout
@@ -247,13 +224,11 @@ class AlgorithmScreen(Generic[C, M ,D], ScreenInterface):
                                              state = "disabled", command = lambda : self.__pauseAlgorithm())
         self.__stateButton.grid(row = 0, column = 1)  
 
-
     # Creates widgets that all algorithm screens use 
     def __createBaseAlgorithmOptions(self) -> None: 
         self.__createAlgorithmSelect()               
         self.__createSpeedSlider()
         self.__createRunButton()
-
 
     # Creates the layout all algorithms screens use
     def createBaseLayout(self) -> None:
@@ -304,13 +279,11 @@ class AlgorithmScreen(Generic[C, M ,D], ScreenInterface):
         # Updates widths
         self.getWindow().update()  
 
-    
     def __updateStateButton(self) -> None:
         if self.getController().isAlgorithmPaused():
             self.__stateButton.config(text="Resume.", command=self.__resumeAlgorithm) 
         else:
             self.__stateButton.config(text="Pause.", command=self.__pauseAlgorithm)  
-
 
     def __updateRunButton(self) -> None: 
         if self.__isAlgorithmRunning: 
@@ -318,19 +291,16 @@ class AlgorithmScreen(Generic[C, M ,D], ScreenInterface):
         else: 
             self.__runButton.config(text="Solve.", command=self.__runAlgorithm)  
 
-
     def __updateToggleWidgets(self) -> None:
         for widget in self.__toggleableWidgets:  
             if self.__isAlgorithmRunning:
                 widget.config(state="disabled")   
             else: widget.config(state="active")
     
-
     def __toggleStateButton(self) -> None: 
         if self.__isAlgorithmRunning:
             self.__stateButton.config(state="active")
         else: self.__stateButton.config(state="disabled")
-
 
     def __updateWidgets(self) -> None: 
         self.__updateToggleWidgets()
@@ -338,23 +308,19 @@ class AlgorithmScreen(Generic[C, M ,D], ScreenInterface):
         self.__updateStateButton() 
         self.__toggleStateButton()
 
-
     # Returns algorithm the user has selected 
     def __getAlgorithmChoice(self) -> str:
         return self.__algorithmOptions.get()  
     
-
     # Releases the lock, letting the algorithm thread run again
     def __resumeAlgorithm(self) -> None: 
         self.__controller.resumeAlgorithm()
         self.__updateStateButton()
 
-
     # Holds the lock, pausing the algorithm Thread
     def __pauseAlgorithm(self) -> None: 
         self.__controller.pauseAlgorithm()
         self.__updateStateButton() 
-
 
     # Call algorithm user has selected
     def __runAlgorithm(self) -> None:   
@@ -368,20 +334,17 @@ class AlgorithmScreen(Generic[C, M ,D], ScreenInterface):
             self.prepare()            
             self.__controller.startAlgorithmThread(self.__algorithmType, self.__getAlgorithmChoice())
 
-
     # TODO add flag to play animation if algorithm terminated successfully
     def algorithmComplete(self, playAnimation : bool) -> None: 
         self.__stopAlgorithm()
         if playAnimation: 
             self.getWindow().scheduleFunctionExecution(self.runCoolEndingAnimation, START_DELAY_MS)
             
-
     # Forces current running algorithm thread to terminate (safely, I hope)
     def __stopAlgorithm(self) -> None:
         self.__controller.stopAlgorithmThread() 
         self.__isAlgorithmRunning = False  
         self.__updateWidgets()
-
 
     # Loads the home screen 
     # Ensures any algorithm threads are terminated 
@@ -397,7 +360,6 @@ class AlgorithmScreen(Generic[C, M ,D], ScreenInterface):
         # Cancel any scheduled function (mostly for traversal screen)
         self.getWindow().cancelScheduledFunctions()
         self.getWindow().loadScreen(ScreenType.MAIN_MENU)
-
 
     # Setters
     def setController(self, controller : C) -> None: self.__controller = controller

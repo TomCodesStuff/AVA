@@ -14,12 +14,10 @@ class MergeSort(Algorithm[SortArray]):
     def __init__(self):
         super().__init__()
 
-
     # Returns algorithms name -> user sees this when selecting algorithm
     def getName(self) -> str:
         return "Merge Sort" 
     
-
     # (In place) Merge Sort Algorithm
     def run(self) -> int: 
         array = self.getDataStructure()
@@ -27,7 +25,7 @@ class MergeSort(Algorithm[SortArray]):
         self.mergeSortHelper(0, len(array) - 1)
         return 0
     
-    
+
     def mergeSortHelper(self, leftPtr, rightPtr):   
         # If sub-arrays are of size one, they are considered sorted 
         if(leftPtr >= rightPtr): return  
@@ -38,7 +36,6 @@ class MergeSort(Algorithm[SortArray]):
         self.mergeSortHelper(mid+1, rightPtr)
         # Merges the sub-arrays by sorting them
         self.mergeArrays(leftPtr, mid, rightPtr)
-
 
     def mergeArrays(self, start, mid, end):   
         array = self.getDataStructure()
@@ -58,7 +55,6 @@ class MergeSort(Algorithm[SortArray]):
                 rightPtr += 1 
             else: 
                 leftPtr += 1 
-
 
     def shiftArrayElements(self, leftPtr, rightPtr):   
         array = self.getDataStructure()

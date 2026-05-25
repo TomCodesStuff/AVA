@@ -14,11 +14,9 @@ class InterpolationSearch(Algorithm[SearchArray]):
     def __init__(self):
         super().__init__()  
     
-    
     def getName(self):
         return "Interpolation Search"
      
-
     def run(self): 
         array = self.getDataStructure()
         target = array.getTarget()

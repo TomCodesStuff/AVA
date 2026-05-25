@@ -7,7 +7,6 @@ class MovementTool():
     def __init__(self, eventsModel : EventsModel):
         self.__eventsModel = eventsModel
     
-
     # This prevents nodes from being dragged off canvas 
     # Could likely do with some refactoring but it just works 
     def __calculateCoords(self, x : int, y : int) -> tuple:  
@@ -35,12 +34,10 @@ class MovementTool():
         # Doing it in one line would make the calculations very hard to read  
         return(x0, y0, x0 + nodeSize, y0 + nodeSize)
 
-
     def moveNode(self, canvasNode : CanvasNode, eventCoords : tuple) -> None: 
         eventX, eventY = eventCoords
         newCoords = self.__calculateCoords(eventX, eventY)
         canvasNode.updateCoords(newCoords) 
-
 
     def connectEdgeToNodes(self, canvasEdge : CanvasEdge) -> None: 
         startNode, endNode = canvasEdge.getNodes()
@@ -49,7 +46,6 @@ class MovementTool():
         x1, y1, _, _ = endNode.getCoords() 
         canvasEdge.updateCoords((x0 + startNode.getOffset(), y0 + + startNode.getOffset(), 
                                 x1 + endNode.getOffset(), y1 + endNode.getOffset()))
-
 
     def moveEdge(self, canvasEdge : CanvasEdge, eventCoords : tuple) -> None:
         nodeOffset = canvasEdge.getStartNode().getOffset()

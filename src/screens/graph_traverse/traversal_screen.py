@@ -22,6 +22,7 @@ D = TypeVar("D", bound="Graph")
 
 INITIAL_WEIGHT = 0
 
+
 class TraversalScreen(AlgorithmScreen[C, M, D]):  
     def __init__(self, window):
         super().__init__(window)
@@ -31,20 +32,17 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
         self.__edgeOptionsFrame = None 
         self.__innerNodeFrame = None 
 
-
     # Creates the button that lets users add nodes to the canvas 
     def __createAddNodeButton(self) -> None: 
         self.__addNodeButton = tk.Button(self.__innerNodeFrame, text="Spawn.", width=6, relief="solid", 
                                          font = (self.getFont(), self.getFontSize()), command=self.getController().spawnNode)
         self.__addNodeButton.grid(row = 1, column = 0, pady = (5, 0), padx=(0, 10))  
     
-
     def __createDeleteNodeButton(self) -> None:
         self.__deleteNodeButton = tk.Button(self.__innerNodeFrame, text="Delete.", width=6, relief="solid", 
                                             font = (self.getFont(), self.getFontSize()), 
                                             command=self.getController().deleteNode)
         self.__deleteNodeButton.grid(row = 1, column = 1, pady = (5, 0), padx=(10, 0))  
-
 
     def __createNodeOptions(self) -> None:
         # Hacky solution to make sure everything stays in centre :/
@@ -57,23 +55,19 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
         self.__createAddNodeButton() 
         self.__createDeleteNodeButton()
 
-
     # Changes the text colour of the add node button to the passed colour
     def setAddNodeButtonColour(self, colour : str) -> None: 
         self.__addNodeButton.config(fg = colour) 
     
-
     # Changes the text colour of the delete node button to the passed colour
     def setDeleteNodeButtonColour(self, colour: str) -> None:
         self.__deleteNodeButton.config(fg = colour)
-
 
     # Updates text in label above weight slider 
     def __updateWeight(self, value : str|int) -> None:
         value = int(value )
         self.__weightSlider.config(label = f"Weight: {value}")   
         if value > INITIAL_WEIGHT: self.getController().updateEdgeWeight(value)
-
 
     # Create option to let users change an edges weight/cost
     def __createWeightSlider(self) -> None:
@@ -87,7 +81,6 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
         
         self.__updateWeight(INITIAL_WEIGHT)
         self.__weightSlider.pack()
-
 
     # Create option to decide if edge is directed/undirected
     def __createEdgeDirectionButtons(self) -> None:
@@ -106,20 +99,17 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
                                             font=(self.getModel().getArrowFont(), self.getFontSize())) 
         self.__rightArrowButton.grid(row=0, column=2, pady=(10, 0), padx=(10, 0))       
        
-
     # Create button to save edge 
     def __createFinishButton(self) -> None:
         self.__saveEdgeButton = tk.Button(self.__edgeConfirmationFrame, text = "Finish.", width=6, relief = "solid", 
                                           font=(self.getFont(), self.getFontSize()), command=self.__finishEdgeEdit)
         self.__saveEdgeButton.grid(row=0, column=0, padx=(0, 10)) 
 
-
     # Create button to delete edge 
     def __createDeleteEdgeButton(self) -> None:
         self.__deleteEdgeButton = tk.Button(self.__edgeConfirmationFrame, text="Delete.", width=6, relief="solid",
                                             font=(self.getFont(), self.getFontSize()), command=self.__deleteEdge)
         self.__deleteEdgeButton.grid(row=0, column=1, padx=(10, 0))
-
 
     # Create buttons to save or delete an edge    
     def __createEdgeConfirmationButtons(self): 
@@ -128,13 +118,11 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
         self.__createFinishButton()
         self.__createDeleteEdgeButton()
 
-
     def __finishEdgeEdit(self) -> None:    
         # This is just calling the event handler function to finish editing the edge  
         self.getController().finishEdgeEdit() 
         # Hides edge edit options from view
         self.__nodeOptionsFrame.tkraise()
-
 
     def __deleteEdge(self) -> None:  
         # Deletes newly drawn weight or pre-existing weight 
@@ -142,7 +130,6 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
         self.getController().deleteEdge()
         self.__finishEdgeEdit()
     
-        
     # Updates weight displayed in the slider bar 
     def updateWeightOnScreen(self, edgeWeight : int) -> None: 
         self.__weightSlider.set(edgeWeight)
@@ -151,7 +138,6 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
             # Need to manually change text above the slider 
             self.__updateWeight(str(self.getModel().getMinWeight()))
 
-    
     # Resets position and disables weight slider 
     def resetWeightSlider(self) -> None: 
         # Resets text
@@ -159,7 +145,6 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
         # Disables slider 
         self.__weightSlider.config(state="disabled")
     
-
     # Enables egde options so users can toggle them
     def showEdgeOptions(self, canvasEdge : CanvasEdge) -> None: 
         # Update weight slider 
@@ -168,7 +153,6 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
         self.__weightSlider.set(canvasEdge.getWeight())
         # Show edge options 
         self.__edgeOptionsFrame.tkraise()
-
 
      # Creates options to add edges or edit existing ones
     def __createEdgeOptions(self) -> None: 
@@ -181,7 +165,6 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
         self.__createEdgeDirectionButtons() 
         # Create buttons to confirm changes 
         self.__createEdgeConfirmationButtons()
-
 
     # Creates the widgets that allows users to toggle the visualisers settings
     def __createOptions(self) -> None:  
@@ -200,13 +183,11 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
         # Show node options as a default
         self.__nodeOptionsFrame.tkraise()
 
-
     def render(self) -> None: 
         self.createBaseLayout()
         self.__createOptions()  
         self.getController().init()
     
-
     # TODO cancel any running functions before algorithm runs 
     def prepare() -> None: pass 
     def animationSetup(self) -> None: pass 

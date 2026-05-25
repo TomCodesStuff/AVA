@@ -15,11 +15,9 @@ class JumpSearch(Algorithm[SearchArray]):
     def __init__(self):
         super().__init__()
 
-
     # Returns algorithms name -> user sees this when selecting algorithm
     def getName(self):
         return "Jump Search" 
-
 
     def run(self):        
         array = self.getDataStructure()

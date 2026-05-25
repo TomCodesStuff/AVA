@@ -13,12 +13,10 @@ class BrickSort(Algorithm[SortArray]):
     def __init__(self,):
        super().__init__()
 
-
     # Returns algorithms name -> user sees this when selecting algorithm
     def getName(self) -> str:
         return "Brick Sort" 
     
-
     # Brick Sort Algorithm
     def run(self) -> int: 
         array = self.getDataStructure()

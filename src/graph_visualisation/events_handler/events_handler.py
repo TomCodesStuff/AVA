@@ -13,8 +13,8 @@ class EventsHandler():
         self.__eventsModel.setCanvasWidth(self.__canvas.winfo_width())
         self.__eventsModel.setCanvasHeight(self.__canvas.winfo_height())
         
-        self.__creationTool = CreationTool(self.__eventsModel)
-        self.__hoverTool = HoverTool(self.__eventsModel)
+        self.__creationTool = CreationTool()
+        self.__hoverTool = HoverTool()
         self.__movementTool = MovementTool(self.__eventsModel)
 
         # Flags to prevent events being incorrectly triggered 
@@ -31,7 +31,6 @@ class EventsHandler():
 
         self.__addCanvasEvents()
 
-
     def __canSpawnEventTrigger(self) -> bool: 
         if self.__isNodeBeingDeleted: 
             self.__isNodeBeingDeleted = False
@@ -42,7 +41,6 @@ class EventsHandler():
         if self.__isEdgeBeingDrawn: return False
         return True 
 
-
     def __spawnNodeDoubleClick(self, event : Event) -> None:
         if not self.__canSpawnEventTrigger(): return 
 
@@ -51,7 +49,6 @@ class EventsHandler():
         x1, y1 = event.x + circleOffset, event.y + circleOffset 
         self.spawnNode((x0, y0, x1, y1)) 
    
-
     def __deleteEdgeOnClick(self, event : Event) -> None: 
         if self.__isEdgeBeingEdited: return 
         if self.__edgeBeingDrawn is None: return 
@@ -65,13 +62,11 @@ class EventsHandler():
             self.__creationTool.deleteEdge(self.__canvasGraph, self.__edgeBeingDrawn) 
             self.__edgeBeingDrawn = None 
 
- 
     def __addCanvasEvents(self) -> None: 
         if self.__canvas is None: return 
         # Add event to delete current edge being drawn when the canvas is clicked
         self.__canvas.bind("<Button-1>", lambda event: self.__deleteEdgeOnClick(event))
         self.__canvas.bind("<Double-Button-1>", lambda event: self.__spawnNodeDoubleClick(event))
-
 
     def __moveNode(self, event : Event, canvasNode : CanvasNode) -> None:  
         self.__resetEdgeDrawingEvent()
@@ -85,7 +80,6 @@ class EventsHandler():
     
     def __resetDragged(self, canvasNode : CanvasNode): 
         canvasNode.resetDragged()
-
 
     def deleteNode(self, canvasNode : CanvasNode) -> None: 
         if self.__isEdgeBeingEdited: return
@@ -104,7 +98,6 @@ class EventsHandler():
 
         self.__isNodeBeingDeleted = False
         
-
     def __drawEdge(self, eventCoords : tuple, canvasEdge : CanvasEdge) -> None: 
         eventX, eventY = eventCoords
         object_collisions = self.__canvas.find_overlapping(eventX, eventY, eventX, eventY)
@@ -114,35 +107,28 @@ class EventsHandler():
             self.__creationTool.renderEdge(self.__canvas, canvasEdge)  
         else: self.__creationTool.redrawEdge(self.__canvas, canvasEdge)
 
-
     def __removeCanvasMotionEvent(self) -> None: 
         self.__canvas.unbind("<Motion>")
-
 
     def __addCanvasMotionEvent(self, canvasEdge : CanvasEdge) -> None:
         self.__canvas.bind("<Motion>", lambda event: self.__drawEdge((event.x, event.y), canvasEdge))
 
-
     def __areEdgeNodesDifferent(self, edgeStartNode : CanvasNode, edgeEndNode : CanvasNode) -> bool:
         return edgeStartNode != edgeEndNode
-
 
     def __deleteEdge(self, canvasEdge : CanvasEdge) -> None:  
         if canvasEdge is None: return
         self.__canvas.delete(canvasEdge.getCanvasID())
         self.__creationTool.deleteEdge(self.__canvasGraph, canvasEdge)
         
-
     def __resetEdgeDrawingEvent(self) -> None:
         self.__removeCanvasMotionEvent() 
         self.__isEdgeBeingDrawn = False 
         self.__edgeBeingDrawn = None  
 
-
     def __canEdgeBeCreated(self, canvasEdge : CanvasEdge, canvasNode : CanvasNode) -> None: 
         return self.__areEdgeNodesDifferent(canvasEdge.getStartNode(), canvasNode)\
             and not self.__canvasGraph.areNodesConnected((canvasEdge.getStartNode(), canvasNode))
-
 
     def __nodeOnClick(self, canvasNode : CanvasNode) -> None: 
         # If an edge is being edited, prevent a new one from being created
@@ -165,19 +151,16 @@ class EventsHandler():
             self.__edgeBeingDrawn = canvasEdge
             self.__addCanvasMotionEvent(canvasEdge) 
     
-
     def __editEdge(self, canvasEdge : CanvasEdge) -> None:
         canvasEdge.setColour(CanvasEdge.getEditColour())
         if self.__showEdgeOptions: self.__showEdgeOptions(canvasEdge)
         self.__edgeBeingEdited = canvasEdge
         self.__isEdgeBeingEdited = True
 
-
     def __editEdgeOnClick(self, canvasEdge : CanvasEdge) -> None:  
         if(self.__isEdgeBeingDrawn or self.__isEdgeBeingEdited): return 
         if self.__showEdgeOptions is None: return
         self.__editEdge(canvasEdge)
-
 
     # Add event handlers to edges for interactability 
     def __addEdgeEvents(self, canvasEdge : CanvasEdge) -> None:          
@@ -187,7 +170,6 @@ class EventsHandler():
                                lambda _: self.__hoverTool.edgeOnHover(self.__canvas, canvasEdge))
         self.__canvas.tag_bind(canvasEdge.getCanvasID(), "<Leave>", 
                                lambda _: self.__hoverTool.edgeOnLeave(self.__canvas, canvasEdge)) 
-
 
     # Add event handlers to the newly created node
     def __addNodeEvents(self, canvasNode : CanvasNode) -> None:     
@@ -206,7 +188,6 @@ class EventsHandler():
         # Add event to delete a node when it is double clicked 
         self.__canvas.tag_bind(canvasNode.getCanvasID(), "<Double-Button-1>", lambda _: self.deleteNode(canvasNode)) 
 
-
     def spawnNode(self, coords : tuple, override:bool=False) -> bool:  
         if self.__isNodeBeingDeleted: 
             self.__isNodeBeingDeleted = False 
@@ -221,11 +202,9 @@ class EventsHandler():
         self.__addNodeEvents(canvasNode) 
         return True   
 
-
     def deleteEdge(self) -> None:
         if self.__edgeBeingEdited: 
             self.__deleteEdge(self.__edgeBeingEdited)
-
 
     def finishEdgeEdit(self) -> float: 
         if self.__edgeBeingEdited: 
@@ -233,11 +212,9 @@ class EventsHandler():
         self.__edgeBeingEdited = None 
         self.__isEdgeBeingEdited = False
     
-
     def updateEdgeWeight(self, weight : int) -> None: 
         if self.__edgeBeingEdited: self.__edgeBeingEdited.setWeight(weight)
     
-
     def setShowEdgeOptionsFunc(self, showEdgeOptionsFunc : Callable) -> None:
         self.__showEdgeOptions = showEdgeOptionsFunc
 

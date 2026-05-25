@@ -29,26 +29,21 @@ class TraversalController(AlgorithmController[S, M, D]):
         self.__canvasGraph = CanvasGraph(self.getDataStructure())
         self.__physicsCalculations = None  
 
-
     def init(self) -> None: 
         self.createEventHandler(self.getScreen().getCanvas())
         self.__repeatCanvasRefresh() 
         self.__createPhysicsThread() 
         self.startManagedThreads()
 
-
     def __getCanvasCentre(self) -> tuple: 
         canvas = self.getScreen().getCanvas()
         return (canvas.winfo_width() // 2, canvas.winfo_height() // 2)
-
-
 
     # NOTE temp function for testing 
     def __repeatCanvasRefresh(self) -> None:  
         # print("Refreshing canvas")
         self.refreshCanvas() 
         self.getScreen().getWindow().scheduleFunctionExecution(self.__repeatCanvasRefresh, 16)
-
 
     def refreshCanvas(self, refreshColours:bool=False) -> None: 
         latestResults = {}
@@ -77,12 +72,10 @@ class TraversalController(AlgorithmController[S, M, D]):
         
         self.getScreen().getWindow().update_idle_tasks()  
 
-        
     def createEventHandler(self, canvas : Canvas) -> None: 
         self.__eventHandler = EventsHandler(canvas, self.__canvasGraph) 
         # Update screen to show edge options 
         self.__eventHandler.setShowEdgeOptionsFunc(self.getScreen().showEdgeOptions)
-
 
     # Draws a circle (node) on the canvas 
     def spawnNode(self, coords: tuple=()): 
@@ -93,7 +86,6 @@ class TraversalController(AlgorithmController[S, M, D]):
             self.getScreen().setDeleteNodeButtonColour("black")
         else: self.getScreen().setAddNodeButtonColour("red") 
     
-
     def deleteNode(self) -> None: 
         if self.__eventHandler is None: return 
         canvasNode = self.__canvasGraph.getLastCreatedNode() 
@@ -103,18 +95,14 @@ class TraversalController(AlgorithmController[S, M, D]):
         self.getScreen().setDeleteNodeButtonColour("black")
         self.__eventHandler.deleteNode(canvasNode) 
 
-
     def deleteEdge(self) -> None: 
         self.__eventHandler.deleteEdge()
-
 
     def finishEdgeEdit(self) -> None: 
         self.__eventHandler.finishEdgeEdit()
 
-
     def updateEdgeWeight(self, weight : int) -> None:
         self.__eventHandler.updateEdgeWeight(weight)
-
 
     def __createPhysicsThread(self) -> None:
         self.__physicsCalculations= PhysicsCalculations(self.__canvasGraph, self.__getCanvasCentre()) 

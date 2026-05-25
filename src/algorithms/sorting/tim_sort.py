@@ -17,16 +17,13 @@ class TimSort(Algorithm[SortArray]):
     def __init__(self): 
         super().__init__()  
     
-
     # Returns algorithms name -> user sees this when selecting algorithm
     def getName(self) -> str:
         return "Tim Sort"  
 
-
     def __calculateRunSize(self, arrayLength : int) -> int:
         if arrayLength <= MIN_NUM_RUNS: return arrayLength
         return max(1, arrayLength // MIN_NUM_RUNS)
-
 
     def __insertionSort(self, leftPtr : int, rightPtr : int) -> None:  
         array = self.getDataStructure()
@@ -42,7 +39,6 @@ class TimSort(Algorithm[SortArray]):
                 array.swapColoursAt(j, j - 1)
                 self.invokeDelay()
                 j -= 1
-
 
     def __shiftElements(self, start : int, idx : int) -> None: 
         array = self.getDataStructure()
@@ -60,7 +56,6 @@ class TimSort(Algorithm[SortArray]):
         self.invokeDelay()
         return 
 
-
     def __mergeSubArrays(self, start : int, mid : int, end : int) -> None:
         array = self.getDataStructure()
         rightPtr = mid + 1 
@@ -76,7 +71,6 @@ class TimSort(Algorithm[SortArray]):
             else: 
                 start += 1
 
-        
     # Tim Sort Algorithm
     def run(self) -> int:    
         array = self.getDataStructure()
@@ -94,6 +88,5 @@ class TimSort(Algorithm[SortArray]):
                     self.__mergeSubArrays(left, mid, right) 
             mergeSize << 1  
         return 0 
-
-        
+ 
 # Listen to No Surprises by Radiohead

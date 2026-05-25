@@ -11,6 +11,7 @@ if TYPE_CHECKING:
     Model = Type[AlgorithmModel]
     DataStruct = Type[DataStructure]
 
+
 class ScreenCreator(): 
     @staticmethod
     def __createAlgorithmScreen(window : Window, mvcClasses :  Tuple[Screen, Controller, Model, DataStruct]) -> AlgorithmScreen: 
@@ -24,7 +25,6 @@ class ScreenCreator():
         screen.setModel(model)
         screen.setDataStructure(dataStructure)
         return screen 
-
 
     @classmethod
     def createScreen(cls, window : Window, screenType : ScreenType) -> ScreenInterface|None:

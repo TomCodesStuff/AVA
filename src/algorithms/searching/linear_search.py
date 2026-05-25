@@ -17,7 +17,6 @@ class LinearSearch(Algorithm[SearchArray]):
     def getName(self) -> str:
         return "Linear Search" 
     
-
     # Linear Search Algorithm
     def run(self) -> int: 
         array = self.getDataStructure()       

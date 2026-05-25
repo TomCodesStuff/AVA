@@ -29,10 +29,10 @@ class AlgorithmValidator():
 
 
     def __getPotentialAlgorithms(self, algorithmType : str) -> List[str]: 
-        projectRoot = Path(__file__).parent.parent.resolve()
-        srcDir = projectRoot / "algorithms" / algorithmType 
-        if not srcDir.exists(): return []
-        return [x.stem for x in srcDir.iterdir() if self.__isFileNameValid(x)]
+        srcDir = Path(__file__).parent.parent.resolve()
+        algorithmsDir = srcDir / "algorithms" / algorithmType 
+        if not algorithmsDir.exists(): return []
+        return [x.stem for x in algorithmsDir.iterdir() if self.__isFileNameValid(x)]
 
 
     def __importModule(self, algorithmType : str, algorithmName : str) -> ModuleType|None:

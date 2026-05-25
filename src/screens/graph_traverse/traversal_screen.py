@@ -140,10 +140,9 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
         # Deletes newly drawn weight or pre-existing weight 
         # TODO RE-implement this btw 
         self.getController().deleteEdge()
-        self.__nodeOptionsFrame.tkraise()
-
-
-
+        self.__finishEdgeEdit()
+    
+        
     # Updates weight displayed in the slider bar 
     def updateWeightOnScreen(self, edgeWeight : int) -> None: 
         self.__weightSlider.set(edgeWeight)

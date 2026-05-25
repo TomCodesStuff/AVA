@@ -145,6 +145,7 @@ class PhysicsCalculations():
         edgesSnapshot = {x.getCanvasID() : (x.getStartNode().getID(), x.getEndNode().getID()) 
                           for x in self.__canvasGraph.getEdges()}
 
+        # print(edgesSnapshot)
         nodes_to_forces = {}
         
         self.__calculateGravity(nodesSnapshot, nodes_to_forces)

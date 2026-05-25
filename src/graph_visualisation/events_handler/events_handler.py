@@ -45,9 +45,7 @@ class EventsHandler():
         if self.__isEdgeBeingDeleted: 
             self.__isEdgeBeingDeleted = False
             return False
-        if self.__isEdgeBeingDrawn: 
-            self.__isEdgeBeingDrawn = False 
-            return False
+        if self.__isEdgeBeingDrawn: return False
         return True 
 
 
@@ -83,7 +81,6 @@ class EventsHandler():
 
     def __moveNode(self, event : Event, canvasNode : CanvasNode) -> None:  
         self.__resetEdgeDrawingEvent()
-        # self.__controller.deleteMovingEdgeEvent()
         self.__isEdgeBeingDrawn = False 
         # Stops the node from only being partially rendered (not sure why this works, I forgot)
         self.__canvas.config(cursor="arrow")
@@ -96,7 +93,7 @@ class EventsHandler():
         canvasNode.resetDragged()
 
 
-    def deleteNode(self, canvasNode : CanvasNode) -> None:   
+    def deleteNode(self, canvasNode : CanvasNode) -> None: 
         if self.__isEdgeBeingEdited: return
         self.__isNodeBeingDeleted = True  
 
@@ -120,8 +117,8 @@ class EventsHandler():
         if canvasEdge.getStartNode().getCanvasID() in object_collisions: return 
         self.__movementTool.moveEdge(canvasEdge, eventCoords)
         if canvasEdge.getCanvasID() == -1: 
-            self.__creationTool.renderEdge(self.__canvas, canvasEdge) 
-            self.__canvasGraph.addCanvasEdge(canvasEdge)
+            self.__creationTool.renderEdge(self.__canvas, canvasEdge)  
+        else: self.__creationTool.redrawEdge(self.__canvas, canvasEdge)
 
 
     def __removeCanvasMotionEvent(self) -> None: 
@@ -154,12 +151,13 @@ class EventsHandler():
 
 
     def __nodeOnClick(self, canvasNode : CanvasNode) -> None: 
-         # If an edge is being edited, prevent a new one from being created
+        # If an edge is being edited, prevent a new one from being created
         if(self.__isEdgeBeingEdited): return
         
         # If an edge is already being drawn on screen
         if(self.__isEdgeBeingDrawn):
             if self.__canEdgeBeCreated(self.__edgeBeingDrawn, canvasNode): 
+                self.__canvasGraph.addCanvasEdge(self.__edgeBeingDrawn)
                 self.__edgeBeingDrawn.setEndNode(canvasNode)  
                 self.__movementTool.connectEdgeToNodes(self.__edgeBeingDrawn)
                 self.__addEdgeEvents(self.__edgeBeingDrawn) 
@@ -168,21 +166,17 @@ class EventsHandler():
             else: self.__deleteEdge(self.__edgeBeingDrawn)
             self.__resetEdgeDrawingEvent()
         else:
-            self.__isEdgeBeingDrawn = True 
+            self.__isEdgeBeingDrawn = True  
             canvasEdge = self.__creationTool.createEdge(canvasNode) 
             self.__edgeBeingDrawn = canvasEdge
             self.__addCanvasMotionEvent(canvasEdge) 
     
 
-    def __deleteEdgeOnDoubleClick(self, canvasEdge : CanvasEdge) -> None:
-        self.__isEdgeBeingDeleted = True 
-        self.__deleteEdge(canvasEdge)
-
-
     def __editEdge(self, canvasEdge : CanvasEdge) -> None:
         canvasEdge.setColour(CanvasEdge.getEditColour())
         if self.__showEdgeOptions: self.__showEdgeOptions(canvasEdge)
         self.__edgeBeingEdited = canvasEdge
+        self.__isEdgeBeingEdited = True
 
 
     def __editEdgeOnClick(self, canvasEdge : CanvasEdge) -> None:  
@@ -195,8 +189,6 @@ class EventsHandler():
     def __addEdgeEvents(self, canvasEdge : CanvasEdge) -> None:          
         # TODO -> probably best/easiest to have references to relevant screen functions 
         self.__canvas.tag_bind(canvasEdge.getCanvasID(), "<Button-1>", lambda _: self.__editEdgeOnClick(canvasEdge))
-        self.__canvas.tag_bind(canvasEdge.getCanvasID(), "<Double-Button-1>", 
-                               lambda _: self.__deleteEdgeOnDoubleClick(canvasEdge)) 
         self.__canvas.tag_bind(canvasEdge.getCanvasID(), "<Enter>", 
                                lambda _: self.__hoverTool.edgeOnHover(self.__canvas, canvasEdge))
         self.__canvas.tag_bind(canvasEdge.getCanvasID(), "<Leave>", 
@@ -245,6 +237,7 @@ class EventsHandler():
         if self.__edgeBeingEdited: 
             self.__edgeBeingEdited.setColour(CanvasEdge.getDefaultColour())
         self.__edgeBeingEdited = None 
+        self.__isEdgeBeingEdited = False
     
 
     def updateEdgeWeight(self, weight : int) -> None: 

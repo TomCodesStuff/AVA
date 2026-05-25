@@ -42,8 +42,12 @@ class CreationTool():
                                       width = CanvasEdge.getDefaultSize(), arrow=BOTH)
         canvasEdge.setCanvasID(canvasID)
         canvas.tag_lower(canvasID)
-            
+    
 
+    def redrawEdge(self, canvas : Canvas, canvasEdge : CanvasEdge) -> None:
+        canvas.coords(canvasEdge.getCanvasID(), canvasEdge.getCoords())
+
+    
     def createEdge(self, canvasNode : CanvasNode) -> CanvasEdge:
         nodeOffset = canvasNode.getOffset()
         x0, y0, _, _ = canvasNode.getCoords()

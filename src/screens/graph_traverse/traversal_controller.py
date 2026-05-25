@@ -64,6 +64,14 @@ class TraversalController(AlgorithmController[S, M, D]):
             self.getScreen().getCanvas().itemconfig(canvasNode.getCanvasID(), fill=canvasNode.getColour())
         
         for canvasEdge in self.__canvasGraph.getEdges(): 
+            x, y = canvasEdge.getNodes() 
+            x0, y0, _, _ = x.getCoords() 
+            x1, y1, _, _ = y.getCoords()    
+
+            canvasEdge.updateCoords((x0 + x.getOffset(), y0 + x.getOffset(), 
+                                     x1 + x.getOffset(), y1 + x.getOffset()))
+
+
             self.getScreen().getCanvas().coords(canvasEdge.getCanvasID(), canvasEdge.getCoords())
             self.getScreen().getCanvas().itemconfig(canvasEdge.getCanvasID(), fill=canvasEdge.getColour())
         
@@ -108,79 +116,9 @@ class TraversalController(AlgorithmController[S, M, D]):
         self.__eventHandler.updateEdgeWeight(weight)
 
 
-    # Calculates and returns coords of the centre of the canvas  
-    def __getCanvasCentreCoords(self) -> tuple: 
-        canvas = self.__screen.getCanvas() 
-        return (canvas.winfo_width() // 2, 
-                canvas.winfo_height() // 2)
- 
-
     def __createPhysicsThread(self) -> None:
         self.__physicsCalculations= PhysicsCalculations(self.__canvasGraph, self.__getCanvasCentre()) 
         self.addManagedThread(PhysicsThread(self.__physicsCalculations))
-
-
-    def centreEdge(self) -> tuple: 
-        circleOffset = self.__model.getCircleSize() // 2 
-        # Reference to canvas 
-        canvas = self.__screen.getCanvas()  
-        x0, y0, _, _ = self.__edgeHandler.getEdgeStartNode().getCoords()
-        # Get Coords of the destination node 
-        x1, y1, _, _ = self.__edgeHandler.getEdgeEndNode().getCoords() 
-        coords = (x0 + circleOffset, y0 + circleOffset, 
-                  x1 + circleOffset, y1 + circleOffset)
-        # Send updated coords to the canvas
-        canvas.coords(self.__edgeHandler.getCurrentEdgeID(), coords)  
-        # Return the updated coords of the edge 
-        return coords 
-
-
-    def __drawEdge(self, event : Event, canvasNode) -> None:  
-        canvas = self.__screen.getCanvas()   
-        circleOffset = self.__model.getCircleSize() // 2
-        x0, y0, _, _ = canvasNode.getCoords() 
-        lineCoords, edgeID = None, None 
-
-        # Checks if mouse has left the node the edge starts from
-        collisions = canvas.find_overlapping(event.x, event.y, event.x, event.y)  
-        # If the mouse is still in the node, the edge is not drawn yet
-        if(canvasNode.getCanvasID() in collisions): return  
-        # If there is no current edge 
-        if(self.__edgeHandler.getCurrentEdgeID() is None): 
-            # Create a new edge on screen
-            edgeID = canvas.create_line(x0 + circleOffset, y0 + circleOffset, 
-                                                    event.x, event.y, width = "3")   
-            self.__edgeHandler.setCurrentEdgeID(edgeID)
-            # Lowers the priority of the edge, so it appears below nodes 
-            canvas.tag_lower(edgeID) 
-        # If there is an edge being drawn on screen
-        else:    
-            # Updates edge to follow mouse 
-            # (Also if the node has moved the edges starting position is updated)
-            lineCoords = (x0 + circleOffset, y0 + circleOffset, event.x, event.y)
-            # Updates the lines coordinates 
-            canvas.coords(self.__edgeHandler.getCurrentEdgeID(), lineCoords)
-
-            
-    # Update positions of edges on the canvas 
-    def __redrawEdges(self):  
-        circleOffset = self.__model.getCircleSize() // 2
-        canvas = self.__screen.getCanvas()
-        for edge in self.__model.getEdges():   
-            startNode, endNode = edge.getNodes()
-            x0, y0, _, _ = startNode.getCoords()
-            x1, y1, _, _ = endNode.getCoords()
-            canvas.coords(edge.getCanvasID(), round(x0 + circleOffset), round(y0 + circleOffset),
-                          round(x1 + circleOffset), round(y1 + circleOffset))
-
-        # If the user is creating an edge, the edges position is updated
-        # (In case the start node is being moved on screen) 
-        if self.__edgeHandler.isEdgeBeingDrawn() and self.__edgeHandler.getCurrentEdgeID(): 
-            x0, y0, _, _ = self.__edgeHandler.getEdgeStartNode().getCoords()
-            _, _, x1, y1 = canvas.coords(self.__edgeHandler.getCurrentEdgeID())
-            newCoords = (x0 + circleOffset, y0 + circleOffset, x1, y1)
-            # Updates the lines coordinates  
-            canvas.coords(self.__edgeHandler.getCurrentEdgeID(), newCoords)
 
 
 # Listen to Paranoid by Black Sabbath

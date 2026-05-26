@@ -13,10 +13,15 @@ class AlgorithmType(Enum):
     TRAVERSAL = "traversal"
 
 
-
 class SortDirection(Enum):
     ASCENDING = 0
     DESCENDING = 1 
+
+
+class EdgeDirection(Enum):  
+    BIDIRECTIONAL = 0 
+    FIRST_TO_SECOND = 1
+    SECOND_TO_FIRST = 2
 
 
 # Listen to Cherry Waves by Deftones

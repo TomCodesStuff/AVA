@@ -120,7 +120,7 @@ class PhysicsCalculations():
     def applyPhysics(self) -> None:  
         # Snapshot of node coords and offset
         nodesSnapshot = {x.getID() : (x.getCoords(), x.getOffset()) for x in self.__canvasGraph.getNodes()}
-        edgesSnapshot = {(x.getStartNode().getID(), x.getEndNode().getID()) 
+        edgesSnapshot = {(x.getFirstNode().getID(), x.getSecondNode().getID()) 
                           for x in self.__canvasGraph.getEdges()}
 
         nodes_to_forces = {}

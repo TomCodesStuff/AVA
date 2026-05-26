@@ -5,7 +5,7 @@ from ..graph_components import CanvasGraph, CanvasNode, CanvasEdge
 
 class CreationTool(): 
     # TODO re-add max number nodes check 
-    def canNodeBeSpawned(self, canvas : Canvas, nodeCoords : tuple) -> bool: 
+    def canNodeBeSpawned(self, canvas : Canvas, nodeCoords : tuple) -> bool:
         if nodeCoords == (): nodeCoords = CanvasNode.getDefaultCoords()
         x0, y0, x1, y1 = nodeCoords 
         overlapOffset = CanvasNode.getMinSpawnDistance() + CanvasNode.getDefaultSize()
@@ -41,7 +41,7 @@ class CreationTool():
         nodeOffset = canvasNode.getOffset()
         x0, y0, _, _ = canvasNode.getCoords()
         canvasEdge = CanvasEdge((x0 + nodeOffset, y0 + nodeOffset, x0 + nodeOffset, y0 + nodeOffset))
-        canvasEdge.setStartNode(canvasNode)  
+        canvasEdge.setFirstNode(canvasNode)  
         return canvasEdge  
 
     def deleteEdge(self, canvasGraph : CanvasGraph, canvasEdge : CanvasEdge) -> None: 

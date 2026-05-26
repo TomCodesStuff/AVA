@@ -7,7 +7,7 @@ if(__name__ == "__main__"):
 import math
 from typing import Tuple
 from .canvas_node import CanvasNode
-
+from src.enums import EdgeDirection
 
 class CanvasEdge(): 
     # Static variables shared between each instance 
@@ -16,6 +16,7 @@ class CanvasEdge():
     editColour = "red"
     defaultSize = "3" 
     hoverSize = "5"
+    defaultDirection = EdgeDirection.BIDIRECTIONAL
 
     def __init__(self, coords : tuple) -> None: 
         # On screen coords of the edge
@@ -29,32 +30,30 @@ class CanvasEdge():
         self.__canvasID = -1
         
         # The node that the edges XY coords start at 
-        self.__startNode = None  
+        self.__firstNode = None  
         # The node that the edges XY coords end at
-        self.__endNode = None 
+        self.__secondNode = None 
+        # Set direction to default (Bidirectional)
+        self.__direction = CanvasEdge.defaultDirection
         
-        # Size edge should be onscreen 
-        self.__screenLen = 0 
 
     # Getters
     def getCanvasID(self): return self.__canvasID
     def getWeight(self) -> int: return self.__weight 
     def getCoords(self) -> tuple: return self.__coords
-    def getStartNode(self) -> CanvasNode|None: return self.__startNode
-    def getEndNode(self) -> CanvasNode|None: return self.__endNode
-    def getNodes(self) -> Tuple[CanvasNode, CanvasNode]: return (self.__startNode, self.__endNode) 
-    def getScreenLen(self) -> int: return self.__screenLen
-    def getColour(self) -> str: return self.__colour
+    def getFirstNode(self) -> CanvasNode|None: return self.__firstNode
+    def getSecondNode(self) -> CanvasNode|None: return self.__secondNode
+    def getNodes(self) -> Tuple[CanvasNode, CanvasNode]: return (self.__firstNode, self.__secondNode) 
+    def getColour(self) -> str: return self.__colour 
+    def getDirection(self) -> EdgeDirection: return self.__direction
     
     # Setters
     def setWeight(self, weight : int) -> None: 
         if weight > 0: self.__weight = weight
     
     def updateCoords(self, coords : tuple) -> None: self.__coords = coords 
-    def setStartNode(self, canvasNode : CanvasNode) -> None: self.__startNode = canvasNode 
-    def setEndNode(self, canvasNode : CanvasNode) -> None: self.__endNode = canvasNode 
-    # TODO error handling and adjustment for screen size
-    def setscreenLen(self, val : int): self.__screenLen = val
+    def setFirstNode(self, canvasNode : CanvasNode) -> None: self.__firstNode = canvasNode 
+    def setSecondNode(self, canvasNode : CanvasNode) -> None: self.__secondNode = canvasNode 
     def setCanvasID(self, val : int) -> None: self.__canvasID = val  
     def setColour(self, colour : str) -> None: self.__colour = colour 
 
@@ -65,8 +64,8 @@ class CanvasEdge():
     def showDirectionArrows(self) -> tuple:
         x0, y0, x1, y1 = self.__coords 
 
-        r0 = self.__startNode.getOffset()
-        r1 = self.__endNode.getOffset()
+        r0 = self.__firstNode.getOffset()
+        r1 = self.__secondNode.getOffset()
 
         dx = x1 - x0 
         dy = y1 - y0
@@ -75,12 +74,17 @@ class CanvasEdge():
 
         if dist == 0: return (x0, y0, x1, y1)
 
-        startX = math.ceil(x0 + (dx / dist) * r0)
-        startY = math.ceil(y0 + (dy / dist) * r0)
-        endX = math.ceil(x1 - (dx / dist) * r1)
-        endY = math.ceil(y1 - (dy / dist) * r1)
+        adjustedX0, adjustedY0 = x0, y0 
+        adjustedX1, adjustedY1 = x1, y1
 
-        return (startX, startY, endX, endY)
+        if self.__direction in (EdgeDirection.SECOND_TO_FIRST, EdgeDirection.BIDIRECTIONAL):
+            adjustedX0 = math.ceil(x0 + (dx / dist) * r0)
+            adjustedY0 = math.ceil(y0 + (dy / dist) * r0)
+        if self.__direction in (EdgeDirection.FIRST_TO_SECOND, EdgeDirection.BIDIRECTIONAL):
+            adjustedX1 = math.ceil(x1 - (dx / dist) * r1)
+            adjustedY1 = math.ceil(y1 - (dy / dist) * r1)
+
+        return (adjustedX0, adjustedY0, adjustedX1, adjustedY1)
 
 
     @staticmethod

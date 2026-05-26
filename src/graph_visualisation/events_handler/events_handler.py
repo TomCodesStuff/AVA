@@ -101,7 +101,7 @@ class EventsHandler():
     def __drawEdge(self, eventCoords : tuple, canvasEdge : CanvasEdge) -> None: 
         eventX, eventY = eventCoords
         object_collisions = self.__canvas.find_overlapping(eventX, eventY, eventX, eventY)
-        if canvasEdge.getStartNode().getCanvasID() in object_collisions: return 
+        if canvasEdge.getFirstNode().getCanvasID() in object_collisions: return 
         self.__movementTool.moveEdge(canvasEdge, eventCoords)
         if canvasEdge.getCanvasID() == -1: 
             self.__creationTool.renderEdge(self.__canvas, canvasEdge)  
@@ -127,8 +127,8 @@ class EventsHandler():
         self.__edgeBeingDrawn = None  
 
     def __canEdgeBeCreated(self, canvasEdge : CanvasEdge, canvasNode : CanvasNode) -> None: 
-        return self.__areEdgeNodesDifferent(canvasEdge.getStartNode(), canvasNode)\
-            and not self.__canvasGraph.areNodesConnected((canvasEdge.getStartNode(), canvasNode))
+        return self.__areEdgeNodesDifferent(canvasEdge.getFirstNode(), canvasNode)\
+            and not self.__canvasGraph.areNodesConnected((canvasEdge.getFirstNode(), canvasNode))
 
     def __nodeOnClick(self, canvasNode : CanvasNode) -> None: 
         # If an edge is being edited, prevent a new one from being created
@@ -138,7 +138,7 @@ class EventsHandler():
         if(self.__isEdgeBeingDrawn):
             if self.__canEdgeBeCreated(self.__edgeBeingDrawn, canvasNode): 
                 self.__canvasGraph.addCanvasEdge(self.__edgeBeingDrawn)
-                self.__edgeBeingDrawn.setEndNode(canvasNode)  
+                self.__edgeBeingDrawn.setSecondNode(canvasNode)  
                 self.__movementTool.connectEdgeToNodes(self.__edgeBeingDrawn)
                 self.__addEdgeEvents(self.__edgeBeingDrawn) 
                 self.__canvasGraph.addEdgeToNodes(self.__edgeBeingDrawn)

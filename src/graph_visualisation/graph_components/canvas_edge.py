@@ -56,6 +56,7 @@ class CanvasEdge():
     def setSecondNode(self, canvasNode : CanvasNode) -> None: self.__secondNode = canvasNode 
     def setCanvasID(self, val : int) -> None: self.__canvasID = val  
     def setColour(self, colour : str) -> None: self.__colour = colour 
+    def setDirection(self, direction : EdgeDirection) -> None: self.__direction = direction 
 
 
     # Stole from ChatGPT would take me way to long to find an acceptable solution :/

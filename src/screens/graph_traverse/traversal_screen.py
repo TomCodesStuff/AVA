@@ -7,8 +7,9 @@ if(__name__ == "__main__"):
 import tkinter as tk 
 from typing import TYPE_CHECKING, TypeVar
 from src.data_structures import Graph
-from ..algorithm_base import AlgorithmScreen
 from src.graph_visualisation import CanvasEdge
+from src.enums import EdgeDirection
+from ..algorithm_base import AlgorithmScreen
 
 if TYPE_CHECKING: 
     from src.screens.graph_traverse import TraversalController, TraversalModel
@@ -65,7 +66,7 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
 
     # Updates text in label above weight slider 
     def __updateWeight(self, value : str|int) -> None:
-        value = int(value )
+        value = int(value)
         self.__weightSlider.config(label = f"Weight: {value}")   
         if value > INITIAL_WEIGHT: self.getController().updateEdgeWeight(value)
 
@@ -88,15 +89,18 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
         self.__directionButtonFrame.pack()
 
         self.__leftArrowButton = tk.Button(self.__directionButtonFrame, text = "<-", width=3, relief = "solid", 
-                                           font=(self.getModel().getArrowFont(), self.getFontSize())) 
+                                           font=(self.getModel().getArrowFont(), self.getFontSize()), 
+                                           command=lambda: self.getController().changeEdgeDirection(EdgeDirection.FIRST_TO_SECOND)) 
         self.__leftArrowButton.grid(row=0, column=0, pady=(10, 0), padx=(0, 10)) 
 
         self.__doubleArrowButton = tk.Button(self.__directionButtonFrame, text = "<->", width=3, relief = "solid", 
-                                             font=(self.getModel().getArrowFont(), self.getFontSize())) 
+                                             font=(self.getModel().getArrowFont(), self.getFontSize()), 
+                                             command=lambda: self.getController().changeEdgeDirection(EdgeDirection.BIDIRECTIONAL)) 
         self.__doubleArrowButton.grid(row=0, column=1, pady=(10, 0)) 
 
         self.__rightArrowButton = tk.Button(self.__directionButtonFrame, text = "->", width=3, relief = "solid", 
-                                            font=(self.getModel().getArrowFont(), self.getFontSize())) 
+                                            font=(self.getModel().getArrowFont(), self.getFontSize()), 
+                                            command=lambda: self.getController().changeEdgeDirection(EdgeDirection.SECOND_TO_FIRST)) 
         self.__rightArrowButton.grid(row=0, column=2, pady=(10, 0), padx=(10, 0))       
        
     # Create button to save edge 
@@ -130,14 +134,6 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
         self.getController().deleteEdge()
         self.__finishEdgeEdit()
     
-    # Updates weight displayed in the slider bar 
-    def updateWeightOnScreen(self, edgeWeight : int) -> None: 
-        self.__weightSlider.set(edgeWeight)
-        # If edges weight is the minimum weight
-        if(edgeWeight == self.getModel().getMinWeight()):  
-            # Need to manually change text above the slider 
-            self.__updateWeight(str(self.getModel().getMinWeight()))
-
     # Resets position and disables weight slider 
     def resetWeightSlider(self) -> None: 
         # Resets text
@@ -152,7 +148,7 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
         # Moves thumb of slider to correct value -> scale must be active first 
         self.__weightSlider.set(canvasEdge.getWeight())
         # Show edge options 
-        self.__edgeOptionsFrame.tkraise()
+        self.__edgeOptionsFrame.tkraise() 
 
      # Creates options to add edges or edit existing ones
     def __createEdgeOptions(self) -> None: 
@@ -188,7 +184,7 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
         self.__createOptions()  
         self.getController().init()
     
-    # TODO cancel any running functions before algorithm runs 
+    # TODO need to create graph 
     def prepare() -> None: pass 
     def animationSetup(self) -> None: pass 
     def coolAnimationFrame(self) -> None: pass  

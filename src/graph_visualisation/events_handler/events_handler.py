@@ -211,11 +211,10 @@ class EventsHandler():
             self.__edgeBeingEdited.setColour(CanvasEdge.getDefaultColour())
         self.__edgeBeingEdited = None 
         self.__isEdgeBeingEdited = False
-    
-    def updateEdgeWeight(self, weight : int) -> None: 
-        if self.__edgeBeingEdited: self.__edgeBeingEdited.setWeight(weight)
-    
+        
     def setShowEdgeOptionsFunc(self, showEdgeOptionsFunc : Callable) -> None:
         self.__showEdgeOptions = showEdgeOptionsFunc
+    
+    def getEdgeBeingEdited(self) -> CanvasEdge: return self.__edgeBeingEdited
 
 # Listen to Why does it always rain on me by Travis  

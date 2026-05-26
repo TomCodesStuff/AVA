@@ -6,12 +6,12 @@ if(__name__ == "__main__"):
 
 
 from typing import TYPE_CHECKING, TypeVar
-from tkinter import Canvas, Event 
+from tkinter import Canvas
 from src.data_structures import Graph
 from src.graph_visualisation import EventsHandler, CanvasGraph, PhysicsCalculations
 from ..algorithm_base import AlgorithmController
 from src.thread_handlers import PhysicsThread
-
+from src.enums import EdgeDirection
 
 if TYPE_CHECKING: 
     from src.screens.graph_traverse import TraversalScreen, TraversalModel
@@ -101,7 +101,13 @@ class TraversalController(AlgorithmController[S, M, D]):
         self.__eventHandler.finishEdgeEdit()
 
     def updateEdgeWeight(self, weight : int) -> None:
-        self.__eventHandler.updateEdgeWeight(weight)
+        edgeBeingEdited = self.__eventHandler.getEdgeBeingEdited() 
+        if edgeBeingEdited: edgeBeingEdited.setWeight(weight) 
+    
+
+    def changeEdgeDirection(self, direction : EdgeDirection) -> None:
+        edgeBeingEdited = self.__eventHandler.getEdgeBeingEdited() 
+        if edgeBeingEdited: edgeBeingEdited.setDirection(direction) 
 
     def __createPhysicsThread(self) -> None:
         self.__physicsCalculations= PhysicsCalculations(self.__canvasGraph, self.__getCanvasCentre()) 

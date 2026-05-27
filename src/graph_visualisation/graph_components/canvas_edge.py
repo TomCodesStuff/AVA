@@ -62,7 +62,7 @@ class CanvasEdge():
     # Stole from ChatGPT would take me way to long to find an acceptable solution :/
     # I dislike using AI as I think it's kinda cheating but I'll make an exception to finish this project
     # Makes arrows indicating edge direction visible rather than just being hidden behind each node
-    def showDirectionArrows(self) -> tuple:
+    def adjustDirectionArrows(self) -> tuple:
         x0, y0, x1, y1 = self.__coords 
 
         # TODO fix bug where arrow changes -> maybe need some way to tell which node is "left" and "right" one.

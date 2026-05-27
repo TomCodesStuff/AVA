@@ -44,7 +44,7 @@ class MovementTool():
         
         x0, y0, _, _ = startNode.getCoords() 
         x1, y1, _, _ = endNode.getCoords() 
-        canvasEdge.updateCoords((x0 + startNode.getOffset(), y0 + + startNode.getOffset(), 
+        canvasEdge.updateCoords((x0 + startNode.getOffset(), y0 + startNode.getOffset(), 
                                 x1 + endNode.getOffset(), y1 + endNode.getOffset()))
 
     def moveEdge(self, canvasEdge : CanvasEdge, eventCoords : tuple) -> None:

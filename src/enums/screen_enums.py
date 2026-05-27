@@ -21,7 +21,13 @@ class SortDirection(Enum):
 class EdgeDirection(Enum):  
     BIDIRECTIONAL = 0 
     FIRST_TO_SECOND = 1
-    SECOND_TO_FIRST = 2
+    SECOND_TO_FIRST = 2 
+
+
+class EdgeDirectionOption(Enum): 
+    BIDIRECTIONAL = 0
+    RIGHT_TO_LEFT = 1 
+    LEFT_TO_RIGHT = 2
 
 
 # Listen to Cherry Waves by Deftones

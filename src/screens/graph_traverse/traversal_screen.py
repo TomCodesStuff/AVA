@@ -8,7 +8,7 @@ import tkinter as tk
 from typing import TYPE_CHECKING, TypeVar
 from src.data_structures import Graph
 from src.graph_visualisation import CanvasEdge
-from src.enums import EdgeDirection
+from src.enums import EdgeDirectionOption
 from ..algorithm_base import AlgorithmScreen
 
 if TYPE_CHECKING: 
@@ -90,17 +90,17 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
 
         self.__leftArrowButton = tk.Button(self.__directionButtonFrame, text = "<-", width=3, relief = "solid", 
                                            font=(self.getModel().getArrowFont(), self.getFontSize()), 
-                                           command=lambda: self.getController().changeEdgeDirection(EdgeDirection.FIRST_TO_SECOND)) 
+                                           command=lambda: self.getController().changeEdgeDirection(EdgeDirectionOption.RIGHT_TO_LEFT)) 
         self.__leftArrowButton.grid(row=0, column=0, pady=(10, 0), padx=(0, 10)) 
 
         self.__doubleArrowButton = tk.Button(self.__directionButtonFrame, text = "<->", width=3, relief = "solid", 
                                              font=(self.getModel().getArrowFont(), self.getFontSize()), 
-                                             command=lambda: self.getController().changeEdgeDirection(EdgeDirection.BIDIRECTIONAL)) 
+                                             command=lambda: self.getController().changeEdgeDirection(EdgeDirectionOption.BIDIRECTIONAL)) 
         self.__doubleArrowButton.grid(row=0, column=1, pady=(10, 0)) 
 
         self.__rightArrowButton = tk.Button(self.__directionButtonFrame, text = "->", width=3, relief = "solid", 
                                             font=(self.getModel().getArrowFont(), self.getFontSize()), 
-                                            command=lambda: self.getController().changeEdgeDirection(EdgeDirection.SECOND_TO_FIRST)) 
+                                            command=lambda: self.getController().changeEdgeDirection(EdgeDirectionOption.LEFT_TO_RIGHT)) 
         self.__rightArrowButton.grid(row=0, column=2, pady=(10, 0), padx=(10, 0))       
        
     # Create button to save edge 

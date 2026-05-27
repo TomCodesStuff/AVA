@@ -65,6 +65,7 @@ class CanvasEdge():
     def showDirectionArrows(self) -> tuple:
         x0, y0, x1, y1 = self.__coords 
 
+        # TODO fix bug where arrow changes -> maybe need some way to tell which node is "left" and "right" one.
         r0 = self.__firstNode.getOffset()
         r1 = self.__secondNode.getOffset()
 

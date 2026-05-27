@@ -11,7 +11,7 @@ from src.data_structures import Graph
 from src.graph_visualisation import EventsHandler, CanvasGraph, PhysicsCalculations
 from ..algorithm_base import AlgorithmController
 from src.thread_handlers import PhysicsThread
-from src.enums import EdgeDirection
+from src.enums import EdgeDirection, EdgeDirectionOption
 
 if TYPE_CHECKING: 
     from src.screens.graph_traverse import TraversalScreen, TraversalModel
@@ -59,12 +59,12 @@ class TraversalController(AlgorithmController[S, M, D]):
             self.getScreen().getCanvas().itemconfig(canvasNode.getCanvasID(), fill=canvasNode.getColour())
         
         for canvasEdge in self.__canvasGraph.getEdges(): 
-            x, y = canvasEdge.getNodes() 
-            x0, y0, _, _ = x.getCoords() 
-            x1, y1, _, _ = y.getCoords()    
+            firstNode, secondNode = canvasEdge.getNodes() 
+            x0, y0, _, _ = firstNode.getCoords() 
+            x1, y1, _, _ = secondNode.getCoords()    
 
-            canvasEdge.updateCoords((x0 + x.getOffset(), y0 + x.getOffset(), 
-                                     x1 + x.getOffset(), y1 + x.getOffset())) 
+            canvasEdge.updateCoords((x0 + firstNode.getOffset(), y0 + firstNode.getOffset(), 
+                                     x1 + secondNode.getOffset(), y1 + secondNode.getOffset())) 
             
             self.getScreen().getCanvas().coords(canvasEdge.getCanvasID(), canvasEdge.showDirectionArrows())
             self.getScreen().getCanvas().itemconfig(canvasEdge.getCanvasID(), fill=canvasEdge.getColour())
@@ -104,10 +104,21 @@ class TraversalController(AlgorithmController[S, M, D]):
         edgeBeingEdited = self.__eventHandler.getEdgeBeingEdited() 
         if edgeBeingEdited: edgeBeingEdited.setWeight(weight) 
     
-
-    def changeEdgeDirection(self, direction : EdgeDirection) -> None:
+    def changeEdgeDirection(self, directionOption : EdgeDirectionOption) -> None:  
         edgeBeingEdited = self.__eventHandler.getEdgeBeingEdited() 
-        if edgeBeingEdited: edgeBeingEdited.setDirection(direction) 
+        if edgeBeingEdited is None: return
+        
+        x0, _, x1, _ = edgeBeingEdited.getCoords()
+        isFirstNodeLeftMost = x0 <= x1
+
+        if (directionOption == EdgeDirectionOption.LEFT_TO_RIGHT and isFirstNodeLeftMost) or \
+            (directionOption == EdgeDirectionOption.RIGHT_TO_LEFT and not isFirstNodeLeftMost): 
+            direction = EdgeDirection.FIRST_TO_SECOND 
+        elif directionOption != EdgeDirectionOption.BIDIRECTIONAL: direction = EdgeDirection.SECOND_TO_FIRST
+        else: direction = EdgeDirection.BIDIRECTIONAL
+
+        edgeBeingEdited.setDirection(direction)
+
 
     def __createPhysicsThread(self) -> None:
         self.__physicsCalculations= PhysicsCalculations(self.__canvasGraph, self.__getCanvasCentre()) 

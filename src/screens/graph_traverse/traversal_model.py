@@ -29,39 +29,31 @@ class TraversalModel(AlgorithmModel):
         # Minimum Weight edges can be 
         self.__minWeight = 1
         # Maximum weight edges can be 
-        self.__maxWeight = 100 
-        # Default weight given to each edge on creation 
-        self.__defaultWeight = 20
+        self.__maxWeight = 100  
+
+        # Minimum and Maximum on screen size for edges
+        self.__edgeMinScreenLen = 100
+        self.__edgeMaxScreenLen = 200
+
+        screenLenRange = self.__edgeMaxScreenLen - self.__edgeMinScreenLen
+        edgeWeightRange = self.__maxWeight - self.__minWeight
+
+        # Calculate slope once and store it -> does not need to be calculated each time weight is changed
+        self.__slope = screenLenRange // edgeWeightRange
+
         # Resolution of the weight slider
         self.__weightSliderResolution = 1
 
-        # Minimum and Maximum on screen size for edges
-        self.__edgeMinScreenLen = 55
-        self.__edgeMaxScreenLen = 200
-
-        # Smallest distance nodes can be apart on screen 
-        self.__minScreenDist = 50
-        # Largest distance nodes can be apart on screen 
-        self.__maxScreenDist = 50 
-
-        # Time delay when updating the canvas   
-        self.__updateDelay = 50 
-
         self.__arrowsFont = "Courier New"
 
-    # Getters for distances between nodes on screen 
-    def getMinScreenDist(self) -> int: return self.__minScreenDist
-    def getMaxScreenDist(self) -> int: return self.__maxScreenDist
     def getMaxNumNodes(self) -> int: return self.__maxNumNodes
 
     # Getters for edge weight 
-    def getMinWeight(self) -> int: return self.__minWeight
-    def getMaxWeight(self) -> int: return self.__maxWeight 
-    def getDefaultWeight(self) -> int: return self.__defaultWeight
+    def getMinEdgeWeight(self) -> int: return self.__minWeight
+    def getMaxEdgeWeight(self) -> int: return self.__maxWeight 
     def getWeightSliderResolution(self) -> int: return self.__weightSliderResolution 
 
-    # Getter for delay used when updating the canvas
-    def getUpdateDelay(self) -> int: return self.__updateDelay 
+    def getRangeSlope(self) -> int: return self.__slope
 
     def getEdgeMinScreenLen(self) -> int: return self.__edgeMinScreenLen
     def getEdgeMaxScreenLen(self) -> int: return self.__edgeMaxScreenLen 

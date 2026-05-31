@@ -8,7 +8,7 @@ if(__name__ == "__main__"):
 from typing import TYPE_CHECKING, TypeVar
 from tkinter import Canvas
 from src.data_structures import Graph
-from src.graph_visualisation import EventsHandler, CanvasGraph, PhysicsCalculations
+from src.graph_visualisation import EventsHandler, CanvasGraph, CanvasEdge, PhysicsCalculations
 from ..algorithm_base import AlgorithmController
 from src.thread_handlers import PhysicsThread
 from src.enums import EdgeDirection, EdgeDirectionOption
@@ -28,6 +28,10 @@ class TraversalController(AlgorithmController[S, M, D]):
         self.__eventHandler = None
         self.__canvasGraph = CanvasGraph(self.getDataStructure())
         self.__physicsCalculations = None  
+
+        # Correctly set the default screen length for newly created edges 
+        CanvasEdge.setDefaultScreenLen(self.__calculateScreenLen(CanvasEdge.getDefaultWeight()))
+        print(CanvasEdge.defaultScreenLen)
 
     def init(self) -> None: 
         self.createEventHandler(self.getScreen().getCanvas())
@@ -94,16 +98,21 @@ class TraversalController(AlgorithmController[S, M, D]):
         self.getScreen().setDeleteNodeButtonColour("black")
         self.__eventHandler.deleteNode(canvasNode) 
 
-    def deleteEdge(self) -> None: 
-        self.__eventHandler.deleteEdge()
+    def deleteEdge(self) -> None:  self.__eventHandler.deleteEdge()
+
+    def __calculateScreenLen(self, newWeight : int) -> None:   
+        model = self.getModel()      
+        return model.getEdgeMinScreenLen() + model.getRangeSlope() * (newWeight - model.getMinEdgeWeight())
 
     def finishEdgeEdit(self) -> None: 
         self.__eventHandler.finishEdgeEdit()
 
     def updateEdgeWeight(self, weight : int) -> None:
         edgeBeingEdited = self.__eventHandler.getEdgeBeingEdited() 
-        if edgeBeingEdited: edgeBeingEdited.setWeight(weight) 
-    
+        if edgeBeingEdited: 
+            edgeBeingEdited.setWeight(weight) 
+            edgeBeingEdited.setScreenLen(self.__calculateScreenLen(weight))
+
     def changeEdgeDirection(self, directionOption : EdgeDirectionOption) -> None:  
         edgeBeingEdited = self.__eventHandler.getEdgeBeingEdited() 
         if edgeBeingEdited is None: return
@@ -118,7 +127,6 @@ class TraversalController(AlgorithmController[S, M, D]):
         else: direction = EdgeDirection.BIDIRECTIONAL
 
         edgeBeingEdited.setDirection(direction)
-
 
     def __createPhysicsThread(self) -> None:
         self.__physicsCalculations= PhysicsCalculations(self.__canvasGraph, self.__getCanvasCentre()) 

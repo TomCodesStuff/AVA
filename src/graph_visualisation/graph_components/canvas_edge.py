@@ -17,12 +17,17 @@ class CanvasEdge():
     defaultSize = "3" 
     hoverSize = "5"
     defaultDirection = EdgeDirection.BIDIRECTIONAL
+    # In case the default screen length is never properly set, a "reasonable" value can still be used 
+    defaultScreenLen = 150
+
 
     def __init__(self, coords : tuple) -> None: 
         # On screen coords of the edge
         self.__coords = coords
         # Weight/cost
-        self.__weight = CanvasEdge.defaultWeight 
+        self.__weight = CanvasEdge.defaultWeight  
+        # Length edge appears when onscreen
+        self.__screenLen = CanvasEdge.defaultScreenLen
         # On screen colour
         self.__colour = CanvasEdge.defaultColour
         
@@ -35,7 +40,7 @@ class CanvasEdge():
         self.__secondNode = None 
         # Set direction to default (Bidirectional)
         self.__direction = CanvasEdge.defaultDirection
-        
+
 
     # Getters
     def getCanvasID(self): return self.__canvasID
@@ -46,11 +51,14 @@ class CanvasEdge():
     def getNodes(self) -> Tuple[CanvasNode, CanvasNode]: return (self.__firstNode, self.__secondNode) 
     def getColour(self) -> str: return self.__colour 
     def getDirection(self) -> EdgeDirection: return self.__direction
+    def getScreenLen(self) -> int: return self.__screenLen
     
     # Setters
     def setWeight(self, weight : int) -> None: 
         if weight > 0: self.__weight = weight
-    
+    def setScreenLen(self, screenLen : int): 
+        if screenLen > 0: self.__screenLen = screenLen
+        
     def updateCoords(self, coords : tuple) -> None: self.__coords = coords 
     def setFirstNode(self, canvasNode : CanvasNode) -> None: self.__firstNode = canvasNode 
     def setSecondNode(self, canvasNode : CanvasNode) -> None: self.__secondNode = canvasNode 
@@ -102,6 +110,9 @@ class CanvasEdge():
     def getDefaultSize() -> str: return CanvasEdge.defaultSize
 
     @staticmethod
-    def getHoverSize() -> str: return CanvasEdge.hoverSize
+    def getHoverSize() -> str: return CanvasEdge.hoverSize 
+
+    @staticmethod
+    def setDefaultScreenLen(defaultScreenLen : int) -> None: CanvasEdge.defaultScreenLen = defaultScreenLen
 
 # Listen to Live Forever by Oasis 

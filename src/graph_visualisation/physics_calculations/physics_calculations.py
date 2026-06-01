@@ -6,7 +6,7 @@ if(__name__ == "__main__"):
 
     
 import math
-from src.graph_visualisation.graph_components import CanvasGraph, CanvasNode
+from src.graph_visualisation.graph_components import CanvasGraph
 
 
 # Handles all physics-based calculations 
@@ -94,7 +94,7 @@ class PhysicsCalculations():
         return nodes_to_forces
 
     def __calculateEdgeRestoration(self, edgesSnapshot : set, nodesSnapshot : dict, nodes_to_forces : dict) -> None: 
-        for (startNodeID, endNodeID) in edgesSnapshot: 
+        for (startNodeID, endNodeID, screenLen) in edgesSnapshot: 
             (x0, y0, _, _), startNodeOffset = nodesSnapshot[startNodeID]
             (x1, y1, _, _), endNodeOffset = nodesSnapshot[endNodeID] 
             
@@ -102,8 +102,7 @@ class PhysicsCalculations():
             centreX1, centreY1 = x1 + endNodeOffset, y1 + endNodeOffset
             
             dist = self.__calculateDistance(centreX0, centreY0, centreX1, centreY1) 
-            # TODO reimplement screen length 
-            displacement = dist - 100
+            displacement = dist - screenLen
 
             dx, dy = self.__calculateStandarisedVector((centreX0, centreY0, centreX1, centreY1), dist)  
             # Calcalate spring restoration force applied to both nodes 
@@ -120,7 +119,7 @@ class PhysicsCalculations():
     def applyPhysics(self) -> None:  
         # Snapshot of node coords and offset
         nodesSnapshot = {x.getID() : (x.getCoords(), x.getOffset()) for x in self.__canvasGraph.getNodes()}
-        edgesSnapshot = {(x.getFirstNode().getID(), x.getSecondNode().getID()) 
+        edgesSnapshot = {(x.getFirstNode().getID(), x.getSecondNode().getID(), x.getScreenLen()) 
                           for x in self.__canvasGraph.getEdges()}
 
         nodes_to_forces = {}

@@ -11,7 +11,8 @@ from src.enums import EdgeDirection
 
 class CanvasEdge(): 
     # Static variables shared between each instance 
-    defaultWeight = 20
+    defaultWeight = 20 
+    defaultScreenLen = 150
     defaultColour = "black"
     editColour = "red"
     defaultSize = "3" 
@@ -23,6 +24,7 @@ class CanvasEdge():
         self.__coords = coords
         # Weight/cost
         self.__weight = CanvasEdge.defaultWeight 
+        self.__screenLen = CanvasEdge.defaultScreenLen
         # On screen colour
         self.__colour = CanvasEdge.defaultColour
         
@@ -40,6 +42,7 @@ class CanvasEdge():
     # Getters
     def getCanvasID(self): return self.__canvasID
     def getWeight(self) -> int: return self.__weight 
+    def getScreenLen(self) -> int: return self.__screenLen
     def getCoords(self) -> tuple: return self.__coords
     def getFirstNode(self) -> CanvasNode|None: return self.__firstNode
     def getSecondNode(self) -> CanvasNode|None: return self.__secondNode
@@ -49,7 +52,9 @@ class CanvasEdge():
     
     # Setters
     def setWeight(self, weight : int) -> None: 
-        if weight > 0: self.__weight = weight
+        if weight > 0: self.__weight = weight 
+    def setScreenLen(self, screenLen : int) -> None: 
+        if screenLen > 0: self.__screenLen = screenLen
     
     def updateCoords(self, coords : tuple) -> None: self.__coords = coords 
     def setFirstNode(self, canvasNode : CanvasNode) -> None: self.__firstNode = canvasNode 
@@ -102,6 +107,9 @@ class CanvasEdge():
     def getDefaultSize() -> str: return CanvasEdge.defaultSize
 
     @staticmethod
-    def getHoverSize() -> str: return CanvasEdge.hoverSize
+    def getHoverSize() -> str: return CanvasEdge.hoverSize 
+
+    @staticmethod 
+    def setDefaultScreenLen(defaultScreenLen : int): CanvasEdge.defaultScreenLen = defaultScreenLen
 
 # Listen to Live Forever by Oasis 

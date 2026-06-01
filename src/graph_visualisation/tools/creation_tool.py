@@ -1,9 +1,8 @@
 from tkinter import Canvas, BOTH
-from ..events_model import EventsModel
 from ..graph_components import CanvasGraph, CanvasNode, CanvasEdge
 
 
-class CreationTool(): 
+class CreationTool():
     # TODO re-add max number nodes check 
     def canNodeBeSpawned(self, canvas : Canvas, nodeCoords : tuple) -> bool:
         if nodeCoords == (): nodeCoords = CanvasNode.getDefaultCoords()

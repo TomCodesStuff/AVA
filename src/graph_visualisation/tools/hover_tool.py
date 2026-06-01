@@ -3,7 +3,11 @@ from ..graph_components import CanvasNode, CanvasEdge
 
 
 class HoverTool():    
-    def nodeOnHover(self, canvasNode : CanvasNode) -> None:
+    def __init__(self):
+        self.__isAlgorithmRunning = False
+
+    def nodeOnHover(self, canvasNode : CanvasNode) -> None: 
+        print(canvasNode.getCanvasID())
         canvasNode.setColour(CanvasNode.getHoverColour())
 
     def nodeOnLeave(self, canvasNode : CanvasNode) -> None:

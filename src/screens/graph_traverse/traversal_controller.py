@@ -8,7 +8,7 @@ if(__name__ == "__main__"):
 from typing import TYPE_CHECKING, TypeVar
 from tkinter import Canvas
 from src.data_structures import Graph
-from src.graph_visualisation import EventsHandler, CanvasGraph, PhysicsCalculations
+from src.graph_visualisation import EventsHandler, CanvasGraph, CanvasNode, PhysicsCalculations
 from ..algorithm_base import AlgorithmController
 from src.thread_handlers import PhysicsThread
 from src.enums import EdgeDirection, EdgeDirectionOption
@@ -27,7 +27,9 @@ class TraversalController(AlgorithmController[S, M, D]):
 
         self.__eventHandler = None
         self.__canvasGraph = CanvasGraph(self.getDataStructure())
-        self.__physicsCalculations = None  
+        self.__physicsCalculations = None   
+        # Set ID counter back to 0
+        CanvasNode.resetNodeIDCounter()
 
     def init(self) -> None: 
         self.createEventHandler(self.getScreen().getCanvas())
@@ -77,9 +79,9 @@ class TraversalController(AlgorithmController[S, M, D]):
         self.__eventHandler.setShowEdgeOptionsFunc(self.getScreen().showEdgeOptions)
 
     # Draws a circle (node) on the canvas 
-    def spawnNode(self, coords: tuple=()): 
+    def spawnNode(self, coords: tuple=()) -> None: 
         if self.__eventHandler is None: return
-        nodeCreated = self.__eventHandler.spawnNode(coords, override=True)        
+        nodeCreated = self.__eventHandler.spawnNode(coords)        
         if nodeCreated: 
             self.getScreen().setAddNodeButtonColour("black")
             self.getScreen().setDeleteNodeButtonColour("black")
@@ -93,6 +95,7 @@ class TraversalController(AlgorithmController[S, M, D]):
             return 
         self.getScreen().setDeleteNodeButtonColour("black")
         self.__eventHandler.deleteNode(canvasNode) 
+
 
     def deleteEdge(self) -> None: 
         self.__eventHandler.deleteEdge()

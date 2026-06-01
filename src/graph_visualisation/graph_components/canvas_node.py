@@ -106,4 +106,7 @@ class CanvasNode():
     @staticmethod
     def getMinSpawnDistance() -> int: return CanvasNode.minSpawnDist
 
+    @staticmethod
+    def resetNodeIDCounter() -> int: CanvasNode.nodeID = 0
+
 # Listen to Paralyzer by Finger Eleven     

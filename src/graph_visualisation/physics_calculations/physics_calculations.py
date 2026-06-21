@@ -117,10 +117,10 @@ class PhysicsCalculations():
 
     # Caclulate and apply forces to each object drawn on screen
     def applyPhysics(self) -> None:  
-        # Snapshot of node coords and offset
-        nodesSnapshot = {x.getID() : (x.getCoords(), x.getOffset()) for x in self.__canvasGraph.getNodes()}
+        # Snapshot of node coords and offset, copies of lists used to prevent crashed(?)
+        nodesSnapshot = {x.getID() : (x.getCoords(), x.getOffset()) for x in self.__canvasGraph.getNodes().copy()}
         edgesSnapshot = {(x.getFirstNode().getID(), x.getSecondNode().getID(), x.getScreenLen()) 
-                          for x in self.__canvasGraph.getEdges()}
+                          for x in self.__canvasGraph.getEdges().copy()}
 
         nodes_to_forces = {}
         
@@ -128,6 +128,7 @@ class PhysicsCalculations():
         self.__calculateNodeRepulsion(nodesSnapshot, nodes_to_forces) 
         self.__calculateEdgeRestoration(edgesSnapshot, nodesSnapshot, nodes_to_forces)
         
+        # Update results after all calculations done 
         self.__calculationResults = nodes_to_forces
         
     def getLatestResults(self) -> dict: return self.__calculationResults

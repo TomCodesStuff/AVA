@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 
 class CanvasNode():
     # Static variables shared between each instance 
-    nodeID = 1 
+    nodeID = 0
     defaultSize = 25
     defaultX, defaultY = 5, 5
     defaultCoords = (defaultX, defaultY, defaultX + defaultSize, defaultY + defaultSize)#
@@ -91,6 +91,9 @@ class CanvasNode():
     def setDragged(self) -> bool: self.__isBeingDragged = True
     def resetDragged(self) -> bool: self.__isBeingDragged = False
 
+    # Used to update on screen ID when a node is deleted 
+    def decrementID(self) -> None: self.nodeID -= 1
+
     @staticmethod
     def getDefaultSize() -> int: return CanvasNode.defaultSize
     
@@ -107,6 +110,10 @@ class CanvasNode():
     def getMinSpawnDistance() -> int: return CanvasNode.minSpawnDist
 
     @staticmethod
-    def resetNodeIDCounter() -> int: CanvasNode.nodeID = 0
+    def resetNodeIDCounter() -> None: CanvasNode.nodeID = 0 
+
+    @staticmethod 
+    def decrementNodeIDCounter() -> None: CanvasNode.nodeID -= 1 
+
 
 # Listen to Paralyzer by Finger Eleven     

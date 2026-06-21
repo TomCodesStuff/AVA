@@ -1,11 +1,16 @@
-from ..events_model import EventsModel
 from ..graph_components import CanvasNode, CanvasEdge
 
 # TODO Make NodeOffset be based on nodes actual size not default
 
 class MovementTool(): 
-    def __init__(self, eventsModel : EventsModel):
-        self.__eventsModel = eventsModel
+    def __init__(self, canvasWidth : int, canvasHeight : int): 
+        self.canvasWidth = canvasWidth 
+        self.canvasHeight = canvasHeight 
+
+        # Account for small border around canvas (Hard coded but should be fine)
+        self.__canvasUpperBoundOffset = 4
+        self.__canvasLowerBoundOffset = 2 
+
     
     # This prevents nodes from being dragged off canvas 
     # Could likely do with some refactoring but it just works 
@@ -13,22 +18,20 @@ class MovementTool():
         # Values needed for calculations
         nodeSize = CanvasNode.getDefaultSize()
         nodeoffset = nodeSize // 2
-        canvasWidth = self.__eventsModel.getCanvasWidth()
-        canvasHeight = self.__eventsModel.getCanvasHeight()
-
+        
         # Checks if mouse has gone out of bounds to the left 
         # Stops the node from moving off the canvas
-        x0 = max(x - nodeoffset, self.__eventsModel.getCanvasLowerBoundOffset()) 
+        x0 = max(x - nodeoffset, self.__canvasLowerBoundOffset) 
         # Checks if mouse has gone out of bounds to the right 
         # Stops the node from moving off the canvas
-        x0 = min(x0, canvasWidth - self.__eventsModel.getCanvasUpperBoundOffset() - nodeSize) 
+        x0 = min(x0, self.canvasWidth - self.__canvasUpperBoundOffset - nodeSize) 
 
         # Checks if mouse has gone out of bounds by going above the canvas
         # Stops the node from moving off the canvas 
-        y0 = max(y - nodeoffset, self.__eventsModel.getCanvasLowerBoundOffset()) 
+        y0 = max(y - nodeoffset, self.__canvasLowerBoundOffset) 
         # Checks if mouse has gone out of bounds by going below the canvas
         # Stops the node from moving off the canvas 
-        y0 = min(y0, canvasHeight - self.__eventsModel.getCanvasUpperBoundOffset() - nodeSize)  
+        y0 = min(y0, self.canvasHeight - self.__canvasUpperBoundOffset - nodeSize)  
 
         # The above could be done in one line but just because it can doesn't mean it should 
         # Doing it in one line would make the calculations very hard to read  

@@ -13,10 +13,18 @@ class CanvasGraph():
     def addCanvasNode(self, canvasNode : CanvasNode) -> None: 
         self.__nodes.append(canvasNode) 
 
-    def deleteCanvasNode(self, canvasNode : CanvasNode) -> None: 
-        if canvasNode in self.__nodes:
-            self.__nodes.remove(canvasNode)
-    
+    def deleteCanvasNode(self, canvasNode : CanvasNode) -> None:
+        if canvasNode not in self.__nodes: return
+
+        nodeID = canvasNode.getID()
+        self.__nodes.remove(canvasNode)
+
+        for node in self.getNodes(): 
+            if nodeID < node.getID(): node.decrementID()
+        
+        # Decrement static ID 
+        CanvasNode.decrementNodeIDCounter()
+
     def getLastCreatedNode(self) -> CanvasNode|None: 
         if len(self.__nodes) == 0: return None 
         return self.__nodes[-1]

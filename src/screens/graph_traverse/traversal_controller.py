@@ -54,7 +54,7 @@ class TraversalController(AlgorithmController[S, M, D]):
     def refreshCanvas(self, refreshColours:bool=False) -> None: 
         latestResults = {}
         if self.__physicsCalculations is not None: 
-            latestResults = self.__physicsCalculations.getLatestResults()
+            latestResults = self.__physicsCalculations.getLatestResults().copy()
 
         for canvasNode in self.__canvasGraph.getNodes():  
             if canvasNode.getID() in latestResults:
@@ -78,7 +78,7 @@ class TraversalController(AlgorithmController[S, M, D]):
         self.getScreen().getWindow().update_idle_tasks()  
 
     def createEventHandler(self, canvas : Canvas) -> None: 
-        self.__eventHandler = EventsHandler(canvas, self.__canvasGraph) 
+        self.__eventHandler = EventsHandler(canvas, self.__canvasGraph, self.getModel().getMaxNumNodes()) 
         # Update screen to show edge options 
         self.__eventHandler.setShowEdgeOptionsFunc(self.getScreen().showEdgeOptions)
 

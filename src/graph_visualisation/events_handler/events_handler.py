@@ -1,21 +1,16 @@
 from typing import Callable
 from tkinter import Canvas, Event 
-from ..events_model import EventsModel
 from ..graph_components import CanvasGraph, CanvasNode, CanvasEdge
 from ..tools import * 
 
 class EventsHandler(): 
-    def __init__(self, canvas : Canvas, canvasGraph : CanvasGraph):
+    def __init__(self, canvas : Canvas, canvasGraph : CanvasGraph, maxNumNodes : int):
         self.__canvas = canvas
         self.__canvasGraph = canvasGraph
-        
-        self.__eventsModel = EventsModel()
-        self.__eventsModel.setCanvasWidth(self.__canvas.winfo_width())
-        self.__eventsModel.setCanvasHeight(self.__canvas.winfo_height())
-        
+                
         self.__creationTool = CreationTool()
         self.__hoverTool = HoverTool()
-        self.__movementTool = MovementTool(self.__eventsModel)
+        self.__movementTool = MovementTool(self.__canvas.winfo_width(), self.__canvas.winfo_height())
 
         # Flags to prevent events being incorrectly triggered 
         self.__isNodeBeingDeleted = False 
@@ -26,7 +21,10 @@ class EventsHandler():
         self.__isAlgorithmRunning = False
 
         self.__edgeBeingDrawn = None  
-        self.__edgeBeingEdited = None  
+        self.__edgeBeingEdited = None   
+
+        # Maximum Number of nodes 
+        self.__maxNumNodes = maxNumNodes
 
         # Function to show edge options in the GUI
         self.__showEdgeOptions = None 
@@ -60,8 +58,8 @@ class EventsHandler():
             self.__removeCanvasMotionEvent()
             self.__isEdgeBeingDrawn = False
 
-            self.__canvas.delete(self.__edgeBeingDrawn.getCanvasID())
-            self.__creationTool.deleteEdge(self.__canvasGraph, self.__edgeBeingDrawn) 
+            self.__canvas.delete(self.__edgeBeingDrawn.getCanvasID()) 
+            self.__canvasGraph.deleteCanvasEdge(self.__edgeBeingDrawn)
             self.__edgeBeingDrawn = None 
 
     def __addCanvasEvents(self) -> None: 
@@ -85,7 +83,6 @@ class EventsHandler():
         canvasNode.resetDragged()
 
     def deleteNode(self, canvasNode : CanvasNode) -> None:  
-        print("RUNNING")
         if self.__isAlgorithmRunning or self.__isEdgeBeingEdited: return
         self.__isNodeBeingDeleted = True  
 
@@ -96,11 +93,9 @@ class EventsHandler():
         # Not to thrilled about making a copy here but it's the best option
         for canvasEdge in list(canvasNode.getEdges()): 
             self.__deleteEdge(canvasEdge)
-
-        print(canvasNode.getCanvasID())
-        self.__canvas.delete(canvasNode.getCanvasID())
-        self.__creationTool.deleteNode(self.__canvasGraph, canvasNode)
-
+            
+        self.__canvas.delete(canvasNode.getCanvasID())  
+        self.__canvasGraph.deleteCanvasNode(canvasNode)
 
     def __drawEdge(self, eventCoords : tuple, canvasEdge : CanvasEdge) -> None: 
         eventX, eventY = eventCoords
@@ -122,8 +117,8 @@ class EventsHandler():
 
     def __deleteEdge(self, canvasEdge : CanvasEdge) -> None:  
         if canvasEdge is None: return
-        self.__canvas.delete(canvasEdge.getCanvasID())
-        self.__creationTool.deleteEdge(self.__canvasGraph, canvasEdge)
+        self.__canvas.delete(canvasEdge.getCanvasID()) 
+        self.__canvasGraph.deleteCanvasEdge(canvasEdge)
         
     def __resetEdgeDrawingEvent(self) -> None:
         self.__removeCanvasMotionEvent() 

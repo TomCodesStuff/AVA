@@ -23,9 +23,6 @@ class CreationTool():
         canvasGraph.addCanvasNode(canvasNode)
         return canvasNode
 
-    def deleteNode(self, canvasGraph : CanvasGraph, canvasNode : CanvasNode):
-        canvasGraph.deleteCanvasNode(canvasNode) 
-
     def renderEdge(self, canvas : Canvas, canvasEdge : CanvasEdge) -> None: 
         x0, y0, x1, y1 = canvasEdge.getCoords() 
         canvasID = canvas.create_line(x0, y0, x1, y1, fill=canvasEdge.getColour(), 
@@ -42,9 +39,5 @@ class CreationTool():
         canvasEdge = CanvasEdge((x0 + nodeOffset, y0 + nodeOffset, x0 + nodeOffset, y0 + nodeOffset))
         canvasEdge.setFirstNode(canvasNode)  
         return canvasEdge  
-
-    def deleteEdge(self, canvasGraph : CanvasGraph, canvasEdge : CanvasEdge) -> None: 
-        canvasGraph.deleteCanvasEdge(canvasEdge)
-
 
 # Listen to Perfect by The Smashing Pumpkins

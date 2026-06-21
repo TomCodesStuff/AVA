@@ -7,7 +7,6 @@ class HoverTool():
         self.__isAlgorithmRunning = False
 
     def nodeOnHover(self, canvasNode : CanvasNode) -> None: 
-        print(canvasNode.getCanvasID())
         canvasNode.setColour(CanvasNode.getHoverColour())
 
     def nodeOnLeave(self, canvasNode : CanvasNode) -> None:

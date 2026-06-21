@@ -20,6 +20,11 @@ class EventsHandler():
         # Disable events when algorithms are running  
         self.__isAlgorithmRunning = False
 
+        # Flags to call correct events when a node is clicked 
+        self.__isSetStartEnabled = True 
+        self.__isSetGoalEnabled = False 
+
+
         self.__edgeBeingDrawn = None  
         self.__edgeBeingEdited = None   
 
@@ -130,10 +135,7 @@ class EventsHandler():
         return self.__areEdgeNodesDifferent(canvasEdge.getFirstNode(), canvasNode)\
             and not self.__canvasGraph.areNodesConnected((canvasEdge.getFirstNode(), canvasNode))
 
-    def __nodeOnClick(self, canvasNode : CanvasNode) -> None: 
-        # If an edge is being edited or algorithm is running, prevent a new one from being created
-        if self.__isAlgorithmRunning or self.__isEdgeBeingEdited: return
-        
+    def handleEdgeDrawing(self, canvasNode : CanvasNode) -> None:
         # If an edge is already being drawn on screen
         if self.__isEdgeBeingDrawn:
             if self.__canEdgeBeCreated(self.__edgeBeingDrawn, canvasNode): 
@@ -150,6 +152,18 @@ class EventsHandler():
             canvasEdge = self.__creationTool.createEdge(canvasNode) 
             self.__edgeBeingDrawn = canvasEdge
             self.__addCanvasMotionEvent(canvasEdge) 
+
+    def __nodeOnClick(self, canvasNode : CanvasNode) -> None: 
+        # If an edge is being edited or algorithm is running, prevent a new one from being created
+        if self.__isAlgorithmRunning: return
+        
+        if self.__isSetStartEnabled: 
+            self.__canvasGraph.assignStartNode(canvasNode)
+            self.__isSetStartEnabled = False
+        elif self.__isSetGoalEnabled: 
+            self.__canvasGraph.assignGoalNode(canvasNode)
+            self.__isSetGoalEnabled = False
+        elif not self.__isEdgeBeingEdited: self.handleEdgeDrawing(canvasNode)
     
     def __editEdge(self, canvasEdge : CanvasEdge) -> None:
         canvasEdge.setColour(CanvasEdge.getEditColour())
@@ -225,5 +239,10 @@ class EventsHandler():
         self.__showEdgeOptions = showEdgeOptionsFunc
     
     def getEdgeBeingEdited(self) -> CanvasEdge: return self.__edgeBeingEdited
+
+    def enableNodeStartAssignEvent(self) -> None: self.__isSetStartEnabled = True
+    def disableNodeStartAssignEvent(self) -> None: self.__isSetStartEnabled = False
+    def enableNodeGoalAssignEvent(self) -> None: self.__isSetGoalEnabled = True
+    def disableNodeGoalAssignEvent(self) -> None: self.__isSetGoalEnabled = False
 
 # Listen to Why does it always rain on me by Travis  

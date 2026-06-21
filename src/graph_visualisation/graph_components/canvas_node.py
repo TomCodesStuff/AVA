@@ -21,6 +21,8 @@ class CanvasNode():
     defaultCoords = (defaultX, defaultY, defaultX + defaultSize, defaultY + defaultSize)#
     defaultColour = "blue" 
     hoverColour = "red"
+    startColour = "orange"
+    goalColour = "green"
     minSpawnDist = 10
 
 
@@ -33,11 +35,14 @@ class CanvasNode():
         self.__size = CanvasNode.defaultSize
         # Text displayed in centre of node 
         self.__canvasText = None
-
+        
         self.__nodeID = CanvasNode.nodeID 
         CanvasNode.nodeID += 1 
         # ID of the node on the canvas
-        self.__canvasID = -1  
+        self.__canvasID = -1   
+
+        # Keep track of previous colour -> useful for hover events 
+        self.__prevColour = CanvasNode.defaultColour
 
         # A set containing references to edges that connects nodes to eachother 
         self.__edges = set()
@@ -62,12 +67,14 @@ class CanvasNode():
     def getEdges(self) -> Set[CanvasEdge]: return self.__edges
     def getSize(self) -> int: return self.__size 
     def getCanvasText(self) -> CanvasText: return self.__canvasText
+    def getPrevColour(self) -> str: return self.__prevColour
     
     # Setters 
     def setCanvasID(self, canvasID : int) -> None:  self.__canvasID = canvasID
-    def setColour(self, colour : str) -> None: self.__node.setColour(colour)   
+    def setColour(self, colour : str) -> None: self.__node.setColour(colour)    
+    def setPrevColour(self, colour : str): self.__prevColour = colour
     def getOffset(self) -> int: return (self.__size // 2) + 1 
-    def setCanvasText(self, canvasText : CanvasText) -> None: self.__canvasText = canvasText
+    def setCanvasText(self, canvasText : CanvasText) -> None: self.__canvasText = canvasText 
     
     # Adds a CanvasEdge Object to the list 
     def addEdge(self, canvasEdge : CanvasEdge) -> None: self.__edges.add(canvasEdge) 

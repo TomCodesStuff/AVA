@@ -141,7 +141,17 @@ class TraversalController(AlgorithmController[S, M, D]):
 
     def __createPhysicsThread(self) -> None:
         self.__physicsCalculations= PhysicsCalculations(self.__canvasGraph, self.__getCanvasCentre()) 
-        self.addManagedThread(PhysicsThread(self.__physicsCalculations))
+        self.addManagedThread(PhysicsThread(self.__physicsCalculations)) 
+    
+    def enableNodeStartAssignEvent(self) -> None: 
+        if self.__eventHandler: 
+            self.__eventHandler.enableNodeStartAssignEvent()  
+            self.__eventHandler.disableNodeGoalAssignEvent()
+    
+    def enableNodeGoalAssignEvent(self) -> None: 
+        if self.__eventHandler: 
+            self.__eventHandler.enableNodeGoalAssignEvent() 
+            self.__eventHandler.disableNodeStartAssignEvent() 
 
 
 # Listen to Paranoid by Black Sabbath

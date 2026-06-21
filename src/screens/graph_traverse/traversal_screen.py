@@ -35,15 +35,27 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
 
     # Creates the button that lets users add nodes to the canvas 
     def __createAddNodeButton(self) -> None: 
-        self.__addNodeButton = tk.Button(self.__innerNodeFrame, text="Spawn.", width=6, relief="solid", 
+        self.__addNodeButton = tk.Button(self.__innerNodeFrame, text="Spawn.", width=8, relief="solid", 
                                          font = (self.getFont(), self.getFontSize()), command=self.getController().spawnNode)
-        self.__addNodeButton.grid(row = 1, column = 0, pady = (5, 0), padx=(0, 10))  
+        self.__addNodeButton.grid(row = 1, column = 0, pady = (5, 0), padx=(0, 5))  
     
     def __createDeleteNodeButton(self) -> None:
-        self.__deleteNodeButton = tk.Button(self.__innerNodeFrame, text="Delete.", width=6, relief="solid", 
+        self.__deleteNodeButton = tk.Button(self.__innerNodeFrame, text="Delete.", width=8, relief="solid", 
                                             font = (self.getFont(), self.getFontSize()), 
                                             command=self.getController().deleteNode)
-        self.__deleteNodeButton.grid(row = 1, column = 1, pady = (5, 0), padx=(10, 0))  
+        self.__deleteNodeButton.grid(row = 1, column = 1, pady = (5, 0), padx=(5, 0))   
+    
+    def __createAssignStartButton(self) -> None: 
+        self.__startNodeButton = tk.Button(self.__innerNodeFrame, text="Set Start.", width=8, relief="solid", 
+                                           font = (self.getFont(), self.getFontSize()), 
+                                           command=self.getController().enableNodeStartAssignEvent)
+        self.__startNodeButton.grid(row = 2, column = 0, pady=(5, 0), padx=(0, 5))           
+    
+    def __createAssignGoalButton(self) -> None: 
+        self.__goalNodeButton = tk.Button(self.__innerNodeFrame, text="Set Goal.", width=8, relief="solid", 
+                                           font = (self.getFont(), self.getFontSize()), 
+                                           command=self.getController().enableNodeGoalAssignEvent)
+        self.__goalNodeButton.grid(row = 2, column = 1, pady=(5, 0), padx=(5, 0))   
 
     def __createNodeOptions(self) -> None:
         # Hacky solution to make sure everything stays in centre :/
@@ -55,6 +67,8 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
 
         self.__createAddNodeButton() 
         self.__createDeleteNodeButton()
+        self.__createAssignStartButton()
+        self.__createAssignGoalButton()
 
     # Changes the text colour of the add node button to the passed colour
     def setAddNodeButtonColour(self, colour : str) -> None: 

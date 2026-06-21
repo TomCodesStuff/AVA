@@ -7,15 +7,16 @@ if(__name__ == "__main__"):
 
 from typing import Set, TYPE_CHECKING
 from src.data_structures import Node 
+from .canvas_text import CanvasText
 
 if TYPE_CHECKING: 
-    from . import CanvasEdge
+    from .canvas_edge import CanvasEdge
 
 
 class CanvasNode():
     # Static variables shared between each instance 
     nodeID = 0
-    defaultSize = 25
+    defaultSize = 26
     defaultX, defaultY = 5, 5
     defaultCoords = (defaultX, defaultY, defaultX + defaultSize, defaultY + defaultSize)#
     defaultColour = "blue" 
@@ -30,38 +31,43 @@ class CanvasNode():
         self.__coords = coords
         # Size of the node 
         self.__size = CanvasNode.defaultSize
+        # Text displayed in centre of node 
+        self.__canvasText = None
 
-        self.__ID = CanvasNode.nodeID 
+        self.__nodeID = CanvasNode.nodeID 
         CanvasNode.nodeID += 1 
-        
         # ID of the node on the canvas
         self.__canvasID = -1  
 
         # A set containing references to edges that connects nodes to eachother 
         self.__edges = set()
-        
         # Boolean flag, when a user is moving a node forces are not applied
-        self.__isBeingDragged = False 
+        self.__isBeingDragged = False  
 
-        
     # Updates the coordinates of the node to be accurate to the coordinates on screen
     def updateCoords(self, coords : tuple) -> None: 
+        if not coords: return
+        x0, y0, _, _ = coords
         self.__coords = coords
+        # Update text so it follows node 
+        self.__canvasText.updateCoords((x0 + self.getOffset(), y0 + self.getOffset()))
 
     # Getters 
     def getCanvasID(self) -> int: return self.__canvasID 
     def getXCoord(self) -> int: return self.__coords[0]
     def getYCoord(self) -> int: return self.__coords[1]
     def getCoords(self) -> tuple: return self.__coords
-    def getID(self) -> int: return self.__ID    
+    def getID(self) -> int: return self.__nodeID    
     def getColour(self) -> str: return self.__node.getColour()
     def getEdges(self) -> Set[CanvasEdge]: return self.__edges
     def getSize(self) -> int: return self.__size 
+    def getCanvasText(self) -> CanvasText: return self.__canvasText
     
     # Setters 
     def setCanvasID(self, canvasID : int) -> None:  self.__canvasID = canvasID
     def setColour(self, colour : str) -> None: self.__node.setColour(colour)   
-    def getOffset(self) -> int: return self.__size // 2 
+    def getOffset(self) -> int: return (self.__size // 2) + 1 
+    def setCanvasText(self, canvasText : CanvasText) -> None: self.__canvasText = canvasText
     
     # Adds a CanvasEdge Object to the list 
     def addEdge(self, canvasEdge : CanvasEdge) -> None: self.__edges.add(canvasEdge) 
@@ -83,8 +89,8 @@ class CanvasNode():
         newX0 = x0 + forceX
         newY0 = y0 + forceY
 
-        # Update coords 
-        self.__coords = (newX0, newY0, newX0 + self.__size, newY0 + self.__size)  
+        # Update coords
+        self.updateCoords((newX0, newY0, newX0 + self.__size, newY0 + self.__size))  
     
     # Function for dragging objects
     def isBeingDragged(self) -> bool: return self.__isBeingDragged
@@ -92,7 +98,8 @@ class CanvasNode():
     def resetDragged(self) -> bool: self.__isBeingDragged = False
 
     # Used to update on screen ID when a node is deleted 
-    def decrementID(self) -> None: self.nodeID -= 1
+    def decrementID(self) -> None: 
+        self.__nodeID -= 1
 
     @staticmethod
     def getDefaultSize() -> int: return CanvasNode.defaultSize

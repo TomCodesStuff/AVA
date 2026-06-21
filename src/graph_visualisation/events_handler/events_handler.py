@@ -94,7 +94,8 @@ class EventsHandler():
         for canvasEdge in list(canvasNode.getEdges()): 
             self.__deleteEdge(canvasEdge)
             
-        self.__canvas.delete(canvasNode.getCanvasID())  
+        self.__canvas.delete(canvasNode.getCanvasID())   
+        self.__canvas.delete(canvasNode.getCanvasText().getCanvasID())
         self.__canvasGraph.deleteCanvasNode(canvasNode)
 
     def __drawEdge(self, eventCoords : tuple, canvasEdge : CanvasEdge) -> None: 
@@ -171,21 +172,34 @@ class EventsHandler():
                                lambda _: self.__hoverTool.edgeOnLeave(self.__canvas, canvasEdge)) 
 
     # Add event handlers to the newly created node
-    def __addNodeEvents(self, canvasNode : CanvasNode) -> None:     
+    def __addNodeEvents(self, canvasNode : CanvasNode) -> None:  
+        # Events need to be added to both on screen circle and text to work :/    
+        canvasTextID = canvasNode.getCanvasText().getCanvasID()
+
         # Add event to change nodes colour when the mouse hovers over it
         self.__canvas.tag_bind(canvasNode.getCanvasID(), "<Enter>", lambda _: self.__hoverTool.nodeOnHover(canvasNode))
+        self.__canvas.tag_bind(canvasTextID, "<Enter>", lambda _: self.__hoverTool.nodeOnHover(canvasNode))
+
         # Add event to change nodes colour when the mouse stops hovering over it
         self.__canvas.tag_bind(canvasNode.getCanvasID(), "<Leave>", lambda _: self.__hoverTool.nodeOnLeave(canvasNode)) 
+        self.__canvas.tag_bind(canvasTextID, "<Leave>", lambda _: self.__hoverTool.nodeOnLeave(canvasNode)) 
+        
         # Add event listener to move node when it's dragged by the mouse 
         self.__canvas.tag_bind(canvasNode.getCanvasID(), "<B1-Motion>", lambda event: self.__moveNode(event, canvasNode))    
+        self.__canvas.tag_bind(canvasTextID, "<B1-Motion>", lambda event: self.__moveNode(event, canvasNode))    
         
         # Add event listener to detect when mouse button released 
         self.__canvas.tag_bind(canvasNode.getCanvasID(), "<ButtonRelease-1>", lambda _: self.__resetDragged(canvasNode))
+        self.__canvas.tag_bind(canvasTextID, "<ButtonRelease-1>", lambda _: self.__resetDragged(canvasNode))
         
         # Add event listener to add an edge when a node is clicked 
         self.__canvas.tag_bind(canvasNode.getCanvasID(), "<Button-1>", lambda _: self.__nodeOnClick(canvasNode))
+        self.__canvas.tag_bind(canvasTextID, "<Button-1>", lambda _: self.__nodeOnClick(canvasNode))
+        
         # Add event to delete a node when it is double clicked 
         self.__canvas.tag_bind(canvasNode.getCanvasID(), "<Double-Button-1>", lambda _: self.deleteNode(canvasNode)) 
+        self.__canvas.tag_bind(canvasTextID, "<Double-Button-1>", lambda _: self.deleteNode(canvasNode)) 
+
 
     def spawnNode(self, coords : tuple) -> bool:  
         if self.__isEdgeBeingDrawn: return

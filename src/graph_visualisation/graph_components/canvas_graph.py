@@ -20,9 +20,11 @@ class CanvasGraph():
         self.__nodes.remove(canvasNode)
 
         for node in self.getNodes(): 
-            if nodeID < node.getID(): node.decrementID()
-        
-        # Decrement static ID 
+            if nodeID < node.getID(): 
+                node.decrementID()
+                node.getCanvasText().updateText(str(node.getID())) 
+
+        # Decrement static ID attribute to future created nodes have correct ID
         CanvasNode.decrementNodeIDCounter()
 
     def getLastCreatedNode(self) -> CanvasNode|None: 

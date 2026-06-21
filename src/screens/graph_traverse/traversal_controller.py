@@ -39,7 +39,7 @@ class TraversalController(AlgorithmController[S, M, D]):
         self.createEventHandler(self.getScreen().getCanvas())
         self.__repeatCanvasRefresh() 
         self.__createPhysicsThread() 
-        self.startManagedThreads()
+        # self.startManagedThreads()
 
     def __getCanvasCentre(self) -> tuple: 
         canvas = self.getScreen().getCanvas()
@@ -52,7 +52,9 @@ class TraversalController(AlgorithmController[S, M, D]):
         self.getScreen().getWindow().scheduleFunctionExecution(self.__repeatCanvasRefresh, 16)
 
     def refreshCanvas(self, refreshColours:bool=False) -> None: 
-        latestResults = {}
+        latestResults = {} 
+        canvas = self.getScreen().getCanvas()
+
         if self.__physicsCalculations is not None: 
             latestResults = self.__physicsCalculations.getLatestResults().copy()
 
@@ -61,8 +63,15 @@ class TraversalController(AlgorithmController[S, M, D]):
                 canvasNode.applyForces(latestResults[canvasNode.getID()])
 
             x0, y0, _, _ = canvasNode.getCoords()
-            self.getScreen().getCanvas().moveto(canvasNode.getCanvasID(), round(x0), round(y0))
-            self.getScreen().getCanvas().itemconfig(canvasNode.getCanvasID(), fill=canvasNode.getColour())
+            # NOTE might need changing to .coords here(?)
+            canvas.moveto(canvasNode.getCanvasID(), round(x0), round(y0))
+            canvas.itemconfig(canvasNode.getCanvasID(), fill=canvasNode.getColour())  
+
+            canvasText = canvasNode.getCanvasText()
+            x0, y0 = canvasText.getCoords()
+            canvas.coords(canvasText.getCanvasID(), x0, y0)
+            canvas.itemconfig(canvasText.getCanvasID(), text=canvasText.getText())
+
         
         for canvasEdge in self.__canvasGraph.getEdges(): 
             firstNode, secondNode = canvasEdge.getNodes() 
@@ -72,8 +81,8 @@ class TraversalController(AlgorithmController[S, M, D]):
             canvasEdge.updateCoords((x0 + firstNode.getOffset(), y0 + firstNode.getOffset(), 
                                      x1 + secondNode.getOffset(), y1 + secondNode.getOffset())) 
             
-            self.getScreen().getCanvas().coords(canvasEdge.getCanvasID(), canvasEdge.adjustDirectionArrows())
-            self.getScreen().getCanvas().itemconfig(canvasEdge.getCanvasID(), fill=canvasEdge.getColour())
+            canvas.coords(canvasEdge.getCanvasID(), canvasEdge.adjustDirectionArrows())
+            canvas.itemconfig(canvasEdge.getCanvasID(), fill=canvasEdge.getColour())
         
         self.getScreen().getWindow().update_idle_tasks()  
 

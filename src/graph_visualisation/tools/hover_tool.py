@@ -3,14 +3,12 @@ from ..graph_components import CanvasNode, CanvasEdge
 
 
 class HoverTool():    
-    def __init__(self):
-        self.__isAlgorithmRunning = False
-
     def nodeOnHover(self, canvasNode : CanvasNode) -> None: 
+        canvasNode.setPrevColour(canvasNode.getColour())
         canvasNode.setColour(CanvasNode.getHoverColour())
 
     def nodeOnLeave(self, canvasNode : CanvasNode) -> None:
-        canvasNode.setColour(CanvasNode.getDefaultColour())  
+        canvasNode.setColour(canvasNode.getPrevColour())  
     
     def edgeOnHover(self, canvas : Canvas, canvasEdge : CanvasEdge) -> None:
         canvas.itemconfig(canvasEdge.getCanvasID(), width=CanvasEdge.getHoverSize())

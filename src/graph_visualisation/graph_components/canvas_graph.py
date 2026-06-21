@@ -10,6 +10,9 @@ class CanvasGraph():
         self.__edges = []
         self.__nodesToEdges = {} 
 
+        self.__startNode = None 
+        self.__goalNode = None 
+
     def addCanvasNode(self, canvasNode : CanvasNode) -> None: 
         self.__nodes.append(canvasNode) 
 
@@ -26,6 +29,20 @@ class CanvasGraph():
 
         # Decrement static ID attribute to future created nodes have correct ID
         CanvasNode.decrementNodeIDCounter()
+
+    def assignStartNode(self, canvasNode : CanvasNode) -> None: 
+        if canvasNode not in self.__nodes: return 
+        if self.__startNode: self.__startNode.setColour(CanvasNode.defaultColour)
+        canvasNode.setColour(CanvasNode.startColour)
+        canvasNode.setPrevColour(CanvasNode.startColour)
+        self.__startNode = canvasNode 
+    
+    def assignGoalNode(self, canvasNode : CanvasNode) -> None: 
+        if canvasNode not in self.__nodes: return 
+        if self.__goalNode: self.__goalNode.setColour(CanvasNode.defaultColour)
+        canvasNode.setColour(CanvasNode.goalColour) 
+        canvasNode.setPrevColour(CanvasNode.goalColour)
+        self.__goalNode = canvasNode
 
     def getLastCreatedNode(self) -> CanvasNode|None: 
         if len(self.__nodes) == 0: return None 

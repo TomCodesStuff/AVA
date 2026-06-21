@@ -202,7 +202,7 @@ class EventsHandler():
 
 
     def spawnNode(self, coords : tuple) -> bool:  
-        if self.__isEdgeBeingDrawn: return
+        if self.__isEdgeBeingDrawn or len(self.__canvasGraph.getNodes()) >= self.__maxNumNodes: return
 
         self.__isNodeBeingDeleted = False 
         if not self.__creationTool.canNodeBeSpawned(self.__canvas, coords): return False 

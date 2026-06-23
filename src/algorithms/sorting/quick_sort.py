@@ -23,7 +23,7 @@ class QuickSort(Algorithm[SortArray]):
     def run(self) -> int:  
         array = self.getDataStructure()
         self.__quickSortHelper(0, len(array) - 1)
-        self.invokeDelay()
+        self.tick()
         return 0
     
     # Recusive implementation of quick sort 
@@ -48,7 +48,7 @@ class QuickSort(Algorithm[SortArray]):
             array.resetBarColours()
             array.setColourAt(pivotIdx, "orange")
             array.setColourAt(i, "red") 
-            self.invokeDelay()
+            self.tick()
 
             # If element is less than/greater than or equal to the pivot 
             if(not array.isSwapNeeded(i, pivotIdx) or array.areElementsEqual(i, pivotIdx)):
@@ -63,7 +63,7 @@ class QuickSort(Algorithm[SortArray]):
             array.resetBarColours()
             array.setColourAt(pivotIdx, "orange")
             array.setColourAt(i, "red") 
-            self.invokeDelay()
+            self.tick()
             # If element is greater/smaller than the pivot 
             if(array.isSwapNeeded(i, pivotIdx) and not array.areElementsEqual(i, pivotIdx)):
                 # Shift elements between i and the pivot one place left

@@ -32,7 +32,7 @@ class CocktailShakerSort(Algorithm[SortArray]):
             for i in range(start, end): 
                 array.resetBarColours()
                 array.setColourAt(i, "red")  
-                self.invokeDelay()
+                self.tick()
                 
                 # If elements need to be swapped
                 if(array.isSwapNeeded(i, i + 1)):
@@ -43,11 +43,11 @@ class CocktailShakerSort(Algorithm[SortArray]):
                     swapped = True
             
             array.setColourAt(i, "red")  
-            self.invokeDelay()
+            self.tick()
 
             # If no swaps were made, stop algorithm 
             if(not swapped): 
-                self.invokeDelay()
+                self.tick()
                 return 0 
             
             # Decrement end 
@@ -56,7 +56,7 @@ class CocktailShakerSort(Algorithm[SortArray]):
             for i in range(end - 1, max(start - 1, 0), -1):
                 array.resetBarColours()
                 array.setColourAt(i, "red")  
-                self.invokeDelay()
+                self.tick()
                 
                 # If elmenents need to be swapped, swap them
                 if(array.isSwapNeeded(i, i + 1)): 
@@ -67,7 +67,7 @@ class CocktailShakerSort(Algorithm[SortArray]):
             # Increment start
             start += 1 
 
-        self.invokeDelay()
+        self.tick()
         return 0
 
 # Listen to What You Know by Two Door Cinema Club 

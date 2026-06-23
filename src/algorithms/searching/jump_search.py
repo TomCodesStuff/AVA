@@ -24,7 +24,7 @@ class JumpSearch(Algorithm[SearchArray]):
         target = array.getTarget()
     
         array.sort()
-        self.invokeBriefDelay()
+        self.briefTick()
 
         # length of array
         n = len(array)
@@ -39,7 +39,7 @@ class JumpSearch(Algorithm[SearchArray]):
             array.setColourAt(prev, "red")
             if prev >= n: return 1
             step += int(math.sqrt(n))
-            self.invokeBriefDelay()
+            self.briefTick()
         
         # Linear search to find target
         # Start at index of last jump and stops at index of next jump 
@@ -53,7 +53,7 @@ class JumpSearch(Algorithm[SearchArray]):
             if array.getAt(i) == target:#
                 array.setColourAt(i, "green")
                 return 0
-            self.invokeDelay()  
+            self.tick()  
         return 1
     
 # Listen to Waiting For The End by Linkin Park

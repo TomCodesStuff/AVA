@@ -28,7 +28,7 @@ class FibonacciSearch(Algorithm[SearchArray]):
         
         n = len(array)
         array.sort()
-        self.invokeBriefDelay()
+        self.briefTick()
         
         # Iterate while there are still elements to check
         while(fibN > 1):  
@@ -54,7 +54,7 @@ class FibonacciSearch(Algorithm[SearchArray]):
                 return 0
 
             array.setColourAt(index, "red")
-            self.invokeDelay()
+            self.tick()
         
         array.resetBarColours()
         # Comparing last element to the target 

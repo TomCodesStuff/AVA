@@ -22,7 +22,7 @@ class ExponentialSearch(Algorithm[SearchArray]):
         target = array.getTarget()
 
         array.sort() 
-        self.invokeBriefDelay()
+        self.briefTick()
 
         # If the target is the first element of the array
         if(array.getAt(0) == target): 
@@ -67,7 +67,7 @@ class ExponentialSearch(Algorithm[SearchArray]):
             elif(array.getAt(mid) < target): left = mid + 1
             
             array.setColourAt(mid, "red")
-            self.invokeDelay()
+            self.tick()
         
         # Element is not in array
         return 1

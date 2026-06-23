@@ -22,7 +22,7 @@ class BinarySearch(Algorithm[SearchArray]):
         array = self.getDataStructure()
         target = array.getTarget()
         array.sort() 
-        self.invokeBriefDelay()
+        self.briefTick()
 
         low, high = 0, array.size() - 1
                
@@ -42,7 +42,7 @@ class BinarySearch(Algorithm[SearchArray]):
             # If element is less than the target
             # Disreguard lower end of the array
             else: low = mid + 1
-            self.invokeDelay()
+            self.tick()
         return 1
     
 # Listen to Welcome to the DCC by Nothing But Thieves

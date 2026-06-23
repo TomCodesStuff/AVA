@@ -8,7 +8,7 @@ from src.data_structures import DataStructure
 from typing import Generic, TypeVar, TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from src.screens import Mediator
+    from src.mediator import Mediator
 
 
 D = TypeVar("D", bound="DataStructure")
@@ -34,16 +34,12 @@ class Algorithm(Generic[D], ABC):
         if self.__mediator is not None: raise Exception("ERROR: Mediator has already been set")
         self.__mediator = mediator 
     
-    def invokeBriefDelay(self) -> None: self.__mediator.briefDelay()
+    def briefTick(self) -> None: self.__mediator.briefTick()
     
-    def invokeDelay(self) -> None: self.__mediator.delay()
+    def tick(self) -> None: self.__mediator.tick()
     
     def getDataStructure(self) -> D: 
         return self.__dataStructure
-
-    # Checks if elements at the specified indexes are equal
-    # def areElementsEqual(self, i : int, j : int) -> bool: 
-    #     return self.getElement(i) == self.getElement(j)
 
 
 # Listen to American Idiot by Green Day

@@ -27,7 +27,7 @@ class GnomeSort(Algorithm[SortArray]):
         while(pos < n): 
             array.resetBarColours()
             array.setColourAt(pos, "red")
-            self.invokeDelay()
+            self.tick()
 
             # If pos is at the start of the array, increment pos
             if(pos == 0): pos += 1 
@@ -35,7 +35,7 @@ class GnomeSort(Algorithm[SortArray]):
             if(array.isSwapNeeded(pos - 1, pos)):
                 array.swapAt(pos, pos - 1)
                 array.swapColoursAt(pos, pos - 1)
-                self.invokeDelay()
+                self.tick()
                 # Decrement pos
                 pos -= 1
             # If elements at pos and pos - 1 are in the right place
@@ -43,7 +43,7 @@ class GnomeSort(Algorithm[SortArray]):
                 # Increment pos 
                 pos += 1  
 
-        self.invokeDelay()
+        self.tick()
         return 0
         
 # Listen to Smells Like Teen Spirit by Nirvana 

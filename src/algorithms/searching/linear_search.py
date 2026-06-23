@@ -30,7 +30,7 @@ class LinearSearch(Algorithm[SearchArray]):
                 # self.updateArrayOnScreen()
                 return 0
             else: array.setColourAt(index, "red")
-            self.invokeDelay()     
+            self.tick()     
         return 1
 
 # Listen to Karma Police By Radiohead

@@ -27,7 +27,7 @@ class InsertionSort(Algorithm[SortArray]):
             array.resetBarColours()
             array.setColourAt(i - 1, "orange")
             array.setColourAt(i, "red")
-            self.invokeDelay()
+            self.tick()
 
             # The left pointer keeps track of sorted element being compared to the sorted element
             leftPtr = i - 1
@@ -43,7 +43,7 @@ class InsertionSort(Algorithm[SortArray]):
                 array.resetBarColours()
                 array.setColourAt(i, "orange")
                 array.setColourAt(rightPtr, "red")
-                self.invokeDelay()
+                self.tick()
         
         return 0 
 

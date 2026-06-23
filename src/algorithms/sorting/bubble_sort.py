@@ -31,7 +31,7 @@ class BubbleSort(Algorithm[SortArray]):
             for j in range(0, n - i - 1):  
                 array.resetBarColours()
                 array.setColourAt(j, "red")
-                self.invokeDelay()
+                self.tick()
                 # If adjacent element needs to be swapped with current element
                 if(array.isSwapNeeded(j, j + 1)): 
                     array.swapAt(j, j + 1)

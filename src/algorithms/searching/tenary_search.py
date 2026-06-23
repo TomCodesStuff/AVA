@@ -22,7 +22,7 @@ class TenarySearch(Algorithm[SearchArray]):
         target = array.getTarget() 
 
         array.sort()
-        self.invokeBriefDelay()
+        self.briefTick()
 
         # Left and right variables, used to adjust mid1 and mid2
         left = 0 
@@ -58,7 +58,7 @@ class TenarySearch(Algorithm[SearchArray]):
             else: 
                 left = mid1 + 1 
                 right = mid2 - 1 
-            self.invokeDelay()
+            self.tick()
         return 1
 
 # Listen to Times Like These By Foo Fighters 

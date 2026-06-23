@@ -22,7 +22,7 @@ class InterpolationSearch(Algorithm[SearchArray]):
         target = array.getTarget()
 
         array.sort()
-        self.invokeBriefDelay()
+        self.briefTick()
 
         # Low and high variables, used to calculate pos
         low = 0
@@ -42,7 +42,7 @@ class InterpolationSearch(Algorithm[SearchArray]):
             # If element at index pos is less than target, adjust low
             elif(array.getAt(pos) < target): low = pos + 1
             array.setColourAt(pos, "red")
-            self.invokeDelay()
+            self.tick()
         return 1
 
 # Listen to Under The Cover Of Darkness by The Strokes

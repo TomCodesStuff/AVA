@@ -45,7 +45,7 @@ class MergeSort(Algorithm[SortArray]):
         while(leftPtr <= mid and rightPtr <= end):  
             array.resetBarColours()
             array.setColourAt(leftPtr, "red")
-            self.invokeDelay()
+            self.tick()
             # If elements are out of order 
             if(array.isSwapNeeded(leftPtr, rightPtr)):  
                 # Shift all elements left 
@@ -72,6 +72,6 @@ class MergeSort(Algorithm[SortArray]):
         # Change element at leftPtr to stored value 
         array.setAt(leftPtr, value) 
         array.setColourAt(rightPtr, "red")
-        self.invokeDelay()
+        self.tick()
 
 # Listen to Wake Me Up When September Ends by Green Day

@@ -26,7 +26,7 @@ class BogoSort(Algorithm[SortArray]):
         while(sortedArray != array.get()): 
             # Randomly shuffle array
             array.shuffle()
-            self.invokeDelay()
+            self.tick()
         return 0
 
 # Listen to Times like these by the Foo Fighters

@@ -32,18 +32,18 @@ class BrickSort(Algorithm[SortArray]):
             for i in range(1, n - 1, 2):
                 array.resetBarColours()  
                 array.setColourAt(i, "red") 
-                self.invokeDelay()
+                self.tick()
                 # If elements are in the wrong the order
                 if(array.isSwapNeeded(i, i + 1)):
                     # Swap elements
                     array.swapAt(i, i + 1)
                     array.swapColoursAt(i, i + 1)
-                    self.invokeDelay()
+                    self.tick()
                     swapped = True
             
             array.resetBarColours()
             array.setColourAt(i, "red")  
-            self.invokeDelay()
+            self.tick()
             
             # If no swaps are performed
             if(not swapped): break
@@ -53,16 +53,16 @@ class BrickSort(Algorithm[SortArray]):
             for i in range(0, n - 1, 2):
                 array.resetBarColours()
                 array.setColourAt(i, "red")  
-                self.invokeBriefDelay
+                self.briefTick
                 # If elements are in the wrong the order
                 if(array.isSwapNeeded(i, i + 1)):
                     # Swap elements
                     array.swapAt(i, i + 1)
                     array.swapColoursAt(i, i + 1)  
-                    self.invokeDelay()
+                    self.tick()
                     swapped = True  
         
-        self.invokeDelay() 
+        self.tick() 
         return 0
 
 # Listen to Lithium by Nirvana 

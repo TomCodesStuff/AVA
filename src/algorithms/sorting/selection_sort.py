@@ -32,16 +32,16 @@ class SelectionSort(Algorithm[SortArray]):
                 array.resetBarColours() 
                 array.setColourAt(i, "orange") 
                 array.setColourAt(j , "red") 
-                self.invokeDelay()
+                self.tick()
                 # If current element smaller/larger than previous smallest/largest element
                 if(not array.isSwapNeeded(j, swapIdx)): swapIdx = j   
             # Shift elements right 
             self.__shiftRight(i, swapIdx) 
             
             array.setColourAt(i, "orange") 
-            self.invokeDelay()
+            self.tick()
         
-        self.invokeDelay() 
+        self.tick() 
         return 0
     
     # Shifts elements between the specified indexes one place right 

@@ -30,7 +30,7 @@ class Mediator():
             # Exit thread
             sys.exit(0) 
 
-    def __delayAlgorithm(self, delay : float) -> None:
+    def __handleTick(self, delay : float) -> None:
         interval = delay / 10
         i = 0 
         while(i < delay):
@@ -40,11 +40,11 @@ class Mediator():
             time.sleep(interval) 
             i += interval  
 
-    def briefDelay(self) -> None: 
-        self.__delayAlgorithm(BRIEF_DELAY)
+    def briefTick(self) -> None: 
+        self.__handleTick(BRIEF_DELAY)
 
-    def delay(self) -> None:  
-        self.__delayAlgorithm(self.getDelay())
+    def tick(self) -> None:  
+        self.__handleTick(self.getDelay())
 
 
 # Listen to Weak by Skunk Anansie

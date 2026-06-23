@@ -42,7 +42,7 @@ class BinarySearch(Algorithm[SearchArray]):
             # If element is less than the target
             # Disreguard lower end of the array
             else: low = mid + 1
-            self.invokeBriefDelay()
+            self.invokeDelay()
         return 1
     
 # Listen to Welcome to the DCC by Nothing But Thieves

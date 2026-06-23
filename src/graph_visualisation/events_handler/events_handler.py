@@ -21,7 +21,7 @@ class EventsHandler():
         self.__areEventsDisabled = False
 
         # Flags to call correct events when a node is clicked 
-        self.__isSetStartEnabled = True 
+        self.__isSetStartEnabled = False
         self.__isSetGoalEnabled = False 
 
 
@@ -32,7 +32,9 @@ class EventsHandler():
         self.__maxNumNodes = maxNumNodes
 
         # Function to show edge options in the GUI
-        self.__showEdgeOptions = None 
+        self.__showEdgeOptions = None  
+        # Function to renable start and goal node selection buttons
+        self.__updateSelectButtons = None
 
         self.__addCanvasEvents()
 
@@ -86,6 +88,7 @@ class EventsHandler():
     
     def __resetDragged(self, canvasNode : CanvasNode): 
         canvasNode.resetDragged()
+        canvasNode.setColour(canvasNode.getPrevColour())
 
     def deleteNode(self, canvasNode : CanvasNode) -> None:  
         if self.__areEventsDisabled or self.__isEdgeBeingEdited: return
@@ -135,7 +138,7 @@ class EventsHandler():
         return self.__areEdgeNodesDifferent(canvasEdge.getFirstNode(), canvasNode)\
             and not self.__canvasGraph.areNodesConnected((canvasEdge.getFirstNode(), canvasNode))
 
-    def handleEdgeDrawing(self, canvasNode : CanvasNode) -> None:
+    def __handleEdgeDrawing(self, canvasNode : CanvasNode) -> None:
         # If an edge is already being drawn on screen
         if self.__isEdgeBeingDrawn:
             if self.__canEdgeBeCreated(self.__edgeBeingDrawn, canvasNode): 
@@ -159,11 +162,13 @@ class EventsHandler():
         
         if self.__isSetStartEnabled: 
             self.__canvasGraph.assignStartNode(canvasNode)
+            if self.__updateSelectButtons: self.__updateSelectButtons()
             self.__isSetStartEnabled = False
         elif self.__isSetGoalEnabled: 
             self.__canvasGraph.assignGoalNode(canvasNode)
+            if self.__updateSelectButtons: self.__updateSelectButtons()
             self.__isSetGoalEnabled = False
-        elif not self.__isEdgeBeingEdited: self.handleEdgeDrawing(canvasNode)
+        elif not self.__isEdgeBeingEdited: self.__handleEdgeDrawing(canvasNode)
     
     def __editEdge(self, canvasEdge : CanvasEdge) -> None:
         canvasEdge.setColour(CanvasEdge.getEditColour())
@@ -216,7 +221,11 @@ class EventsHandler():
 
 
     def spawnNode(self, coords : tuple) -> bool:  
+<<<<<<< HEAD
         if self.__isEdgeBeingDrawn or self.__areEventsDisabled: return False
+=======
+        if self.__isEdgeBeingDrawn or len(self.__canvasGraph.getNodes()) >= self.__maxNumNodes: return
+>>>>>>> fd9f567fea71a6918e1eceabdc53b9e552dc9887
 
         self.__isNodeBeingDeleted = False 
         if not self.__creationTool.canNodeBeSpawned(self.__canvas, coords): return False 
@@ -235,8 +244,11 @@ class EventsHandler():
         self.__edgeBeingEdited = None 
         self.__isEdgeBeingEdited = False
         
-    def setShowEdgeOptionsFunc(self, showEdgeOptionsFunc : Callable) -> None:
-        self.__showEdgeOptions = showEdgeOptionsFunc
+    def setShowEdgeOptionsCallback(self, showEdgeOptionsFn : Callable) -> None:
+        self.__showEdgeOptions = showEdgeOptionsFn
+    
+    def setUpdateSelectButtonsCallback(self, updateSelectButtonsFn : Callable) -> None:
+        self.__updateSelectButtons = updateSelectButtonsFn 
     
     def getEdgeBeingEdited(self) -> CanvasEdge: return self.__edgeBeingEdited
 

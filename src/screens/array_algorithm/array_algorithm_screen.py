@@ -5,7 +5,6 @@ if(__name__ == "__main__"):
     print("This is file shouldn't be run on it's own. \nIt should be imported only.")
     exit()
 
-import time 
 import tkinter as tk
 from typing import TYPE_CHECKING, TypeVar
 from ..algorithm_base import AlgorithmScreen

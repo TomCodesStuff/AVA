@@ -18,7 +18,7 @@ class CanvasNode():
     nodeID = 0
     defaultSize = 26
     defaultX, defaultY = 5, 5
-    defaultCoords = (defaultX, defaultY, defaultX + defaultSize, defaultY + defaultSize)#
+    defaultCoords = (defaultX, defaultY, defaultX + defaultSize, defaultY + defaultSize)
     defaultColour = "blue" 
     hoverColour = "red"
     startColour = "orange"

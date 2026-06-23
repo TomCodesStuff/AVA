@@ -33,6 +33,20 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
         self.__edgeOptionsFrame = None 
         self.__innerNodeFrame = None 
 
+    def enableNodeSelectionButtons(self) -> None:  
+        self.__startNodeButton.config(state="active")
+        self.__goalNodeButton.config(state="active")
+        
+    def __triggerAssignStartNodeEvent(self) -> None: 
+        self.__startNodeButton.config(state="disabled")
+        self.__goalNodeButton.config(state="active")
+        self.getController().enableNodeStartAssignEvent()  
+
+    def __triggerAssignGoalNodeEvent(self) -> None: 
+        self.__goalNodeButton.config(state="disabled")
+        self.__startNodeButton.config(state="active")
+        self.getController().enableNodeGoalAssignEvent() 
+
     # Creates the button that lets users add nodes to the canvas 
     def __createAddNodeButton(self) -> None: 
         self.__addNodeButton = tk.Button(self.__innerNodeFrame, text="Spawn.", width=8, relief="solid", 
@@ -48,13 +62,13 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
     def __createAssignStartButton(self) -> None: 
         self.__startNodeButton = tk.Button(self.__innerNodeFrame, text="Set Start.", width=8, relief="solid", 
                                            font = (self.getFont(), self.getFontSize()), 
-                                           command=self.getController().enableNodeStartAssignEvent)
+                                           command=self.__triggerAssignStartNodeEvent)
         self.__startNodeButton.grid(row = 2, column = 0, pady=(5, 0), padx=(0, 5))           
     
     def __createAssignGoalButton(self) -> None: 
         self.__goalNodeButton = tk.Button(self.__innerNodeFrame, text="Set Goal.", width=8, relief="solid", 
                                            font = (self.getFont(), self.getFontSize()), 
-                                           command=self.getController().enableNodeGoalAssignEvent)
+                                           command=self.__triggerAssignGoalNodeEvent)
         self.__goalNodeButton.grid(row = 2, column = 1, pady=(5, 0), padx=(5, 0))   
 
     def __createNodeOptions(self) -> None:
@@ -216,4 +230,4 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
  
 
 
-# Listen Glass Spiders by Hot Milk
+# Listen to Glass Spiders by Hot Milk

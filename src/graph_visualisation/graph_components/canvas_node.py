@@ -25,7 +25,6 @@ class CanvasNode():
     goalColour = "green"
     minSpawnDist = 10
 
-
     def __init__(self, coords : tuple) -> None: 
         # Reference to abstracted node object
         self.__node = Node(CanvasNode.defaultColour)
@@ -41,7 +40,7 @@ class CanvasNode():
         # ID of the node on the canvas
         self.__canvasID = -1   
 
-        # Keep track of previous colour -> useful for hover events 
+        # Buffer to keepm track of previous colour -> useful for hover events 
         self.__prevColour = CanvasNode.defaultColour
 
         # A set containing references to edges that connects nodes to eachother 

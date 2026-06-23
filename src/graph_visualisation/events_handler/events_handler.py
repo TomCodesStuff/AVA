@@ -18,7 +18,7 @@ class EventsHandler():
         self.__isEdgeBeingEdited = False  
         self.__isEdgeBeingDeleted = False
         # Disable events when algorithms are running  
-        self.__isAlgorithmRunning = False
+        self.__areEventsDisabled = False
 
         # Flags to call correct events when a node is clicked 
         self.__isSetStartEnabled = True 
@@ -37,7 +37,7 @@ class EventsHandler():
         self.__addCanvasEvents()
 
     def __canSpawnEventTrigger(self) -> bool: 
-        if self.__isAlgorithmRunning: return False
+        if self.__areEventsDisabled: return False
         if self.__isNodeBeingDeleted: 
             self.__isNodeBeingDeleted = False
             return False
@@ -56,7 +56,7 @@ class EventsHandler():
         self.spawnNode((x0, y0, x1, y1)) 
    
     def __deleteEdgeOnClick(self, event : Event) -> None: 
-        if any([self.__isAlgorithmRunning, self.__isEdgeBeingDeleted, self.__edgeBeingDrawn is None]): return
+        if any([self.__areEventsDisabled, self.__isEdgeBeingDeleted, self.__edgeBeingDrawn is None]): return
         
         object_collisions = self.__canvas.find_overlapping(event.x, event.y , event.x, event.y) 
         if(len(object_collisions) == 1 and self.__edgeBeingDrawn.getCanvasID() in object_collisions): 
@@ -74,7 +74,7 @@ class EventsHandler():
         self.__canvas.bind("<Double-Button-1>", lambda event: self.__spawnNodeDoubleClick(event))
 
     def __moveNode(self, event : Event, canvasNode : CanvasNode) -> None:   
-        if self.__isAlgorithmRunning: return
+        if self.__areEventsDisabled: return
         
         self.__resetEdgeDrawingEvent()
         self.__isEdgeBeingDrawn = False 
@@ -88,7 +88,7 @@ class EventsHandler():
         canvasNode.resetDragged()
 
     def deleteNode(self, canvasNode : CanvasNode) -> None:  
-        if self.__isAlgorithmRunning or self.__isEdgeBeingEdited: return
+        if self.__areEventsDisabled or self.__isEdgeBeingEdited: return
         self.__isNodeBeingDeleted = True  
 
         # The event to draw an edge can still trigger so it needs to be deleted
@@ -155,7 +155,7 @@ class EventsHandler():
 
     def __nodeOnClick(self, canvasNode : CanvasNode) -> None: 
         # If an edge is being edited or algorithm is running, prevent a new one from being created
-        if self.__isAlgorithmRunning: return
+        if self.__areEventsDisabled: return
         
         if self.__isSetStartEnabled: 
             self.__canvasGraph.assignStartNode(canvasNode)
@@ -172,7 +172,7 @@ class EventsHandler():
         self.__isEdgeBeingEdited = True
 
     def __editEdgeOnClick(self, canvasEdge : CanvasEdge) -> None:  
-        if any([self.__isAlgorithmRunning, self.__isEdgeBeingDrawn, 
+        if any([self.__areEventsDisabled, self.__isEdgeBeingDrawn, 
                self.__isEdgeBeingEdited, self.__showEdgeOptions is None]): return
         self.__editEdge(canvasEdge)
 
@@ -216,7 +216,7 @@ class EventsHandler():
 
 
     def spawnNode(self, coords : tuple) -> bool:  
-        if self.__isEdgeBeingDrawn: return
+        if self.__isEdgeBeingDrawn or self.__areEventsDisabled: return False
 
         self.__isNodeBeingDeleted = False 
         if not self.__creationTool.canNodeBeSpawned(self.__canvas, coords): return False 
@@ -227,7 +227,7 @@ class EventsHandler():
         return True   
 
     def deleteEdge(self) -> None:
-        if self.__isAlgorithmRunning: return
+        if self.__areEventsDisabled: return
         if self.__edgeBeingEdited: self.__deleteEdge(self.__edgeBeingEdited)
 
     def finishEdgeEdit(self) -> float: 
@@ -244,5 +244,8 @@ class EventsHandler():
     def disableNodeStartAssignEvent(self) -> None: self.__isSetStartEnabled = False
     def enableNodeGoalAssignEvent(self) -> None: self.__isSetGoalEnabled = True
     def disableNodeGoalAssignEvent(self) -> None: self.__isSetGoalEnabled = False
+
+    def disableAllEvents(self) -> None: self.__areEventsDisabled = True
+    def enableAllEvents(self) -> None: self.__areEventsDisabled = False
 
 # Listen to Why does it always rain on me by Travis  

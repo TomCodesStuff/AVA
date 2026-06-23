@@ -8,7 +8,7 @@ import tkinter as tk
 from typing import TYPE_CHECKING, TypeVar
 from src.data_structures import Graph
 from src.graph_visualisation import CanvasEdge
-from src.enums import EdgeDirectionOption
+from src.enums import EdgeDirectionOption, AlgorithmType
 from ..algorithm_base import AlgorithmScreen
 
 if TYPE_CHECKING: 
@@ -196,10 +196,20 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
     def render(self) -> None: 
         self.createBaseLayout()
         self.__createOptions()  
+        self.setAlgorithmType(AlgorithmType.TRAVERSAL)
+        self.displayAlgorithmOptions()
         self.getController().init()
     
     # TODO need to create graph 
-    def prepare() -> None: pass 
+    def prepare(self) -> None:   
+        # If the user is in the middle of editing an edge 
+        self.__finishEdgeEdit()
+
+        print("I need to create the graph")
+        print("I need to disable all the events")
+        
+        
+        pass 
     def animationSetup(self) -> None: pass 
     def coolAnimationFrame(self) -> None: pass  
 

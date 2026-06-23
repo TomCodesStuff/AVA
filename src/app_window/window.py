@@ -38,7 +38,7 @@ class Window():
         
         # Declaring window
         self.__window = tk.Tk()
-        self.__window.title('Useful Algorithms')
+        self.__window.title('AVA.')
 
         # windows dimensions
         self.__window.geometry(f'{self.__width}x{self.__height}')

@@ -26,7 +26,7 @@ class AlgorithmValidator():
     def __isFileNameValid(self, x : Path) -> None: 
         return True if re.match(FILE_NAME_REGEX, x.name) else False
 
-    def __getPotentialAlgorithms(self, algorithmType : str) -> List[str]: 
+    def __getPotentialAlgorithms(self, algorithmType : str) -> List[str]:  
         srcDir = Path(__file__).parent.parent.resolve()
         algorithmsDir = srcDir / "algorithms" / algorithmType 
         if not algorithmsDir.exists(): return []
@@ -83,7 +83,6 @@ class AlgorithmValidator():
         if algorithmClass is None: return None 
         
         if not self.__isAlgorithmSubclass(algorithmClassName, algorithmClass): return None  
-
         try:
             algorithmInstance = algorithmClass()  
         except Exception as e: 
@@ -93,7 +92,7 @@ class AlgorithmValidator():
         if not self.__isGetNameCorrect(algorithmInstance): return None
         return algorithmClass
 
-    def __addValidAlgorithm(self, algorithmType : str, algorithmClass : type[Algorithm]) -> None: 
+    def __addValidAlgorithm(self, algorithmType : str, algorithmClass : type[Algorithm]) -> None:  
         algorithmInstance = algorithmClass()
         self.__algorithmsByType[algorithmType][algorithmInstance.getName()] = algorithmClass
 

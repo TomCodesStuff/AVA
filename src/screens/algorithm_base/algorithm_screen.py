@@ -103,7 +103,8 @@ class AlgorithmScreen(Generic[C, M ,D], ScreenInterface):
         self.__animationStarting()  
         self.getWindow().scheduleFunctionExecution(self.coolEndingAnimation, START_DELAY_MS)
         
-    def displayAlgorithmOptions(self) -> None: 
+    def displayAlgorithmOptions(self) -> None:  
+        if self.__algorithmType is None: return
         self.__algorithmOptions["values"] = self.getWindow().getAlgorithmNames(self.__algorithmType) 
 
     # Creates frame to display the border

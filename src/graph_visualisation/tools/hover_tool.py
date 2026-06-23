@@ -3,8 +3,10 @@ from ..graph_components import CanvasNode, CanvasEdge
 
 
 class HoverTool():    
-    def nodeOnHover(self, canvasNode : CanvasNode) -> None: 
-        canvasNode.setPrevColour(canvasNode.getColour())
+    def nodeOnHover(self, canvasNode : CanvasNode) -> None:  
+        # Prevent previous colour from being overwritten with hover colour
+        if not canvasNode.getColour() == CanvasNode.getHoverColour():
+            canvasNode.setPrevColour(canvasNode.getColour())
         canvasNode.setColour(CanvasNode.getHoverColour())
 
     def nodeOnLeave(self, canvasNode : CanvasNode) -> None:

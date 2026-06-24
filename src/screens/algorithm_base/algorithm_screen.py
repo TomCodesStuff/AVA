@@ -26,7 +26,6 @@ D = TypeVar("D", bound="DataStructure")
 FRAME_HEIGHT = 50
 START_DELAY_MS = 500
 
-
 # All screens that visualise the algorithms have the same fundamental layout
 # This class delegates the reponsiblity of creating the basic layout
 class AlgorithmScreen(Generic[C, M ,D], ScreenInterface):

@@ -7,6 +7,9 @@ if(__name__ == "__main__"):
 from ..array_algorithm import ArrayAlgorithmModel
 from src.enums import SortDirection
 
+TEN_MS = 10 
+ONE_SECOND = 1000
+DELAY_RESOLUTION = 1
 
 class SortModel(ArrayAlgorithmModel):
     def __init__(self):
@@ -15,9 +18,9 @@ class SortModel(ArrayAlgorithmModel):
         self.__sortDirection = SortDirection.ASCENDING
 
         self.setDelayToMilliseconds()
-        self.setResolution(1)
-        self.setMinDelay(1)
-        self.setMaxDelay(1000)
+        self.setResolution(DELAY_RESOLUTION)
+        self.setMinDelay(TEN_MS)
+        self.setMaxDelay(ONE_SECOND)
 
     # Toggles the sort setting between and ascending and descending
     def toggleSortDirection(self):

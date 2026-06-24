@@ -1,13 +1,14 @@
 MILLISECONDS_TO_SECONDS = 1000
 
-
 class AlgorithmModel(): 
     def __init__(self):
         self.__delay = 0
         self.__minDelay = 0 
         self.__maxDelay = 0  
         self.__resolution = 0 
-        self.__isDelayMilliseconds = False 
+        self.__isDelayMilliseconds = False   
+        # 1ms -> used by mediator to briefly sleep when applying delay 
+        self.__sleepInterval = 0.001
 
     def setDelay(self, val : float) -> None:
         if val < 0: return 
@@ -37,7 +38,8 @@ class AlgorithmModel():
     def getMaxDelay(self) -> int: return self.__maxDelay
     def getMinDelay(self) -> int: return self.__minDelay 
     def getResolution(self) -> int: return self.__resolution 
-    def isDelayMilliSeconds(self) -> bool: return self.__isDelayMilliseconds
+    def isDelayMilliSeconds(self) -> bool: return self.__isDelayMilliseconds 
+    def getSleepInterval(self) -> float: return self.__sleepInterval
 
 
 # Listen to Nancy Boy by Placebo

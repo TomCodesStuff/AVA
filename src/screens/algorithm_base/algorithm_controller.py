@@ -25,7 +25,6 @@ D = TypeVar("D", bound="DataStructure")
 # 16MS = ~ 60 FPS
 EXECUTION_DELAY = 16
 
-
 class AlgorithmController(ABC, Generic[S, M, D]):  
 
     def __init__(self, screen : S, model : M, dataStructure : D):
@@ -64,7 +63,7 @@ class AlgorithmController(ABC, Generic[S, M, D]):
             return
         
         self.__algorithmThread = AlgorithmThread(algorithmObj)
-        mediator = Mediator(self.getAlgorithmDelay, self.__algorithmThread)
+        mediator = Mediator(self.getAlgorithmDelay, self.__algorithmThread, self.getModel().getSleepInterval())
 
         try:
             algorithmObj.setDataStructure(self.getDataStructure())

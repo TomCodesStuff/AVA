@@ -26,6 +26,10 @@ class CanvasNode():
     minSpawnDist = 10
 
     def __init__(self, coords : tuple) -> None: 
+        # Unique Identifier fot node 
+        self.__nodeID = CanvasNode.nodeID 
+        CanvasNode.nodeID += 1 
+        
         # Reference to abstracted node object
         self.__node = Node(CanvasNode.defaultColour)
         # X-Y Coordindates of the node on screen
@@ -35,8 +39,6 @@ class CanvasNode():
         # Text displayed in centre of node 
         self.__canvasText = None
         
-        self.__nodeID = CanvasNode.nodeID 
-        CanvasNode.nodeID += 1 
         # ID of the node on the canvas
         self.__canvasID = -1   
 
@@ -67,6 +69,7 @@ class CanvasNode():
     def getSize(self) -> int: return self.__size 
     def getCanvasText(self) -> CanvasText: return self.__canvasText
     def getPrevColour(self) -> str: return self.__prevColour
+    def getNode(self) -> Node: return self.__node
     
     # Setters 
     def setCanvasID(self, canvasID : int) -> None:  self.__canvasID = canvasID

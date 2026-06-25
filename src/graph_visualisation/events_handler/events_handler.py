@@ -109,7 +109,7 @@ class EventsHandler():
     def __drawEdge(self, eventCoords : tuple, canvasEdge : CanvasEdge) -> None: 
         eventX, eventY = eventCoords
         object_collisions = self.__canvas.find_overlapping(eventX, eventY, eventX, eventY)
-        if canvasEdge.getFirstNode().getCanvasID() in object_collisions: return 
+        if canvasEdge.getFirstCanvasNode().getCanvasID() in object_collisions: return 
         self.__movementTool.moveEdge(canvasEdge, eventCoords)
         if canvasEdge.getCanvasID() == -1: 
             self.__creationTool.renderEdge(self.__canvas, canvasEdge)  
@@ -135,15 +135,15 @@ class EventsHandler():
         self.__edgeBeingDrawn = None  
 
     def __canEdgeBeCreated(self, canvasEdge : CanvasEdge, canvasNode : CanvasNode) -> None: 
-        return self.__areEdgeNodesDifferent(canvasEdge.getFirstNode(), canvasNode)\
-            and not self.__canvasGraph.areNodesConnected((canvasEdge.getFirstNode(), canvasNode))
+        return self.__areEdgeNodesDifferent(canvasEdge.getFirstCanvasNode(), canvasNode)\
+            and not self.__canvasGraph.areNodesConnected((canvasEdge.getFirstCanvasNode(), canvasNode))
 
     def __handleEdgeDrawing(self, canvasNode : CanvasNode) -> None:
         # If an edge is already being drawn on screen
         if self.__isEdgeBeingDrawn:
             if self.__canEdgeBeCreated(self.__edgeBeingDrawn, canvasNode): 
                 self.__canvasGraph.addCanvasEdge(self.__edgeBeingDrawn)
-                self.__edgeBeingDrawn.setSecondNode(canvasNode)  
+                self.__edgeBeingDrawn.setSecondCanvasNode(canvasNode)  
                 self.__movementTool.connectEdgeToNodes(self.__edgeBeingDrawn)
                 self.__addEdgeEvents(self.__edgeBeingDrawn) 
                 self.__canvasGraph.addEdgeToNodes(self.__edgeBeingDrawn)
@@ -221,7 +221,7 @@ class EventsHandler():
 
 
     def spawnNode(self, coords : tuple) -> bool:  
-        if self.__isEdgeBeingDrawn or len(self.__canvasGraph.getNodes()) >= self.__maxNumNodes: return
+        if self.__isEdgeBeingDrawn or len(self.__canvasGraph.getCanvasNodes()) >= self.__maxNumNodes: return
 
         self.__isNodeBeingDeleted = False 
         if not self.__creationTool.canNodeBeSpawned(self.__canvas, coords): return False 

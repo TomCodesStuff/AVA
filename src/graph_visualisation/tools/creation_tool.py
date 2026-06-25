@@ -45,7 +45,7 @@ class CreationTool():
         nodeOffset = canvasNode.getOffset()
         x0, y0, _, _ = canvasNode.getCoords()
         canvasEdge = CanvasEdge((x0 + nodeOffset, y0 + nodeOffset, x0 + nodeOffset, y0 + nodeOffset))
-        canvasEdge.setFirstNode(canvasNode)  
+        canvasEdge.setFirstCanvasNode(canvasNode)  
         return canvasEdge  
 
 # Listen to Perfect by The Smashing Pumpkins

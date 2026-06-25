@@ -50,7 +50,7 @@ class Node():
     
     def addEdge(self, edge : Edge) -> None:  
         neighbourNode = edge.getNeighbourNode(self) 
-        if neighbourNode is not None: 
+        if neighbourNode is not None and neighbourNode not in self.__neighbours: 
             self.__neighbours[neighbourNode] = edge
 
     def removeEdge(self, edge : Edge) -> None: 
@@ -77,16 +77,23 @@ class Graph(DataStructure[Node]):
         self.__startNode = None  
         self.__endNode = None 
 
-    def addNode(self, node : Node) -> None: 
-        if node not in self.__nodes:
-            self.__nodes.append(node)
+    def addNode(self, nodeEntry : Tuple[int, Node]) -> None: 
+        if nodeEntry not in self.__nodes:
+            self.__nodes.append(nodeEntry)
     
-    def get(self) -> List[Node]: 
+    def removeNode(self, nodeEntry : Tuple[int, Node]) -> None: 
+        if nodeEntry in self.__nodes: 
+            self.__nodes.remove(nodeEntry)
+    
+    def get(self) -> List[Tuple[int, Node]]: 
         return self.__nodes
 
     def size(self) -> int: return len(self.__nodes) 
 
-    def __str__(self) -> str:
+    def __str__(self) -> str: 
+        # for node in self.__nodes: 
+
+
         return "Graph"
     
     def __iter__(self) -> Iterable: 

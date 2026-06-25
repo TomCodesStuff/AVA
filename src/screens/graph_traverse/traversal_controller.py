@@ -58,7 +58,7 @@ class TraversalController(AlgorithmController[S, M, D]):
         if self.__physicsCalculations is not None: 
             latestResults = self.__physicsCalculations.getLatestResults().copy()
 
-        for canvasNode in self.__canvasGraph.getNodes():  
+        for canvasNode in self.__canvasGraph.getCanvasNodes():  
             if canvasNode.getID() in latestResults:
                 canvasNode.applyForces(latestResults[canvasNode.getID()])
 
@@ -73,8 +73,8 @@ class TraversalController(AlgorithmController[S, M, D]):
             canvas.itemconfig(canvasText.getCanvasID(), text=canvasText.getText())
 
         
-        for canvasEdge in self.__canvasGraph.getEdges(): 
-            firstNode, secondNode = canvasEdge.getNodes() 
+        for canvasEdge in self.__canvasGraph.getCanvasEdges(): 
+            firstNode, secondNode = canvasEdge.getCanvasNodes() 
             x0, y0, _, _ = firstNode.getCoords() 
             x1, y1, _, _ = secondNode.getCoords()    
 

@@ -15,20 +15,21 @@ class CanvasGraph():
 
     def addCanvasNode(self, canvasNode : CanvasNode) -> None: 
         self.__nodes.append(canvasNode) 
+        self.__graph.addNode((canvasNode.getID(), canvasNode.getNode()))
 
+    def __decrementNodeIDs(self, deletedNodeID : int) -> None:
+        for node in self.getCanvasNodes(): 
+            if deletedNodeID < node.getID(): 
+                node.decrementID()
+                node.getCanvasText().updateText(str(node.getID()))  
+        CanvasNode.decrementNodeIDCounter()
+ 
     def deleteCanvasNode(self, canvasNode : CanvasNode) -> None:
         if canvasNode not in self.__nodes: return
-
-        nodeID = canvasNode.getID()
         self.__nodes.remove(canvasNode)
+        self.__graph.removeNode((canvasNode.getID(), canvasNode.getNode()))
 
-        for node in self.getNodes(): 
-            if nodeID < node.getID(): 
-                node.decrementID()
-                node.getCanvasText().updateText(str(node.getID())) 
-
-        # Decrement static ID attribute to future created nodes have correct ID
-        CanvasNode.decrementNodeIDCounter()
+        self.__decrementNodeIDs(canvasNode.getID())
 
     def assignStartNode(self, canvasNode : CanvasNode) -> None: 
         if canvasNode not in self.__nodes: return 
@@ -56,7 +57,7 @@ class CanvasGraph():
             self.__edges.append(canvasEdge)
 
     def addEdgeToNodes(self, canvasEdge : CanvasEdge) -> None: 
-        startNode, endNode = canvasEdge.getNodes() 
+        startNode, endNode = canvasEdge.getCanvasNodes() 
         startNode.addEdge(canvasEdge) 
         endNode.addEdge(canvasEdge)   
         if not self.areNodesConnected((startNode, endNode)):
@@ -65,7 +66,7 @@ class CanvasGraph():
     def deleteCanvasEdge(self, canvasEdge : CanvasEdge) -> None:  
         if canvasEdge not in self.__edges: return
         self.__edges.remove(canvasEdge)
-        nodes = canvasEdge.getNodes() 
+        nodes = canvasEdge.getCanvasNodes() 
         if not self.areNodesConnected(nodes): return
         
         if nodes in self.__nodesToEdges: self.__nodesToEdges.pop(nodes)
@@ -80,10 +81,10 @@ class CanvasGraph():
         if canvasEdge: return canvasEdge
         return self.__nodesToEdges.get(nodes[::-1], None)
 
-    def getNodes(self) -> List[CanvasNode]: return self.__nodes  
-    def getEdges(self) -> List[CanvasEdge]: return self.__edges
+    def getCanvasNodes(self) -> List[CanvasNode]: return self.__nodes  
+    def getCanvasEdges(self) -> List[CanvasEdge]: return self.__edges
 
-    def getNodeAt(self, index : int) -> None: 
+    def getCanvasNodeAt(self, index : int) -> None: 
         return self.__nodes[min(index, len(self.__nodes) - 1)]
 
 

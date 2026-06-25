@@ -54,7 +54,9 @@ class CanvasEdge():
     
     def getColour(self) -> str: return self.__edge.getColour() 
     
-    def getDirection(self) -> EdgeDirection: return self.__edge.getDirection()
+    def getDirection(self) -> EdgeDirection: return self.__edge.getDirection() 
+
+    def getEdge(self) -> Edge: return self.__edge
     
     # Setters
     def setWeight(self, weight : int) -> None: 
@@ -68,30 +70,29 @@ class CanvasEdge():
         self.__firstCanvasNode = canvasNode  
         self.__edge.setFirstNode(canvasNode.getNode())
     
-    def __updateEdgeDirection(self) -> None:
+    def syncDirection(self) -> None:
         if self.__edge.getDirection() == EdgeDirection.BIDIRECTIONAL:
-            self.__firstCanvasNode.addEdge(self.__edge) 
-            self.__secondCanvasNode.addEdge(self.__edge)  
+            self.__firstCanvasNode.getNode().addEdge(self.__edge) 
+            self.__secondCanvasNode.getNode().addEdge(self.__edge)  
         elif self.__edge.getDirection() == EdgeDirection.FIRST_TO_SECOND: 
-            self.__firstCanvasNode.addEdge(self.__edge)
-            self.__secondCanvasNode.removeEdge(self.__edge)
+            self.__firstCanvasNode.getNode().addEdge(self.__edge)
+            self.__secondCanvasNode.getNode().removeEdge(self.__edge)
         elif self.__edge.getDirection() == EdgeDirection.SECOND_TO_FIRST: 
-            self.__firstCanvasNode.removeEdge(self.__edge)
-            self.__secondCanvasNode.addEdge(self.__edge)
+            self.__firstCanvasNode.getNode().removeEdge(self.__edge)
+            self.__secondCanvasNode.getNode().addEdge(self.__edge)
 
     def setSecondCanvasNode(self, canvasNode : CanvasNode) -> None: 
         if self.__secondCanvasNode is not None: return
         self.__secondCanvasNode = canvasNode 
         self.__edge.setSecondNode(canvasNode.getNode())
-        self.__updateEdgeDirection()
     
     def setCanvasID(self, val : int) -> None: self.__canvasID = val  
     
     def setColour(self, colour : str) -> None: self.__edge.setColour(colour) 
     
     def setDirection(self, direction : EdgeDirection) -> None: 
-        self.__updateEdgeDirection()
         self.__edge.setDirection(direction) 
+        self.syncDirection()
     
     def updateCoords(self, coords : tuple) -> None: 
         if coords: self.__coords = coords 

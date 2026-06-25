@@ -79,7 +79,10 @@ class CanvasNode():
     def setCanvasText(self, canvasText : CanvasText) -> None: self.__canvasText = canvasText 
     
     # Adds a CanvasEdge Object to the list 
-    def addEdge(self, canvasEdge : CanvasEdge) -> None: self.__edges.add(canvasEdge) 
+    def addEdge(self, canvasEdge : CanvasEdge) -> None: 
+        self.__edges.add(canvasEdge) 
+        self.__node.addEdge(canvasEdge.getEdge())
+
 
     def removeEdge(self, canvasEdge : CanvasEdge) -> None: 
         if canvasEdge in self.__edges: self.__edges.remove(canvasEdge)

@@ -15,21 +15,26 @@ class CanvasGraph():
 
     def addCanvasNode(self, canvasNode : CanvasNode) -> None: 
         self.__nodes.append(canvasNode) 
-        self.__graph.addNode((canvasNode.getID(), canvasNode.getNode()))
+        self.__graph.addNode(canvasNode.getNode(), canvasNode.getID()) 
+
+        print(str(self.__graph))
 
     def __decrementNodeIDs(self, deletedNodeID : int) -> None:
-        for node in self.getCanvasNodes(): 
-            if deletedNodeID < node.getID(): 
-                node.decrementID()
-                node.getCanvasText().updateText(str(node.getID()))  
+        for canvasNode in self.getCanvasNodes(): 
+            if deletedNodeID < canvasNode.getID(): 
+                canvasNode.decrementID()
+                self.__graph.updateNodeID(canvasNode.getNode(), canvasNode.getID())
+                canvasNode.getCanvasText().updateText(str(canvasNode.getID()))  
         CanvasNode.decrementNodeIDCounter()
  
     def deleteCanvasNode(self, canvasNode : CanvasNode) -> None:
         if canvasNode not in self.__nodes: return
         self.__nodes.remove(canvasNode)
-        self.__graph.removeNode((canvasNode.getID(), canvasNode.getNode()))
+        self.__graph.removeNode(canvasNode.getNode())
 
         self.__decrementNodeIDs(canvasNode.getID())
+
+        print(str(self.__graph))
 
     def assignStartNode(self, canvasNode : CanvasNode) -> None: 
         if canvasNode not in self.__nodes: return 
@@ -57,11 +62,15 @@ class CanvasGraph():
             self.__edges.append(canvasEdge)
 
     def addEdgeToNodes(self, canvasEdge : CanvasEdge) -> None: 
+        # Assume default directional is bidirectional and add edge to both nodes
         startNode, endNode = canvasEdge.getCanvasNodes() 
         startNode.addEdge(canvasEdge) 
         endNode.addEdge(canvasEdge)   
         if not self.areNodesConnected((startNode, endNode)):
             self.__nodesToEdges[(startNode, endNode)] = canvasEdge
+        
+        # Handle if default direction has been changed from bidirectional 
+        canvasEdge.syncDirection()
          
     def deleteCanvasEdge(self, canvasEdge : CanvasEdge) -> None:  
         if canvasEdge not in self.__edges: return

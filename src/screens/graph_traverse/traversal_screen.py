@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, TypeVar
 from src.data_structures import Graph
 from src.graph_visualisation import CanvasEdge
 from src.enums import EdgeDirectionOption, AlgorithmType
-from ..algorithm_base import AlgorithmScreen
+from src.screens.algorithm_base import AlgorithmScreen
 
 if TYPE_CHECKING: 
     from src.screens.graph_traverse import TraversalController, TraversalModel

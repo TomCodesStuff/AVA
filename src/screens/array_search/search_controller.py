@@ -7,7 +7,7 @@ if(__name__ == "__main__"):
 
 import random
 from typing import TYPE_CHECKING, TypeVar
-from ..array_algorithm import ArrayAlgorithmController
+from src.screens.array_algorithm import ArrayAlgorithmController
 from src.data_structures import SearchArray
 
 if TYPE_CHECKING: 

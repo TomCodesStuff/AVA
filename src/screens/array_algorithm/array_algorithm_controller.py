@@ -1,6 +1,6 @@
 import random
 from typing import TYPE_CHECKING, TypeVar
-from ..algorithm_base import AlgorithmController
+from src.screens.algorithm_base import AlgorithmController
 from src.data_structures import Array
 
 if TYPE_CHECKING: 

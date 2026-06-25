@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, TypeVar
 from tkinter import Canvas
 from src.data_structures import Graph
 from src.graph_visualisation import EventsHandler, CanvasGraph, CanvasNode, CanvasEdge, PhysicsCalculations
-from ..algorithm_base import AlgorithmController
+from src.screens.algorithm_base import AlgorithmController
 from src.thread_handlers import PhysicsThread
 from src.enums import EdgeDirection, EdgeDirectionOption
 

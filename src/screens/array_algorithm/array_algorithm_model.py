@@ -1,4 +1,4 @@
-from ..algorithm_base import AlgorithmModel
+from src.screens.algorithm_base import AlgorithmModel
 
 
 class ArrayAlgorithmModel(AlgorithmModel):

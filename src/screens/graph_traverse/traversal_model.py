@@ -4,9 +4,8 @@ if(__name__ == "__main__"):
     print("This is file shouldn't be run on it's own. \nIt should be imported only.")
     exit()
 
-from typing import Set
-from ..algorithm_base import AlgorithmModel
-from src.graph_visualisation.graph_components import CanvasNode, CanvasEdge
+
+from src.screens.algorithm_base import AlgorithmModel
 
 
 RESOLUTION = 1

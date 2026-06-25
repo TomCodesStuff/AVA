@@ -7,7 +7,7 @@ if(__name__ == "__main__"):
 
 import tkinter as tk 
 from typing import TYPE_CHECKING, TypeVar
-from ..array_algorithm import ArrayAlgorithmScreen
+from src.screens.array_algorithm import ArrayAlgorithmScreen
 from src.data_structures import SortArray
 from src.enums import SortDirection, AlgorithmType
 

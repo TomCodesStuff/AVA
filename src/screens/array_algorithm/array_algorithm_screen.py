@@ -7,7 +7,7 @@ if(__name__ == "__main__"):
 
 import tkinter as tk
 from typing import TYPE_CHECKING, TypeVar
-from ..algorithm_base import AlgorithmScreen
+from src.screens.algorithm_base import AlgorithmScreen
 from src.data_structures import Array
 
 

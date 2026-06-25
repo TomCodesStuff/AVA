@@ -1,6 +1,6 @@
-from .managed_thread import ManagedThread
-from ..graph_visualisation import PhysicsCalculations, CanvasGraph
 import time 
+from .managed_thread import ManagedThread
+from src.graph_visualisation import PhysicsCalculations
 
 class PhysicsThread(ManagedThread):
     def __init__(self, physicsCalculations : PhysicsCalculations):

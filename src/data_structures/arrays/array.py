@@ -1,6 +1,6 @@
 import random
 from typing import List
-from ..data_structure import DataStructure
+from src.data_structures import DataStructure
 
 
 class Array(DataStructure[int]): 

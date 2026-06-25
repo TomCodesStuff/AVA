@@ -5,7 +5,7 @@ if(__name__ == "__main__"):
     exit()
 
 
-from ..array_algorithm import ArrayAlgorithmModel
+from src.screens.array_algorithm import ArrayAlgorithmModel
 
 
 class SearchModel(ArrayAlgorithmModel): 

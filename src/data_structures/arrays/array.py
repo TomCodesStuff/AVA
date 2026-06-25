@@ -1,8 +1,9 @@
 import random
+from typing import List
 from ..data_structure import DataStructure
 
 
-class Array(DataStructure): 
+class Array(DataStructure[int]): 
     # Constructor
     def __init__(self):
         super().__init__()
@@ -13,10 +14,10 @@ class Array(DataStructure):
         return len(self.__array)
 
     # Returns the array
-    def get(self) -> list: 
+    def get(self) -> List[int]: 
         return self.__array.copy()
 
-    def getBarColours(self) -> list:
+    def getBarColours(self) -> List[str]:
         return self.__barColours
 
     # Appends passed value to the array
@@ -78,7 +79,13 @@ class Array(DataStructure):
 
     # Returns true if passed value is in the array, else false
     def isInArray(self, value : int) -> bool: 
-        return value in self.__array
+        return value in self.__array 
+    
+    def __str__(self) -> str:
+        return "Array: " + ", ".join([str(x) for x in self.__array])
+
+    def __iter__(self):
+        return iter(self.__array)
 
 
 # Listen to Everlong By Foo Fighters

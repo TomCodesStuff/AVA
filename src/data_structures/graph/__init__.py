@@ -1,1 +1,1 @@
-from .graph import Graph, Node
+from .graph import Graph, Node, Edge 

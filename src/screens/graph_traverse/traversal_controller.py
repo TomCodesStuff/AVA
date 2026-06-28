@@ -39,7 +39,7 @@ class TraversalController(AlgorithmController[S, M, D]):
         self.createEventHandler(self.getScreen().getCanvas())
         self.__repeatCanvasRefresh() 
         self.__createPhysicsThread() 
-        # self.startManagedThreads()
+        self.startManagedThreads()
 
     def __getCanvasCentre(self) -> tuple: 
         canvas = self.getScreen().getCanvas()

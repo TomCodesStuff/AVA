@@ -108,7 +108,6 @@ class EventsHandler():
         object_collisions = self.__canvas.find_overlapping(eventX, eventY, eventX, eventY)
         if canvasEdge.getFirstCanvasNode().getCanvasID() in object_collisions: return 
         
-        
         self.__movementTool.moveEdge(canvasEdge, eventCoords)
         
         if canvasEdge.getCanvasID() is None: 
@@ -149,7 +148,8 @@ class EventsHandler():
                 self.__addEdgeEvents(self.__edgeBeingDrawn) 
                 self.__canvasGraph.addEdgeToNodes(self.__edgeBeingDrawn)
                 self.__editEdge(self.__edgeBeingDrawn)
-            elif self.__edgeBeingDrawn: self.__edgeBeingDrawn.markForDeletion()
+            elif self.__edgeBeingDrawn: 
+                self.__canvas.delete(self.__edgeBeingDrawn.getCanvasID())
             self.__resetEdgeDrawingEvent()
         else:
             self.__isEdgeBeingDrawn = True  

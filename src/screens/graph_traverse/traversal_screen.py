@@ -51,25 +51,29 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
     def __createAddNodeButton(self) -> None: 
         self.__addNodeButton = tk.Button(self.__innerNodeFrame, text="Spawn.", width=8, relief="solid", 
                                          font = (self.getFont(), self.getFontSize()), command=self.getController().spawnNode)
-        self.__addNodeButton.grid(row = 1, column = 0, pady = (5, 0), padx=(0, 5))  
+        self.__addNodeButton.grid(row = 1, column = 0, pady = (5, 0), padx=(0, 5))   
+        self.addToggleableWidget(self.__addNodeButton)
     
     def __createDeleteNodeButton(self) -> None:
         self.__deleteNodeButton = tk.Button(self.__innerNodeFrame, text="Delete.", width=8, relief="solid", 
                                             font = (self.getFont(), self.getFontSize()), 
                                             command=self.getController().deleteNode)
-        self.__deleteNodeButton.grid(row = 1, column = 1, pady = (5, 0), padx=(5, 0))   
+        self.__deleteNodeButton.grid(row = 1, column = 1, pady = (5, 0), padx=(5, 0))  
+        self.addToggleableWidget(self.__deleteNodeButton)  
     
     def __createAssignStartButton(self) -> None: 
         self.__startNodeButton = tk.Button(self.__innerNodeFrame, text="Set Start.", width=8, relief="solid", 
                                            font = (self.getFont(), self.getFontSize()), 
                                            command=self.__triggerAssignStartNodeEvent)
-        self.__startNodeButton.grid(row = 2, column = 0, pady=(5, 0), padx=(0, 5))           
+        self.__startNodeButton.grid(row = 2, column = 0, pady=(5, 0), padx=(0, 5))      
+        self.addToggleableWidget(self.__startNodeButton)     
     
     def __createAssignGoalButton(self) -> None: 
         self.__goalNodeButton = tk.Button(self.__innerNodeFrame, text="Set Goal.", width=8, relief="solid", 
                                            font = (self.getFont(), self.getFontSize()), 
                                            command=self.__triggerAssignGoalNodeEvent)
         self.__goalNodeButton.grid(row = 2, column = 1, pady=(5, 0), padx=(5, 0))   
+        self.addToggleableWidget(self.__goalNodeButton) 
 
     def __createNodeOptions(self) -> None:
         # Hacky solution to make sure everything stays in centre :/
@@ -158,7 +162,6 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
 
     def __deleteEdge(self) -> None:  
         # Deletes newly drawn weight or pre-existing weight 
-        # TODO RE-implement this btw 
         self.getController().deleteEdge()
         self.__finishEdgeEdit()
     
@@ -218,8 +221,7 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
     def prepare(self) -> None:   
         # If the user is in the middle of editing an edge 
         self.__finishEdgeEdit()
-
-        print("I need to create the graph")
+        
         print("I need to disable all the events")
         
         

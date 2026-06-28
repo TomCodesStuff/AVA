@@ -118,8 +118,8 @@ class PhysicsCalculations():
     # Caclulate and apply forces to each object drawn on screen
     def applyPhysics(self) -> None:  
         # Snapshot of node coords and offset, copies of lists used to prevent crashes(?)
-        nodesSnapshot = {x.getID() : (x.getCoords(), x.getOffset()) for x in self.__canvasGraph.getCanvasNodes().copy()}
-        edgesSnapshot = {(x.getFirstCanvasNode().getID(), x.getSecondCanvasNode().getID(), x.getScreenLen()) 
+        nodesSnapshot = {x.getCanvasID() : (x.getCoords(), x.getOffset()) for x in self.__canvasGraph.getCanvasNodes().copy()}
+        edgesSnapshot = {(x.getFirstCanvasNode().getCanvasID(), x.getSecondCanvasNode().getCanvasID(), x.getScreenLen()) 
                           for x in self.__canvasGraph.getCanvasEdges().copy()}
 
         nodes_to_forces = {}
@@ -131,7 +131,7 @@ class PhysicsCalculations():
         # Update results after all calculations done 
         self.__calculationResults = nodes_to_forces
         
-    def getLatestResults(self) -> dict: return self.__calculationResults
+    def getLatestResults(self) -> dict: return self.__calculationResults.copy()
 
 
 # Listen to Yesterday by The Beatles  

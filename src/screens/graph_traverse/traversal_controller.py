@@ -65,8 +65,7 @@ class TraversalController(AlgorithmController[S, M, D]):
             self.__canvasGraph.deleteCanvasNode(canvasNode)
             canvas.delete(canvasNode.getCanvasID())
             canvas.delete(canvasNode.getCanvasText().getCanvasID())
-
-            
+  
     def refreshCanvas(self, refreshColours:bool=False) -> None: 
         latestResults = {} 
         canvas = self.getScreen().getCanvas()
@@ -77,13 +76,14 @@ class TraversalController(AlgorithmController[S, M, D]):
                 canvas.coords(edgeBeingDrawn.getCanvasID(), edgeBeingDrawn.getCoords())
 
         if self.__physicsCalculations is not None: 
-            latestResults = self.__physicsCalculations.getLatestResults().copy()
+            latestResults = self.__physicsCalculations.getLatestResults()
 
+        # Delete any marked Nodes and Edges (might stop race conditions/crashes)
         self.__deleteMarkedGraphItems()
 
         for canvasNode in self.__canvasGraph.getCanvasNodes():  
-            if canvasNode.getID() in latestResults:
-                canvasNode.applyForces(latestResults[canvasNode.getID()])
+            if canvasNode.getCanvasID() in latestResults:
+                canvasNode.applyForces(latestResults[canvasNode.getCanvasID()])
 
             x0, y0, _, _ = canvasNode.getCoords()
             # NOTE might need changing to .coords here(?)

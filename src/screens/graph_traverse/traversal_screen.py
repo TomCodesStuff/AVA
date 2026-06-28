@@ -221,7 +221,6 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
     def prepare(self) -> None:   
         # If the user is in the middle of editing an edge 
         self.__finishEdgeEdit()
-        
         print("I need to disable all the events")
         
         

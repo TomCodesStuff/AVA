@@ -58,10 +58,9 @@ class EventsHandler():
         self.spawnNode((x0, y0, x1, y1)) 
    
     def __deleteEdgeOnClick(self, event : Event) -> None: 
-        if any([self.__areEventsDisabled, self.__isEdgeBeingDeleted, self.__edgeBeingDrawn is None]): return
-        
+        if any([self.__areEventsDisabled, self.__isEdgeBeingDeleted, self.__edgeBeingDrawn is None]): return 
         object_collisions = self.__canvas.find_overlapping(event.x, event.y , event.x, event.y) 
-        if(len(object_collisions) == 1 and self.__edgeBeingDrawn.getCanvasID() in object_collisions): 
+        if(not object_collisions or len(object_collisions) == 1 and self.__edgeBeingDrawn.getCanvasID() in object_collisions): 
             self.__removeCanvasMotionEvent()
             self.__isEdgeBeingDrawn = False
 
@@ -94,7 +93,7 @@ class EventsHandler():
         self.__isNodeBeingDeleted = True  
 
         # The event to draw an edge can still trigger so it needs to be deleted
-        if self.__edgeBeingDrawn: self.__edgeBeingDrawn.markForDeletion()
+        if self.__edgeBeingDrawn: self.__canvas.delete(self.__edgeBeingDrawn.getCanvasID())
         self.__resetEdgeDrawingEvent()
         
         # Not to thrilled about making a copy here but it's the best option

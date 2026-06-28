@@ -29,12 +29,14 @@ class CanvasEdge():
         self.__screenLen = CanvasEdge.defaultScreenLen
         
         # ID used to identify edge on the canvas
-        self.__canvasID = -1
+        self.__canvasID = None
         
         # The node that the edges XY coords start at 
         self.__firstCanvasNode = None  
         # The node that the edges XY coords end at
         self.__secondCanvasNode = None 
+
+        self.__isMarkedForDeletion = False
         
 
     # Getters
@@ -95,7 +97,11 @@ class CanvasEdge():
         self.syncDirection()
     
     def updateCoords(self, coords : tuple) -> None: 
-        if coords: self.__coords = coords 
+        if coords: self.__coords = coords  
+    
+    def isMarkedForDeletion(self) -> bool: return self.__isMarkedForDeletion
+    
+    def markForDeletion(self) -> None: self.__isMarkedForDeletion = True
 
     # Stole from ChatGPT would take me way to long to find an acceptable solution :/
     # I dislike using AI as I think it's kinda cheating but I'll make an exception to finish this project

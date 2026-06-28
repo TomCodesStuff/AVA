@@ -51,12 +51,35 @@ class TraversalController(AlgorithmController[S, M, D]):
         self.refreshCanvas() 
         self.getScreen().getWindow().scheduleFunctionExecution(self.__repeatCanvasRefresh, 16)
 
+    def __deleteMarkedGraphItems(self) -> None:   
+        canvas = self.getScreen().getCanvas()
+
+        edges_to_delete = [canvasEdge for canvasEdge in self.__canvasGraph.getCanvasEdges() if canvasEdge.isMarkedForDeletion()]     
+        nodes_to_delete = [canvasNode for canvasNode in self.__canvasGraph.getCanvasNodes() if canvasNode.isMarkedForDeletion()]    
+        
+        for canvasEdge in edges_to_delete:  
+            self.__canvasGraph.deleteCanvasEdge(canvasEdge)
+            canvas.delete(canvasEdge.getCanvasID()) 
+        
+        for canvasNode in nodes_to_delete: 
+            self.__canvasGraph.deleteCanvasNode(canvasNode)
+            canvas.delete(canvasNode.getCanvasID())
+            canvas.delete(canvasNode.getCanvasText().getCanvasID())
+
+            
     def refreshCanvas(self, refreshColours:bool=False) -> None: 
         latestResults = {} 
         canvas = self.getScreen().getCanvas()
 
+        if self.__eventHandler and self.__eventHandler.getEdgeBeingDrawn():  
+            edgeBeingDrawn = self.__eventHandler.getEdgeBeingDrawn() 
+            if edgeBeingDrawn.getCanvasID() is not None: 
+                canvas.coords(edgeBeingDrawn.getCanvasID(), edgeBeingDrawn.getCoords())
+
         if self.__physicsCalculations is not None: 
             latestResults = self.__physicsCalculations.getLatestResults().copy()
+
+        self.__deleteMarkedGraphItems()
 
         for canvasNode in self.__canvasGraph.getCanvasNodes():  
             if canvasNode.getID() in latestResults:
@@ -84,8 +107,6 @@ class TraversalController(AlgorithmController[S, M, D]):
             canvas.coords(canvasEdge.getCanvasID(), canvasEdge.adjustDirectionArrows())
             canvas.itemconfig(canvasEdge.getCanvasID(), fill=canvasEdge.getColour())
         
-        self.getScreen().getWindow().update_idle_tasks()  
-
     def createEventHandler(self, canvas : Canvas) -> None: 
         self.__eventHandler = EventsHandler(canvas, self.__canvasGraph, self.getModel().getMaxNumNodes()) 
         # Update screen to show edge options 

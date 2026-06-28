@@ -33,8 +33,9 @@ class Edge():
         if node == self.__firstNode: return self.__secondNode 
         if node == self.__secondNode: return self.__firstNode
         return None 
-    
 
+
+# TODO add function to get ID in constructor 
 class Node(): 
     def __init__(self, colour : str):
         self.__colour = colour 
@@ -71,36 +72,34 @@ class Node():
 
 class Graph(DataStructure[Node]): 
     def __init__(self):
-        self.__nodesToID = {}
+        self.__nodes = []
         self.__startNode = None  
         self.__endNode = None 
 
-    def addNode(self, node : Node, nodeID : int) -> None: 
-        if node not in self.__nodesToID:
-            self.__nodesToID[node] = nodeID
+    def addNode(self, node : Node) -> None: 
+        if node not in self.__nodes:
+            self.__nodes.append(node)
     
     def removeNode(self, node : Node) -> None: 
-        if node in self.__nodesToID: 
-            del self.__nodesToID[node]
+        if node in self.__nodes: 
+            self.__nodes.remove(node)
     
-    def updateNodeID(self, node : Node, newID : int) -> None:
-        if node not in self.__nodesToID: return 
-        self.__nodesToID[node] = newID 
 
-    def get(self) -> List[Tuple[int, Node]]: 
-        return list(self.__nodesToID.keys())
+    def get(self) -> List[Node]: 
+        return self.__nodes.copy()
 
-    def size(self) -> int: return len(self.__nodesToID) 
+    def size(self) -> int: return len(self.__nodes) 
 
     def __str__(self) -> str: 
         lines = ["Graph:"]
-        for node, nodeID in self.__nodesToID.items(): 
-            line = f"{nodeID}: "
+        for i, node in enumerate(self.__nodes): 
+            line = f"{i}: "
             for (neighbour, weight) in node.getNeighbours(): 
-                line += f"{self.__nodesToID.get(neighbour, "None")} [W={weight}] "
+                neighbourID = self.__nodes.index(neighbour) if neighbour in self.__nodes else "<undefined>"
+                line += f"{neighbourID} [W={weight}] " 
             lines.append(line)
         return "\n".join(lines)
-    
+
     def __iter__(self) -> Iterable: 
         return iter(self.get())
     

@@ -50,6 +50,9 @@ class CanvasNode():
         # Boolean flag, when a user is moving a node forces are not applied
         self.__isBeingDragged = False  
 
+        # Used to tell refresh loop if nodes needs to be deleted 
+        self.__isMarkedForDeletion = False
+
     # Updates the coordinates of the node to be accurate to the coordinates on screen
     def updateCoords(self, coords : tuple) -> None: 
         if not coords: return
@@ -69,14 +72,16 @@ class CanvasNode():
     def getSize(self) -> int: return self.__size 
     def getCanvasText(self) -> CanvasText: return self.__canvasText
     def getPrevColour(self) -> str: return self.__prevColour
-    def getNode(self) -> Node: return self.__node
+    def getNode(self) -> Node: return self.__node 
+    def isMarkedForDeletion(self) -> bool: return self.__isMarkedForDeletion
     
     # Setters 
     def setCanvasID(self, canvasID : int) -> None:  self.__canvasID = canvasID
     def setColour(self, colour : str) -> None: self.__node.setColour(colour)    
     def setPrevColour(self, colour : str): self.__prevColour = colour
     def getOffset(self) -> int: return (self.__size // 2) + 1 
-    def setCanvasText(self, canvasText : CanvasText) -> None: self.__canvasText = canvasText 
+    def setCanvasText(self, canvasText : CanvasText) -> None: self.__canvasText = canvasText  
+    def markForDeletion(self) -> None: self.__isMarkedForDeletion = True
     
     # Adds a CanvasEdge Object to the list 
     def addEdge(self, canvasEdge : CanvasEdge) -> None: 
@@ -85,7 +90,9 @@ class CanvasNode():
 
 
     def removeEdge(self, canvasEdge : CanvasEdge) -> None: 
-        if canvasEdge in self.__edges: self.__edges.remove(canvasEdge)
+        if canvasEdge in self.__edges: 
+            self.__edges.remove(canvasEdge)
+            self.__node.removeEdge(canvasEdge.getEdge())
 
     def applyForces(self, forces : tuple) -> None:  
         # Don't update if node is being dragged by the user here 

@@ -3,6 +3,7 @@ from .canvas_node import CanvasNode
 from .canvas_edge import CanvasEdge
 from src.data_structures import Graph
 
+
 class CanvasGraph():
     def __init__(self, graph : Graph): 
         self.__graph = graph
@@ -15,15 +16,12 @@ class CanvasGraph():
 
     def addCanvasNode(self, canvasNode : CanvasNode) -> None: 
         self.__nodes.append(canvasNode) 
-        self.__graph.addNode(canvasNode.getNode(), canvasNode.getID()) 
-
-        print(str(self.__graph))
+        self.__graph.addNode(canvasNode.getNode()) 
 
     def __decrementNodeIDs(self, deletedNodeID : int) -> None:
         for canvasNode in self.getCanvasNodes(): 
             if deletedNodeID < canvasNode.getID(): 
                 canvasNode.decrementID()
-                self.__graph.updateNodeID(canvasNode.getNode(), canvasNode.getID())
                 canvasNode.getCanvasText().updateText(str(canvasNode.getID()))  
         CanvasNode.decrementNodeIDCounter()
  
@@ -31,9 +29,7 @@ class CanvasGraph():
         if canvasNode not in self.__nodes: return
         self.__nodes.remove(canvasNode)
         self.__graph.removeNode(canvasNode.getNode())
-
         self.__decrementNodeIDs(canvasNode.getID())
-
         print(str(self.__graph))
 
     def assignStartNode(self, canvasNode : CanvasNode) -> None: 

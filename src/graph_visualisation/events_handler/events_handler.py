@@ -61,12 +61,8 @@ class EventsHandler():
         if any([self.__areEventsDisabled, self.__isEdgeBeingDeleted, self.__edgeBeingDrawn is None]): return 
         object_collisions = self.__canvas.find_overlapping(event.x, event.y , event.x, event.y) 
         if(not object_collisions or len(object_collisions) == 1 and self.__edgeBeingDrawn.getCanvasID() in object_collisions): 
-            self.__removeCanvasMotionEvent()
-            self.__isEdgeBeingDrawn = False
-
-            self.__canvas.delete(self.__edgeBeingDrawn.getCanvasID())            
-            self.__edgeBeingDrawn = None 
-
+            self.__resetEdgeDrawingEvent(deleteDrawnEdge=True)
+            
     def __addCanvasEvents(self) -> None: 
         if self.__canvas is None: return 
         # Add event to delete current edge being drawn when the canvas is clicked
@@ -93,8 +89,7 @@ class EventsHandler():
         self.__isNodeBeingDeleted = True  
 
         # The event to draw an edge can still trigger so it needs to be deleted
-        if self.__edgeBeingDrawn: self.__canvas.delete(self.__edgeBeingDrawn.getCanvasID())
-        self.__resetEdgeDrawingEvent()
+        self.__resetEdgeDrawingEvent(deleteDrawnEdge=True)
         
         # Not to thrilled about making a copy here but it's the best option
         for canvasEdge in list(canvasNode.getEdges()):  
@@ -120,15 +115,10 @@ class EventsHandler():
 
     def __areEdgeNodesDifferent(self, edgeStartNode : CanvasNode, edgeEndNode : CanvasNode) -> bool:
         return edgeStartNode != edgeEndNode
-
-    def __deleteEdge(self, canvasEdge : CanvasEdge) -> None:  
-        if canvasEdge is None: return
-        canvasEdge.markForDeletion()
-
-        # self.__canvas.delete(canvasEdge.getCanvasID()) 
-        # self.__canvasGraph.deleteCanvasEdge(canvasEdge)
         
-    def __resetEdgeDrawingEvent(self) -> None:
+    def __resetEdgeDrawingEvent(self, deleteDrawnEdge : bool=False) -> None: 
+        if self.__edgeBeingDrawn and deleteDrawnEdge: 
+            self.__canvas.delete(self.__edgeBeingDrawn.getCanvasID())
         self.__removeCanvasMotionEvent() 
         self.__isEdgeBeingDrawn = False 
         self.__edgeBeingDrawn = None  
@@ -138,7 +128,7 @@ class EventsHandler():
             and not self.__canvasGraph.areNodesConnected((canvasEdge.getFirstCanvasNode(), canvasNode))
 
     def __handleEdgeDrawing(self, canvasNode : CanvasNode) -> None:
-        # If an edge is already being drawn on screen
+        deleteEdge = False
         if self.__isEdgeBeingDrawn:
             if self.__canEdgeBeCreated(self.__edgeBeingDrawn, canvasNode): 
                 self.__canvasGraph.addCanvasEdge(self.__edgeBeingDrawn)
@@ -147,9 +137,8 @@ class EventsHandler():
                 self.__addEdgeEvents(self.__edgeBeingDrawn) 
                 self.__canvasGraph.addEdgeToNodes(self.__edgeBeingDrawn)
                 self.__editEdge(self.__edgeBeingDrawn)
-            elif self.__edgeBeingDrawn: 
-                self.__canvas.delete(self.__edgeBeingDrawn.getCanvasID())
-            self.__resetEdgeDrawingEvent()
+            else: deleteEdge = True
+            self.__resetEdgeDrawingEvent(deleteDrawnEdge=deleteEdge)
         else:
             self.__isEdgeBeingDrawn = True  
             canvasEdge = self.__creationTool.createEdge(canvasNode) 
@@ -253,7 +242,10 @@ class EventsHandler():
     def enableNodeGoalAssignEvent(self) -> None: self.__isSetGoalEnabled = True
     def disableNodeGoalAssignEvent(self) -> None: self.__isSetGoalEnabled = False
 
-    def disableAllEvents(self) -> None: self.__areEventsDisabled = True
+    def disableAllEvents(self) -> None:  
+        self.__resetEdgeDrawingEvent(deleteDrawnEdge=True)
+        self.__areEventsDisabled = True
+    
     def enableAllEvents(self) -> None: self.__areEventsDisabled = False 
 
     def getEdgeBeingDrawn(self) -> CanvasEdge|None: 

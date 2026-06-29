@@ -231,7 +231,4 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
         self.endAnimation()
         pass  
 
- 
-
-
 # Listen to Glass Spiders by Hot Milk

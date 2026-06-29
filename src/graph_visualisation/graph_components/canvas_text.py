@@ -12,7 +12,9 @@ class CanvasText():
     
 
     def getCanvasID(self) -> int: return self.__canvasID
+    
     def getText(self) -> str: return self.__text 
+    
     def getCoords(self) -> str: return self.__coords 
 
 # Listen to crushcrushcrush by Paramore

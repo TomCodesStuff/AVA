@@ -7,6 +7,7 @@ if(__name__ == "__main__"):
 import math
 from typing import Tuple
 from .canvas_node import CanvasNode
+from .canvas_text import CanvasText
 from src.data_structures import Edge 
 from src.enums import EdgeDirection
 
@@ -37,11 +38,13 @@ class CanvasEdge():
         self.__secondCanvasNode = None 
 
         self.__isMarkedForDeletion = False
-        
 
+        # Displays weights next to the edge when algorithm is running
+        self.__canvasWeightText = None
+        
     # Getters
     def getCanvasID(self): return self.__canvasID
-    
+
     def getWeight(self) -> int: return self.__edge.getWeight() 
     
     def getScreenLen(self) -> int: return self.__screenLen
@@ -58,8 +61,11 @@ class CanvasEdge():
     
     def getDirection(self) -> EdgeDirection: return self.__edge.getDirection() 
 
-    def getEdge(self) -> Edge: return self.__edge
+    def getEdge(self) -> Edge: return self.__edge 
+
+    def getWeightCanvasText(self) -> CanvasText | None: return self.__canvasWeightText
     
+
     # Setters
     def setWeight(self, weight : int) -> None: 
         if weight > 0: self.__edge.setWeight(weight) 
@@ -101,21 +107,22 @@ class CanvasEdge():
     
     def isMarkedForDeletion(self) -> bool: return self.__isMarkedForDeletion
     
-    def markForDeletion(self) -> None: self.__isMarkedForDeletion = True
+    def markForDeletion(self) -> None: self.__isMarkedForDeletion = True 
 
-    # Stole from ChatGPT would take me way to long to find an acceptable solution :/
+    def setCanvasWeightText(self, canvasWeightText : CanvasText) -> None: 
+        self.__canvasWeightText = canvasWeightText
+
+    # Stole from ChatGPT, would take me way to long to find an acceptable solution :/
     # I dislike using AI as I think it's kinda cheating but I'll make an exception to finish this project
     # Makes arrows indicating edge direction visible rather than just being hidden behind each node
     def adjustDirectionArrows(self) -> tuple:
         x0, y0, x1, y1 = self.__coords 
         r0 = self.__firstCanvasNode.getOffset()
         r1 = self.__secondCanvasNode.getOffset()
-
         dx = x1 - x0 
         dy = y1 - y0
 
         dist = math.sqrt(dx ** 2 + dy ** 2)
-
         if dist == 0: return (x0, y0, x1, y1)
 
         adjustedX0, adjustedY0 = x0, y0 

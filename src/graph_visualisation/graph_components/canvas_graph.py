@@ -87,6 +87,7 @@ class CanvasGraph():
         return self.__nodesToEdges.get(nodes[::-1], None)
 
     def getCanvasNodes(self) -> List[CanvasNode]: return self.__nodes  
+    
     def getCanvasEdges(self) -> List[CanvasEdge]: return self.__edges
 
     def getCanvasNodeAt(self, index : int) -> None: 

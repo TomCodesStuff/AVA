@@ -51,5 +51,4 @@ class ScreenCreator():
                    Graph))
             case _: return None
 
-
 # Listen to Tonight, Tonight by The Smashing Pumpkins

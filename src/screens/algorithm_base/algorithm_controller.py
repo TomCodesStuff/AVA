@@ -113,7 +113,9 @@ class AlgorithmController(ABC, Generic[S, M, D]):
         return delay
 
     def getScreen(self) -> S: return self.__screen 
+    
     def getModel(self) -> M: return self.__model
+    
     def getDataStructure(self) -> D: return self.__dataStructure
     
     def scheduleScreenUpdate(self) -> None:

@@ -378,24 +378,35 @@ class AlgorithmScreen(Generic[C, M ,D], ScreenInterface):
 
     # Setters
     def setController(self, controller : C) -> None: self.__controller = controller
+    
     def setModel(self, model : M) -> None: self.__model = model 
+    
     def setDataStructure(self, dataStructure : D) -> None: self.__dataStructure = dataStructure  
+    
     def addToggleableWidget(self, widget : tk.Widget) -> None: self.__toggleableWidgets.append(widget)
+    
     def removeToggleableWidget(self, widget : tk.Widget) -> None:  
         if widget in self.__toggleableWidgets: 
             self.__toggleableWidgets.remove(widget) 
+    
     def setAlgorithmType(self, algorithmType : AlgorithmType) -> None:
         self.__algorithmType = algorithmType
 
     # Getters 
     def getController(self) -> C: return self.__controller
+    
     def getModel(self) -> M: return self.__model
+    
     def getDataStructure(self) -> D: return self.__dataStructure 
+    
     def getFont(self) -> str: return self.__FONT 
+    
     def getFontSize(self) -> int: return self.__FONTSIZE
+    
     def getOptionsWidgetFrame(self) -> tk.Frame: return self.__optionsWidgetsFrame 
+    
     def getCanvas(self) -> tk.Canvas: return self.__canvas  
+    
     def getAlgorithmType(self) -> AlgorithmType: return self.__algorithmType
-
 
 # Listen to Under You by Foo Fighters

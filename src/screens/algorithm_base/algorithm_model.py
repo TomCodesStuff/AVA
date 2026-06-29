@@ -35,11 +35,15 @@ class AlgorithmModel():
         self.__isDelayMilliseconds = False
 
     def getDelay(self) -> float: return self.__delay
+    
     def getMaxDelay(self) -> int: return self.__maxDelay
+    
     def getMinDelay(self) -> int: return self.__minDelay 
+    
     def getResolution(self) -> int: return self.__resolution 
+    
     def isDelayMilliSeconds(self) -> bool: return self.__isDelayMilliseconds 
+    
     def getSleepInterval(self) -> float: return self.__sleepInterval
-
 
 # Listen to Nancy Boy by Placebo

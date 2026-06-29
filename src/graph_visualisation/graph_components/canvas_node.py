@@ -63,31 +63,46 @@ class CanvasNode():
 
     # Getters 
     def getCanvasID(self) -> int: return self.__canvasID 
+    
     def getXCoord(self) -> int: return self.__coords[0]
+    
     def getYCoord(self) -> int: return self.__coords[1]
+    
     def getCoords(self) -> tuple: return self.__coords
+    
     def getID(self) -> int: return self.__nodeID    
+    
     def getColour(self) -> str: return self.__node.getColour()
+    
     def getEdges(self) -> Set[CanvasEdge]: return self.__edges
+    
     def getSize(self) -> int: return self.__size 
+    
     def getCanvasText(self) -> CanvasText: return self.__canvasText
+    
     def getPrevColour(self) -> str: return self.__prevColour
+    
     def getNode(self) -> Node: return self.__node 
+    
     def isMarkedForDeletion(self) -> bool: return self.__isMarkedForDeletion
     
     # Setters 
     def setCanvasID(self, canvasID : int) -> None:  self.__canvasID = canvasID
+    
     def setColour(self, colour : str) -> None: self.__node.setColour(colour)    
+    
     def setPrevColour(self, colour : str): self.__prevColour = colour
+    
     def getOffset(self) -> int: return (self.__size // 2) + 1 
+    
     def setCanvasText(self, canvasText : CanvasText) -> None: self.__canvasText = canvasText  
+    
     def markForDeletion(self) -> None: self.__isMarkedForDeletion = True
     
     # Adds a CanvasEdge Object to the list 
     def addEdge(self, canvasEdge : CanvasEdge) -> None: 
         self.__edges.add(canvasEdge) 
         self.__node.addEdge(canvasEdge.getEdge())
-
 
     def removeEdge(self, canvasEdge : CanvasEdge) -> None: 
         if canvasEdge in self.__edges: 
@@ -113,7 +128,9 @@ class CanvasNode():
     
     # Function for dragging objects
     def isBeingDragged(self) -> bool: return self.__isBeingDragged
+    
     def setDragged(self) -> bool: self.__isBeingDragged = True
+    
     def resetDragged(self) -> bool: self.__isBeingDragged = False
 
     # Used to update on screen ID when a node is deleted 

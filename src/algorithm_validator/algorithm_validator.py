@@ -13,9 +13,7 @@ from typing import List, Tuple
 from src.algorithms import Algorithm
 from src.enums import AlgorithmType
 
-
 FILE_NAME_REGEX = r"^([a-z]+_)+(search|sort|traverse)\.py$"
-
 
 class AlgorithmValidator(): 
     def __init__(self): 

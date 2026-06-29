@@ -69,7 +69,6 @@ class Window():
         # Custom Exit 
         self.__window.protocol('WM_DELETE_WINDOW', self.__exitOverride)
 
-        
     # Draws window
     def show(self) -> None:
         self.__window.mainloop() 
@@ -123,11 +122,9 @@ class Window():
     def getAlgorithmClass(self, algorithmType : AlgorithmType, algorithmName : str) -> Type[Algorithm]: 
         return self.__algorithmValidator.getAlgorithmClass(algorithmType, algorithmName) 
     
-
     def __exitOverride(self) -> None:
         if self.__customExitFunc is not None: self.__customExitFunc()
         self.__window.destroy() 
-
 
     def setCustomExitFunc(self, customExitFunc : Callable) -> None: self.__customExitFunc = customExitFunc
     

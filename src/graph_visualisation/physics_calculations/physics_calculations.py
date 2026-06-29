@@ -118,7 +118,8 @@ class PhysicsCalculations():
     # Caclulate and apply forces to each object drawn on screen
     def applyPhysics(self) -> None:  
         # Snapshot of node coords and offset, copies of lists used to prevent crashes(?)
-        nodesSnapshot = {x.getCanvasID() : (x.getCoords(), x.getOffset()) for x in self.__canvasGraph.getCanvasNodes().copy()}
+        nodesSnapshot = {x.getCanvasID() : (x.getCoords(), x.getOffset()) 
+                         for x in self.__canvasGraph.getCanvasNodes().copy()}
         edgesSnapshot = {(x.getFirstCanvasNode().getCanvasID(), x.getSecondCanvasNode().getCanvasID(), x.getScreenLen()) 
                           for x in self.__canvasGraph.getCanvasEdges().copy()}
 

@@ -14,12 +14,14 @@ if TYPE_CHECKING:
 
 class ScreenCreator(): 
     @staticmethod
-    def __createAlgorithmScreen(window : Window, mvcClasses :  Tuple[Screen, Controller, Model, DataStruct]) -> AlgorithmScreen: 
-        screenClass, controllerClass, modelClass, dataStructureClass = mvcClasses
-        screen = screenClass(window)
-        model = modelClass()
-        dataStructure = dataStructureClass()
-        controller = controllerClass(screen, model, dataStructure)
+    def __createAlgorithmScreen(window : Window, 
+                                mvcClasses : Tuple[Screen, Controller, Model, DataStruct]
+                                ) -> AlgorithmScreen: 
+        screenCls, controllerCls, modelCls, dataStructureCls = mvcClasses
+        screen = screenCls(window)
+        model = modelCls()
+        dataStructure = dataStructureCls()
+        controller = controllerCls(screen, model, dataStructure)
         
         screen.setController(controller)
         screen.setModel(model)

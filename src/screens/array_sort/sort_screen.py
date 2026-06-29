@@ -34,14 +34,18 @@ class SortScreen(ArrayAlgorithmScreen[C, M, D]):
 
     # Creates the button to toggle ascending order
     def __createSortAscendingButton(self):
-        self.__ascendingOption = tk.Button(self.__radioButtonsFrame, text="Sort Ascending.", width = self.getModel().getButtonWidth(), 
-                                           relief = "solid", font = (self.getFont(), self.getFontSize()), state="disabled", command=self.getController().toggleSortDirection)
+        self.__ascendingOption = tk.Button(self.__radioButtonsFrame, text="Sort Ascending.", 
+                                           width = self.getModel().getButtonWidth(), relief = "solid", 
+                                           font = (self.getFont(), self.getFontSize()), state="disabled", 
+                                           command=self.getController().toggleSortDirection)
         self.__ascendingOption.pack() 
 
     # Creates the button to toggle descending order
     def __createSortDescendingButton(self):
-        self.__descendingOption = tk.Button(self.__radioButtonsFrame, text="Sort Descending.", width = self.getModel().getButtonWidth(), 
-                                            relief = "solid", font = (self.getFont(), self.getFontSize()), command=self.getController().toggleSortDirection)
+        self.__descendingOption = tk.Button(self.__radioButtonsFrame, text="Sort Descending.", 
+                                            width = self.getModel().getButtonWidth(), relief = "solid", 
+                                            font = (self.getFont(), self.getFontSize()), 
+                                            command=self.getController().toggleSortDirection)
         self.__descendingOption.pack(pady=(5, 0))
         self.addToggleableWidget(self.__descendingOption)
 

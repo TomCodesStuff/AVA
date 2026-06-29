@@ -58,7 +58,8 @@ class Window():
 
         # Declaring and customising the frame
         # This is where all the displayed content 
-        self.__contentFrame = tk.Frame(self.__window, height = self.__contentFrameHeight, width = self.__contentFrameWidth, bg = "white")
+        self.__contentFrame = tk.Frame(self.__window, height = self.__contentFrameHeight, 
+                                       width = self.__contentFrameWidth, bg = "white")
         
         # Makes the frame centred in the GUI window
         self.__contentFrame.place(relx = 0.5, rely = 0.5, anchor = "center")

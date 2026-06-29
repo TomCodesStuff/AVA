@@ -32,8 +32,9 @@ class ArrayAlgorithmScreen(AlgorithmScreen[C, M, D]):
     # Creates a slider that allows users to alter an arrays size
     def __createArrayAdjuster(self) -> None:
         self.__arraySizeSlider = tk.Scale(self.getOptionsWidgetFrame(), from_ = 1, to_ = self.getModel().getMaxBars(), 
-                                          length = self.getOptionsWidgetFrame().winfo_width(),\
-            orient = "horizontal", bg = "white", highlightbackground = "white", command = lambda x: self.getController().adjustArray(int(x)))
+                                          length = self.getOptionsWidgetFrame().winfo_width(), 
+                                          orient = "horizontal", bg = "white", highlightbackground = "white", 
+                                          command = lambda x: self.getController().adjustArray(int(x)))
         self.__arraySizeSlider.pack(pady = (10, 0))
         self.addToggleableWidget(self.__arraySizeSlider)
 

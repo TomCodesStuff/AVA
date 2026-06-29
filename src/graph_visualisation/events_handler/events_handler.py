@@ -59,8 +59,11 @@ class EventsHandler():
    
     def __deleteEdgeOnClick(self, event : Event) -> None: 
         if any([self.__areEventsDisabled, self.__isEdgeBeingDeleted, self.__edgeBeingDrawn is None]): return 
+        
         object_collisions = self.__canvas.find_overlapping(event.x, event.y , event.x, event.y) 
-        if(not object_collisions or len(object_collisions) == 1 and self.__edgeBeingDrawn.getCanvasID() in object_collisions): 
+        hasCollidedWithEdge = self.__edgeBeingDrawn.getCanvasID() in object_collisions
+        
+        if(not object_collisions or len(object_collisions) == 1 and hasCollidedWithEdge): 
             self.__resetEdgeDrawingEvent(deleteDrawnEdge=True)
             
     def __addCanvasEvents(self) -> None: 
@@ -193,7 +196,8 @@ class EventsHandler():
         self.__canvas.tag_bind(canvasTextID, "<Leave>", lambda _: self.__hoverTool.nodeOnLeave(canvasNode)) 
         
         # Add event listener to move node when it's dragged by the mouse 
-        self.__canvas.tag_bind(canvasNode.getCanvasID(), "<B1-Motion>", lambda event: self.__moveNode(event, canvasNode))    
+        self.__canvas.tag_bind(canvasNode.getCanvasID(), "<B1-Motion>", 
+                               lambda event: self.__moveNode(event, canvasNode))    
         self.__canvas.tag_bind(canvasTextID, "<B1-Motion>", lambda event: self.__moveNode(event, canvasNode))    
         
         # Add event listener to detect when mouse button released 

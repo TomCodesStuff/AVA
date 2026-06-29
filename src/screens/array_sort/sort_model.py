@@ -34,4 +34,4 @@ class SortModel(ArrayAlgorithmModel):
     def getSortDirection(self) -> SortDirection: return self.__sortDirection
     
 
-# Listen to What You Know by Two Door Cinema 
+# Listen to What You Know by Two Door Cinema Club

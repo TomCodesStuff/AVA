@@ -110,7 +110,7 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
         self.__edgeWeightFrame = tk.Frame(self.__edgeOptionsFrame, background="white") 
         self.__edgeWeightFrame.pack(pady=(5, 0))
         self.__weightSlider = tk.Scale(self.__edgeWeightFrame, from_ = self.getModel().getMinEdgeWeight(), 
-                                       to_=self.getModel().getMaxEdgeWeight(), 
+                                       to_=self.getModel().getMaxEdgeWeight(),  
                                        resolution=self.getModel().getWeightSliderResolution(), 
                                        length = self.getOptionsWidgetFrame().winfo_width(), orient="horizontal", 
                                        showvalue=False, bg = "white", highlightbackground="white", 

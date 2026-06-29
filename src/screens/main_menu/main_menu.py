@@ -48,16 +48,18 @@ class MainMenu(ScreenInterface):
         buttonsFrame = tk.Frame(self.__contentFrame, bg = "white")
         buttonsFrame.pack()
         # Navigate to path finding algorithms screen
-        tk.Button(buttonsFrame, text = "Path Finding", font = (self.__FONT, 12), height = 2, width = 15, relief = "solid",\
-                  command = lambda: self.getWindow().loadScreen(ScreenType.TRAVERSAL)).pack(pady=15)  
+        tk.Button(buttonsFrame, text = "Path Finding", font = (self.__FONT, 12), height = 2, width = 15, 
+                  relief = "solid", command = lambda: self.getWindow().loadScreen(ScreenType.TRAVERSAL))\
+                    .pack(pady=15)  
         # Navigate to array searching screen
-        tk.Button(buttonsFrame, text = "Array Searching",  font = (self.__FONT, 12), height = 2, width = 15, relief = "solid",\
-                  command=lambda: self.getWindow().loadScreen(ScreenType.SEARCH)).pack(side = "left", pady = 15, padx = (100, 0)) 
+        tk.Button(buttonsFrame, text = "Array Searching",  font = (self.__FONT, 12), height = 2, width = 15, 
+                  relief = "solid", command=lambda: self.getWindow().loadScreen(ScreenType.SEARCH))\
+                    .pack(side = "left", pady = 15, padx = (100, 0)) 
        
         # Navigate to array sorting screen
-        tk.Button(buttonsFrame, text = "Array Sorting",  font = (self.__FONT, 12), height = 2, width = 15, relief = "solid",\
-                  command=lambda: self.getWindow().loadScreen(ScreenType.SORT)).pack(side = "left", padx = 100)  
-        
+        tk.Button(buttonsFrame, text = "Array Sorting",  font = (self.__FONT, 12), height = 2, width = 15, relief = "solid", 
+                  command=lambda: self.getWindow().loadScreen(ScreenType.SORT))\
+                    .pack(side = "left", padx = 100)  
         
         tk.Label(self.__contentFrame, text = "Created by Tom.", bg = "white", justify = "left")\
             .pack(side = "bottom", anchor = "w", pady = 5, padx = 5) 

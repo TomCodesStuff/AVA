@@ -153,8 +153,9 @@ class AlgorithmScreen(Generic[C, M ,D], ScreenInterface):
     # Creates the button to let the user navigate back to the main menu
     def __createHomeButton(self, root : tk.Frame) -> None: 
         # Creates and places button in the centre of the frame
-        self.__homeButton = tk.Button(root, text = "Home.", font = (self.__FONT, self.__FONTSIZE), width = 7, height = 1, borderwidth = 2, 
-                                      relief = "solid", command = self.__loadHomeScreen)
+        self.__homeButton = tk.Button(root, text = "Home.", font = (self.__FONT, self.__FONTSIZE), 
+                                      width = 7, height = 1, borderwidth = 2, relief = "solid", 
+                                      command = self.__loadHomeScreen)
         self.__homeButton.place(relx = 0.5, rely = 0.5, anchor = "center") 
     
     # Creates the frame to store the canvas
@@ -182,9 +183,9 @@ class AlgorithmScreen(Generic[C, M ,D], ScreenInterface):
     # Creates a combo box which displays all algorithms 
     def __createAlgorithmSelect(self) -> None:
         #combo box, allows the user to choose what algorithm they want
-        self.__algorithmOptions = ttk.Combobox(self.getOptionsWidgetFrame(), textvariable = tk.StringVar(), state = "readonly", 
-                                               font = (self.getFont(), self.getFontSize()),\
-             width = self.getOptionsWidgetFrame().winfo_width())
+        self.__algorithmOptions = ttk.Combobox(self.getOptionsWidgetFrame(), textvariable = tk.StringVar(), 
+                                               state = "readonly", font = (self.getFont(), self.getFontSize()), 
+                                               width = self.getOptionsWidgetFrame().winfo_width())
         self.__algorithmOptions.set(self.__selectDefaultText)
         # Removes the blue highlighting when something is selected that annoyed me
         self.__algorithmOptions.bind("<<ComboboxSelected>>", lambda _: self.getOptionsWidgetFrame().focus())
@@ -203,10 +204,11 @@ class AlgorithmScreen(Generic[C, M ,D], ScreenInterface):
     def __createSpeedSlider(self) -> None:
         # Creates a slider that goes from the maximum delay to the minmum delay 
         # Every time the sliders value is changed the updateDelay() method is called to update the value seen on screen
-        self.__speedSlider = tk.Scale(self.getOptionsWidgetFrame(), from_ = self.__model.getMaxDelay(), to_ = self.__model.getMinDelay(), 
-                                      resolution=self.__model.getResolution(), 
-                                      length = self.getOptionsWidgetFrame().winfo_width(), orient = "horizontal", showvalue = False, 
-                                      bg =  "white", highlightbackground = "white", command = self.__updateDelay)
+        self.__speedSlider = tk.Scale(self.getOptionsWidgetFrame(), from_ = self.__model.getMaxDelay(), 
+                                      to_ = self.__model.getMinDelay(), resolution=self.__model.getResolution(), 
+                                      length = self.getOptionsWidgetFrame().winfo_width(), orient = "horizontal", 
+                                      showvalue = False, bg =  "white", highlightbackground = "white", 
+                                      command = self.__updateDelay)
         self.__speedSlider.pack(pady = (10, 0))  
         self.__speedSlider.set(self.__model.getMaxDelay())
         # When the user stops moving the slider the slider is updated in the dataStructure class 

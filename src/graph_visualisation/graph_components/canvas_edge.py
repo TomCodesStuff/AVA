@@ -67,8 +67,10 @@ class CanvasEdge():
     
 
     # Setters
-    def setWeight(self, weight : int) -> None: 
-        if weight > 0: self.__edge.setWeight(weight) 
+    def setWeight(self, weight : int) -> None:  
+        if weight <= 0: return
+        self.__edge.setWeight(weight) 
+        if self.__canvasWeightText: self.__canvasWeightText.updateText(str(weight))
     
     def setScreenLen(self, screenLen : int) -> None: 
         if screenLen > 0: self.__screenLen = screenLen

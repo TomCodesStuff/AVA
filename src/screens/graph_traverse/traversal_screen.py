@@ -50,7 +50,8 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
     # Creates the button that lets users add nodes to the canvas 
     def __createAddNodeButton(self) -> None: 
         self.__addNodeButton = tk.Button(self.__innerNodeFrame, text="Spawn.", width=8, relief="solid", 
-                                         font = (self.getFont(), self.getFontSize()), command=self.getController().spawnNode)
+                                         font = (self.getFont(), self.getFontSize()), 
+                                         command=self.getController().spawnNode)
         self.__addNodeButton.grid(row = 1, column = 0, pady = (5, 0), padx=(0, 5))   
         self.addToggleableWidget(self.__addNodeButton)
     
@@ -80,7 +81,8 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
         self.__innerNodeFrame = tk.Frame(self.__nodeOptionsFrame, bg="white") 
         self.__innerNodeFrame.pack()
 
-        tk.Label(self.__innerNodeFrame, text="Node Options:", font=(self.getFont(), self.getFontSize(), "bold", "underline"), bg="white")\
+        tk.Label(self.__innerNodeFrame, text="Node Options:", 
+                 font=(self.getFont(), self.getFontSize(), "bold", "underline"), bg="white")\
             .grid(row=0, column=0, pady=(10, 0), columnspan=2)
 
         self.__createAddNodeButton() 
@@ -108,9 +110,11 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
         self.__edgeWeightFrame = tk.Frame(self.__edgeOptionsFrame, background="white") 
         self.__edgeWeightFrame.pack(pady=(5, 0))
         self.__weightSlider = tk.Scale(self.__edgeWeightFrame, from_ = self.getModel().getMinEdgeWeight(), 
-                                       to_=self.getModel().getMaxEdgeWeight(), resolution=self.getModel().getWeightSliderResolution(), 
-                                       length = self.getOptionsWidgetFrame().winfo_width(), orient="horizontal", showvalue=False, 
-                                       bg = "white", highlightbackground="white", command=self.__updateWeight)
+                                       to_=self.getModel().getMaxEdgeWeight(), 
+                                       resolution=self.getModel().getWeightSliderResolution(), 
+                                       length = self.getOptionsWidgetFrame().winfo_width(), orient="horizontal", 
+                                       showvalue=False, bg = "white", highlightbackground="white", 
+                                       command=self.__updateWeight)
         
         self.__updateWeight(INITIAL_WEIGHT)
         self.__weightSlider.pack()
@@ -122,17 +126,20 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
 
         self.__leftArrowButton = tk.Button(self.__directionButtonFrame, text = "<-", width=3, relief = "solid", 
                                            font=(self.getModel().getArrowFont(), self.getFontSize()), 
-                                           command=lambda: self.getController().changeEdgeDirection(EdgeDirectionOption.RIGHT_TO_LEFT)) 
+                                           command=lambda: self.getController()\
+                                            .changeEdgeDirection(EdgeDirectionOption.RIGHT_TO_LEFT)) 
         self.__leftArrowButton.grid(row=0, column=0, pady=(10, 0), padx=(0, 10)) 
 
         self.__doubleArrowButton = tk.Button(self.__directionButtonFrame, text = "<->", width=3, relief = "solid", 
                                              font=(self.getModel().getArrowFont(), self.getFontSize()), 
-                                             command=lambda: self.getController().changeEdgeDirection(EdgeDirectionOption.BIDIRECTIONAL)) 
+                                             command=lambda: self.getController()\
+                                                .changeEdgeDirection(EdgeDirectionOption.BIDIRECTIONAL)) 
         self.__doubleArrowButton.grid(row=0, column=1, pady=(10, 0)) 
 
         self.__rightArrowButton = tk.Button(self.__directionButtonFrame, text = "->", width=3, relief = "solid", 
                                             font=(self.getModel().getArrowFont(), self.getFontSize()), 
-                                            command=lambda: self.getController().changeEdgeDirection(EdgeDirectionOption.LEFT_TO_RIGHT)) 
+                                            command=lambda: self.getController()\
+                                                .changeEdgeDirection(EdgeDirectionOption.LEFT_TO_RIGHT)) 
         self.__rightArrowButton.grid(row=0, column=2, pady=(10, 0), padx=(10, 0))       
        
     # Create button to save edge 
@@ -184,7 +191,8 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
      # Creates options to add edges or edit existing ones
     def __createEdgeOptions(self) -> None: 
         # Label 
-        tk.Label(self.__edgeOptionsFrame, text="Edge Options:", font=(self.getFont(), self.getFontSize(), "bold", "underline"), bg="white")\
+        tk.Label(self.__edgeOptionsFrame, text="Edge Options:", 
+                 font=(self.getFont(), self.getFontSize(), "bold", "underline"), bg="white")\
             .pack(pady=(10, 0))
         # Calls slider to adjust weight
         self.__createWeightSlider() 
@@ -220,9 +228,12 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
     def prepare(self) -> None:   
         # If the user is in the middle of editing an edge 
         self.__finishEdgeEdit()
-        self.getController().stopInteractiveGraph() 
+        self.getController().stopInteractiveGraph()  
+        self.getController().showEdgeWeightText()
+
     
     def complete(self) -> None:
+        self.getController().hideEdgeWeightText()
         self.getController().startInteractiveGraph()
         
     def animationSetup(self) -> None: pass 

@@ -43,21 +43,32 @@ class TraversalModel(AlgorithmModel):
         # Resolution of the weight slider
         self.__weightSliderResolution = 1
 
-        self.__arrowsFont = "Courier New"
+        self.__arrowsFont = "Courier New" 
+
+        self.__weightTextFont = ("Arial", 10, "bold") 
+
+        # How far away from edge text will be displayed 
+        self.__weightTextOffset = 12
 
     def getMaxNumNodes(self) -> int: return self.__maxNumNodes
 
     # Getters for edge weight 
     def getMinEdgeWeight(self) -> int: return self.__minWeight
+    
     def getMaxEdgeWeight(self) -> int: return self.__maxWeight 
+    
     def getWeightSliderResolution(self) -> int: return self.__weightSliderResolution 
 
     def getRangeSlope(self) -> int: return self.__slope
 
     def getEdgeMinScreenLen(self) -> int: return self.__edgeMinScreenLen
+    
     def getEdgeMaxScreenLen(self) -> int: return self.__edgeMaxScreenLen 
 
     def getArrowFont(self) -> str: return self.__arrowsFont 
 
+    def getWeightTextFont(self) -> tuple: return self.__weightTextFont
+
+    def getWeightTextOffset(self) -> int: return self.__weightTextOffset
 
 # Listen to Jigsaws Falling Into Place by Radiohead

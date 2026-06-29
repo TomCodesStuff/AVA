@@ -4,11 +4,11 @@ if(__name__ == "__main__"):
     print("This is file shouldn't be run on it's own. \nIt should be imported only.")
     exit()
 
-
+import math
 from typing import TYPE_CHECKING, TypeVar
 from tkinter import Canvas
 from src.data_structures import Graph
-from src.graph_visualisation import EventsHandler, CanvasGraph, CanvasNode, CanvasEdge, PhysicsCalculations
+from src.graph_visualisation import EventsHandler, CanvasGraph, CanvasNode, CanvasEdge, CanvasText, PhysicsCalculations
 from src.screens.algorithm_base import AlgorithmController
 from src.thread_handlers import PhysicsThread
 from src.enums import EdgeDirection, EdgeDirectionOption
@@ -20,6 +20,8 @@ if TYPE_CHECKING:
 S = TypeVar("S", bound="TraversalScreen")
 M = TypeVar("M", bound="TraversalModel")
 D = TypeVar("D", bound="Graph")
+
+SIXTY_FPS_IN_MS = 16
 
 class TraversalController(AlgorithmController[S, M, D]):
     def __init__(self, screen : S, model : M, dataStructure : D):
@@ -39,12 +41,11 @@ class TraversalController(AlgorithmController[S, M, D]):
     def startInteractiveGraph(self) -> None:  
         if self.__eventHandler is None:
             self.createEventHandler(self.getScreen().getCanvas())
-        self.__createPhysicsThread() 
+        # self.__createPhysicsThread() 
         self.startManagedThreads()
         self.__eventHandler.enableAllEvents()
         self.__startCanvasRefreshLoop() 
     
-
     def stopInteractiveGraph(self) -> None:
         self.stopManagedThreads() 
         self.__eventHandler.disableAllEvents() 
@@ -55,19 +56,22 @@ class TraversalController(AlgorithmController[S, M, D]):
         canvas = self.getScreen().getCanvas()
         return (canvas.winfo_width() // 2, canvas.winfo_height() // 2)
 
-
     def __canvasRefreshLoop(self) -> None:   
         if self.__cancelCanvasRefreshLoop: return
         self.refreshCanvas() 
-        self.getScreen().getWindow().scheduleFunctionExecution(self.__canvasRefreshLoop, 16)
+        self.getScreen().getWindow().scheduleFunctionExecution(self.__canvasRefreshLoop, SIXTY_FPS_IN_MS)
 
     def __deleteMarkedGraphItems(self) -> None:   
         canvas = self.getScreen().getCanvas()
 
-        edges_to_delete = [canvasEdge for canvasEdge in self.__canvasGraph.getCanvasEdges() if canvasEdge.isMarkedForDeletion()]     
-        nodes_to_delete = [canvasNode for canvasNode in self.__canvasGraph.getCanvasNodes() if canvasNode.isMarkedForDeletion()]    
+        edges_to_delete = [canvasEdge for canvasEdge in self.__canvasGraph.getCanvasEdges() 
+                           if canvasEdge.isMarkedForDeletion()]     
+        nodes_to_delete = [canvasNode for canvasNode in self.__canvasGraph.getCanvasNodes() 
+                           if canvasNode.isMarkedForDeletion()]    
         
-        for canvasEdge in edges_to_delete:  
+        for canvasEdge in edges_to_delete: 
+            if canvasEdge.getWeightCanvasText() is not None: 
+                canvas.delete(canvasEdge.getWeightCanvasText().getCanvasID())
             self.__canvasGraph.deleteCanvasEdge(canvasEdge)
             canvas.delete(canvasEdge.getCanvasID()) 
         
@@ -196,7 +200,66 @@ class TraversalController(AlgorithmController[S, M, D]):
     
     def __startCanvasRefreshLoop(self) -> None: 
         self.__cancelCanvasRefreshLoop = False 
-        self.__canvasRefreshLoop()
+        self.__canvasRefreshLoop()   
+    
+    # I asked ChatGPT to help with this 
+    def __calculateWeightTextCoords(self, edgeCoords : tuple) -> tuple: 
+        x0, y0, x1, y1 = edgeCoords 
+        weightTextOffset = self.getModel().getWeightTextOffset()
+        
+        midX = (x0 + x1) // 2 
+        midY = (y0 + y1) // 2 
+        
+        # Calculate edge's vector 
+        dx = x1 - x0
+        dy = y1 - y0
+        
+        # Normalise vector -> so we move the correct amount of pixels away 
+        length = math.sqrt(dx*dx + dy*dy)
+        ux = dx / length
+        uy = dy / length
 
+        # Want text to be perpendicular (90 degrees) to the edges line
+        # So calculate the offsets using the opposite normalised lengths 
+        xOffset = (uy * weightTextOffset)
+        yOffset = (-ux * weightTextOffset)
 
+        # Calculate new initial coords
+        xCoord = midX + xOffset
+        yCoord = midY + yOffset
+        
+        # If weight text is going to be offscreen, move to the opposite position
+        if yCoord - weightTextOffset <= 0: yCoord = midY - yOffset
+        if xCoord + weightTextOffset >= self.getScreen().getCanvas().winfo_width(): 
+            xCoord = midX - xOffset
+
+        return (xCoord, yCoord)
+
+    def __createWeightCanvasText(self, canvasEdge : CanvasEdge) -> CanvasText:  
+        x0, y0 = weightTextCoords = self.__calculateWeightTextCoords(canvasEdge.getCoords())
+        weightCanvasText = CanvasText(str(canvasEdge.getWeight()), weightTextCoords) 
+        canvasEdge.setCanvasWeightText(weightCanvasText)
+        
+        canvasID = self.getScreen().getCanvas().create_text(x0, y0, text=str(weightCanvasText.getText()), 
+                                                            font=self.getModel().getWeightTextFont())
+        weightCanvasText.setCanvasID(canvasID)
+
+    def showEdgeWeightText(self) -> None:  
+        canvas = self.getScreen().getCanvas()
+        for canvasEdge in self.__canvasGraph.getCanvasEdges():             
+            if canvasEdge.getWeightCanvasText() is None: 
+                self.__createWeightCanvasText(canvasEdge) 
+            else: 
+                weightCanvasText = canvasEdge.getWeightCanvasText()
+                x0, y0 = coords = self.__calculateWeightTextCoords(canvasEdge.getCoords()) 
+                weightCanvasText.updateCoords(coords)
+                canvas.moveto(weightCanvasText.getCanvasID(), x0, y0)  
+                canvas.itemconfig(weightCanvasText.getCanvasID(), text=weightCanvasText.getText(), state="normal")
+                
+    def hideEdgeWeightText(self) -> None: 
+        canvas = self.getScreen().getCanvas()
+        for canvasEdge in self.__canvasGraph.getCanvasEdges(): 
+            if canvasEdge.getWeightCanvasText() is not None: 
+                canvas.itemconfig(canvasEdge.getWeightCanvasText().getCanvasID(), state="hidden")
+            
 # Listen to Paranoid by Black Sabbath

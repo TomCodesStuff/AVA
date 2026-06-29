@@ -12,15 +12,18 @@ class CreationTool():
                                                     x1 + overlapOffset, y1 + overlapOffset)
         return True if len(overlapping_nodes) == 0 else False
 
-    def createText(self, textCanvasID : int, text : str, textCoords : tuple) -> CanvasText:
-        return CanvasText(textCanvasID, text, textCoords)
+    def createText(self, canvas : Canvas, text : str, textCoords : tuple) -> CanvasText: 
+        canvasText = CanvasText(text, textCoords)
+        canvasID = canvas.create_text(textCoords[0], textCoords[1], text=text, fill="white", font=("Arial", 10, "bold"))
+        canvasText.setCanvasID(canvasID)
+        return canvasText
     
     def renderNode(self, canvas : Canvas, canvasNode : CanvasNode) -> None: 
         x0, y0, x1, y1 = canvasNode.getCoords() 
         cx, cy = x0 + canvasNode.getOffset(), y0 + canvasNode.getOffset() 
         nodeCanvasID = canvas.create_oval(x0, y0, x1, y1, outline="black", fill=canvasNode.getColour())
-        textCanvasID = canvas.create_text(cx, cy, text=str(canvasNode.getID()), fill="white", font=("Arial", 10, "bold"))
-        canvasText = self.createText(textCanvasID, str(canvasNode.getID()), (cx, cy))
+        
+        canvasText = self.createText(canvas, str(canvasNode.getID()), (cx, cy))
         
         canvasNode.setCanvasID(nodeCanvasID) 
         canvasNode.setCanvasText(canvasText)

@@ -1,6 +1,6 @@
 class CanvasText():  
-    def __init__(self, canvasID : int, text : str, coords : tuple):
-        self.__canvasID = canvasID
+    def __init__(self, text : str, coords : tuple):
+        self.__canvasID = None 
         self.__text = text 
         self.__coords = coords
 
@@ -10,6 +10,8 @@ class CanvasText():
     def updateCoords(self, newCoords : tuple) -> tuple:
         if newCoords: self.__coords = newCoords   
     
+    def setCanvasID(self, canvasID : int) -> None: 
+        if canvasID: self.__canvasID  = canvasID
 
     def getCanvasID(self) -> int: return self.__canvasID
     

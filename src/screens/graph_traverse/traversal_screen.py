@@ -215,18 +215,21 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
         self.__createOptions()  
         self.setAlgorithmType(AlgorithmType.TRAVERSAL)
         self.displayAlgorithmOptions()
-        self.getController().init()
+        self.getController().startInteractiveGraph()
     
-    # TODO need to create graph 
     def prepare(self) -> None:   
         # If the user is in the middle of editing an edge 
         self.__finishEdgeEdit()
-        print("I need to disable all the events")
+        self.getController().stopInteractiveGraph() 
+    
+    def complete(self) -> None:
+        self.getController().startInteractiveGraph()
         
-        
-        pass 
     def animationSetup(self) -> None: pass 
-    def coolAnimationFrame(self) -> None: pass  
+    
+    def coolAnimationFrame(self) -> None: 
+        self.endAnimation()
+        pass  
 
  
 

@@ -28,28 +28,38 @@ class TraversalController(AlgorithmController[S, M, D]):
         self.__eventHandler = None
         self.__canvasGraph = CanvasGraph(self.getDataStructure())
         self.__physicsCalculations = None   
+        self.__cancelCanvasRefreshLoop = False
+
         # Set ID counter back to 0
         CanvasNode.resetNodeIDCounter()
 
         # Correctly set the default screen length for newly created edges 
         CanvasEdge.setDefaultScreenLen(self.__calculateScreenLen(CanvasEdge.getDefaultWeight()))
-  
-
-    def init(self) -> None: 
-        self.createEventHandler(self.getScreen().getCanvas())
-        self.__repeatCanvasRefresh() 
+    
+    def startInteractiveGraph(self) -> None:  
+        if self.__eventHandler is None:
+            self.createEventHandler(self.getScreen().getCanvas())
         self.__createPhysicsThread() 
         self.startManagedThreads()
+        self.__eventHandler.enableAllEvents()
+        self.__startCanvasRefreshLoop() 
+    
+
+    def stopInteractiveGraph(self) -> None:
+        self.stopManagedThreads() 
+        self.__eventHandler.disableAllEvents() 
+        self.__stopCanvasRefreshLoop()
+        self.cancelScheduledProcesses()
 
     def __getCanvasCentre(self) -> tuple: 
         canvas = self.getScreen().getCanvas()
         return (canvas.winfo_width() // 2, canvas.winfo_height() // 2)
 
-    # NOTE temp function for testing 
-    def __repeatCanvasRefresh(self) -> None:  
-        # print("Refreshing canvas")
+
+    def __canvasRefreshLoop(self) -> None:   
+        if self.__cancelCanvasRefreshLoop: return
         self.refreshCanvas() 
-        self.getScreen().getWindow().scheduleFunctionExecution(self.__repeatCanvasRefresh, 16)
+        self.getScreen().getWindow().scheduleFunctionExecution(self.__canvasRefreshLoop, 16)
 
     def __deleteMarkedGraphItems(self) -> None:   
         canvas = self.getScreen().getCanvas()
@@ -66,15 +76,15 @@ class TraversalController(AlgorithmController[S, M, D]):
             canvas.delete(canvasNode.getCanvasID())
             canvas.delete(canvasNode.getCanvasText().getCanvasID())
   
-    def refreshCanvas(self, refreshColours:bool=False) -> None: 
+    def refreshCanvas(self, refreshColours:bool=False) -> None:     
         latestResults = {} 
         canvas = self.getScreen().getCanvas()
 
         if self.__eventHandler and self.__eventHandler.getEdgeBeingDrawn():  
             edgeBeingDrawn = self.__eventHandler.getEdgeBeingDrawn() 
             if edgeBeingDrawn.getCanvasID() is not None: 
-                canvas.coords(edgeBeingDrawn.getCanvasID(), edgeBeingDrawn.getCoords())
-
+                canvas.coords(edgeBeingDrawn.getCanvasID(), edgeBeingDrawn.getCoords()) 
+               
         if self.__physicsCalculations is not None: 
             latestResults = self.__physicsCalculations.getLatestResults()
 
@@ -162,7 +172,7 @@ class TraversalController(AlgorithmController[S, M, D]):
         edgeBeingEdited.setDirection(direction)
 
     def __createPhysicsThread(self) -> None:
-        self.__physicsCalculations= PhysicsCalculations(self.__canvasGraph, self.__getCanvasCentre()) 
+        self.__physicsCalculations = PhysicsCalculations(self.__canvasGraph, self.__getCanvasCentre()) 
         self.addManagedThread(PhysicsThread(self.__physicsCalculations)) 
     
     def enableNodeStartAssignEvent(self) -> None: 
@@ -173,7 +183,20 @@ class TraversalController(AlgorithmController[S, M, D]):
     def enableNodeGoalAssignEvent(self) -> None: 
         if self.__eventHandler: 
             self.__eventHandler.enableNodeGoalAssignEvent() 
-            self.__eventHandler.disableNodeStartAssignEvent() 
+            self.__eventHandler.disableNodeStartAssignEvent()  
+    
+    def disableAllEvents(self) -> None:
+        if self.__eventHandler: self.__eventHandler.disableAllEvents() 
+    
+    def enableAllEvents(self) -> None:
+        if self.__eventHandler: self.__eventHandler.enableAllEvents() 
+    
+    def __stopCanvasRefreshLoop(self) -> None: 
+        self.__cancelCanvasRefreshLoop = True
+    
+    def __startCanvasRefreshLoop(self) -> None: 
+        self.__cancelCanvasRefreshLoop = False 
+        self.__canvasRefreshLoop()
 
 
 # Listen to Paranoid by Black Sabbath

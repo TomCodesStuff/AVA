@@ -63,6 +63,9 @@ class AlgorithmScreen(Generic[C, M ,D], ScreenInterface):
     def prepare(self) -> None: pass  
 
     @abstractmethod
+    def complete(self) -> None: pass 
+
+    @abstractmethod
     def render(self) -> None: pass 
 
     @abstractmethod 
@@ -70,6 +73,10 @@ class AlgorithmScreen(Generic[C, M ,D], ScreenInterface):
 
     @abstractmethod 
     def coolAnimationFrame(self) -> None: pass  
+
+    def __restore(self) -> None:
+        self.__updateWidgets() 
+        self.complete()
 
     def __animationStarting(self) -> None: 
         # Disable Buttons
@@ -79,10 +86,10 @@ class AlgorithmScreen(Generic[C, M ,D], ScreenInterface):
         self.animationSetup()
         self.__animationRunning = True
 
-    def __animationEnding(self) -> None:
+    def __animationEnded(self) -> None:
         self.__runButton.config(state="active")
         self.__stateButton.config(state="active")
-      
+        
     def endAnimation(self) -> None: 
         self.__animationRunning = False  
     
@@ -96,7 +103,8 @@ class AlgorithmScreen(Generic[C, M ,D], ScreenInterface):
             self.getWindow().scheduleFunctionExecution(self.coolEndingAnimation, self.__frameDelay) 
         else: 
             self.getController().refreshCanvas(refreshColours=True)
-            self.__animationEnding()
+            self.__animationEnded()
+            self.__restore()
 
     def runCoolEndingAnimation(self) -> None:
         self.__animationStarting()  
@@ -337,17 +345,16 @@ class AlgorithmScreen(Generic[C, M ,D], ScreenInterface):
             self.prepare()            
             self.__controller.startAlgorithmThread(self.__algorithmType, self.__getAlgorithmChoice())
 
-    # TODO add flag to play animation if algorithm terminated successfully
-    def algorithmComplete(self, playAnimation : bool) -> None: 
+    def algorithmComplete(self, playAnimation : bool) -> None:  
         self.__stopAlgorithm()
         if playAnimation: 
-            self.getWindow().scheduleFunctionExecution(self.runCoolEndingAnimation, START_DELAY_MS)
+            self.getWindow().scheduleFunctionExecution(self.runCoolEndingAnimation, START_DELAY_MS) 
+        else: self.__restore()
             
     # Forces current running algorithm thread to terminate (safely, I hope)
     def __stopAlgorithm(self) -> None:
         self.__controller.stopAlgorithmThread() 
         self.__isAlgorithmRunning = False  
-        self.__updateWidgets()
 
     # Loads the home screen 
     # Ensures any algorithm threads are terminated 

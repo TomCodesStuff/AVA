@@ -84,6 +84,9 @@ class ArrayAlgorithmScreen(AlgorithmScreen[C, M, D]):
         self.__animationIndex += 1
         self.setFrameDelay(TINY_DELAY_MS)
         if self.__animationIndex == array.size(): self.endAnimation()
+    
+    def complete(self) -> None:
+        self.getController().refreshCanvas(refreshColours=True)
 
 # Listen to Almost by Bowling For Soup
    

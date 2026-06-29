@@ -38,7 +38,6 @@ class AlgorithmController(ABC, Generic[S, M, D]):
     @abstractmethod
     def refreshCanvas(self, refreshColours:bool=False) -> None: pass
 
-
     # Cancels any scheduled function calls left by a terminated thread
     def cancelScheduledProcesses(self):
         # If there are still processed scheduled from the terminated thread

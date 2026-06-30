@@ -98,6 +98,9 @@ class TraversalController(AlgorithmController[S, M, D]):
             self.__canvasGraph.deleteCanvasNode(canvasNode)
             canvas.delete(canvasNode.getCanvasID())
             canvas.delete(canvasNode.getCanvasText().getCanvasID())
+        
+        if len(self.__canvasGraph.getCanvasNodes()) <= self.getModel().getMinNumNodes(): 
+            self.getScreen().disableDeleteNodeButton()
   
     def refreshCanvas(self, refreshColours:bool=False) -> None:     
         latestResults = {} 
@@ -144,9 +147,11 @@ class TraversalController(AlgorithmController[S, M, D]):
         model = self.getModel()
         screen = self.getScreen()
         self.__eventHandler = EventsHandler(canvas, self.__canvasGraph, model.getMinNumNodes(), model.getMaxNumNodes()) 
-        # Update screen to show edge options 
+        
+        # Reference to Functions event handler needs to call  
         self.__eventHandler.setShowEdgeOptionsCallback(screen.showEdgeOptions)
-        self.__eventHandler.setUpdateSelectButtonsCallback(screen.enableNodeSelectionButtons)
+        self.__eventHandler.setUpdateSelectButtonsCallback(screen.enableNodeSelectionButtons) 
+        self.__eventHandler.setEnableDeleteNodeButtonCallaback(self.getScreen().enableDeleteNodeButton)
 
     # Draws a circle (node) on the canvas 
     def spawnNode(self, coords: tuple=()) -> None: 
@@ -284,18 +289,30 @@ class TraversalController(AlgorithmController[S, M, D]):
                 canvas.itemconfig(canvasEdge.getWeightCanvasText().getCanvasID(), state="hidden")
 
     def selectStartNode(self) -> None: 
-        if not self.__canvasGraph.getCanvasNodes(): return
-        self.__canvasGraph.assignStartNode(random.choice(self.__canvasGraph.getCanvasNodes()))
+        if not self.__canvasGraph.getCanvasNodes(): return 
+        # If goal node has node been selected, choose random node
+        if self.__canvasGraph.getStartNode() is None:
+            self.__canvasGraph.assignStartNode(random.choice(self.__canvasGraph.getCanvasNodes())) 
+        # Set start node in Graph data structure 
+        self.getDataStructure().setStartNode(self.__canvasGraph.getStartNode().getNode())
     
     def selectGoalNode(self) -> None:  
         if not self.__canvasGraph.getCanvasNodes(): return
-        if self.__canvasGraph.getStartNode() is None: self.selectStartNode()
         startNode = self.__canvasGraph.getStartNode()
+        goalNode = self.__canvasGraph.getGoalNode()
 
-        candidateNodes = [x for x in self.__canvasGraph.getCanvasNodes() if x != startNode] 
-        if not candidateNodes: self.__canvasGraph.assignGoalNode(startNode)
-        else: self.__canvasGraph.assignGoalNode(random.choice(candidateNodes))
-
+        # Assign start node if it has not already been assigned 
+        if startNode is None: self.selectStartNode() 
+        # Assign goal node if it as not been assigned
+        if goalNode is None:
+            # Find all nodes that are not start node 
+            candidateNodes = [x for x in self.__canvasGraph.getCanvasNodes() if x != startNode]  
+            # If there are no candidate nodes -> set goal node to be start node 
+            if not candidateNodes: self.__canvasGraph.assignGoalNode(startNode)
+            # Otherwise randomly choose goal node
+            else: self.__canvasGraph.assignGoalNode(random.choice(candidateNodes)) 
+        # Set goal node in Graph data structure
+        self.getDataStructure().setGoalNode(self.__canvasGraph.getGoalNode().getNode())
 
 
 # Listen to Paranoid by Black Sabbath

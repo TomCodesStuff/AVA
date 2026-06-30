@@ -23,6 +23,7 @@ class CanvasNode():
     hoverColour = "red"
     startColour = "orange"
     goalColour = "green"
+    startGoalColour = "purple"
     minSpawnDist = 10
 
     def __init__(self, coords : tuple) -> None: 

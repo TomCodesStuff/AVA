@@ -37,11 +37,13 @@ class EventsHandler():
         # Function to show edge options in the GUI
         self.__showEdgeOptions = None  
         # Function to renable start and goal node selection buttons
-        self.__updateSelectButtons = None
+        self.__updateSelectButtons = None 
+        # Function to enable to delete node button
+        self.__enableDeleteNodeButton = None
 
         self.__addCanvasEvents()
 
-    def __canSpawnEventTrigger(self) -> bool: 
+    def __canSpawnEventTrigger(self) -> bool:  
         if self.__areEventsDisabled: return False
         if self.__isNodeBeingDeleted: 
             self.__isNodeBeingDeleted = False
@@ -54,7 +56,6 @@ class EventsHandler():
 
     def __spawnNodeDoubleClick(self, event : Event) -> None: 
         if not self.__canSpawnEventTrigger(): return 
-
         circleOffset = CanvasNode.getDefaultSize() // 2
         x0, y0 = event.x - circleOffset, event.y - circleOffset
         x1, y1 = event.x + circleOffset, event.y + circleOffset 
@@ -105,6 +106,7 @@ class EventsHandler():
             canvasEdge.markForDeletion()
         
         canvasNode.markForDeletion()
+        self.__isNodeBeingDeleted = False
         
     def __drawEdge(self, eventCoords : tuple, canvasEdge : CanvasEdge) -> None: 
         eventX, eventY = eventCoords
@@ -227,7 +229,10 @@ class EventsHandler():
         
         canvasNode = self.__creationTool.createNode(self.__canvasGraph, coords)
         self.__creationTool.renderNode(self.__canvas, canvasNode)
-        self.__addNodeEvents(canvasNode) 
+        self.__addNodeEvents(canvasNode)  
+        
+        if len(self.__canvasGraph.getCanvasNodes()) > self.__minNumNodes:  
+            if self.__enableDeleteNodeButton: self.__enableDeleteNodeButton()
         return True   
 
     def deleteEdge(self) -> None:
@@ -243,7 +248,10 @@ class EventsHandler():
         self.__showEdgeOptions = showEdgeOptionsFn
     
     def setUpdateSelectButtonsCallback(self, updateSelectButtonsFn : Callable) -> None:
-        self.__updateSelectButtons = updateSelectButtonsFn 
+        self.__updateSelectButtons = updateSelectButtonsFn  
+    
+    def setEnableDeleteNodeButtonCallaback(self, enableDeleteNodeButtonFn : Callable) -> None: 
+        self.__enableDeleteNodeButton = enableDeleteNodeButtonFn
     
     def getEdgeBeingEdited(self) -> CanvasEdge: return self.__edgeBeingEdited
 

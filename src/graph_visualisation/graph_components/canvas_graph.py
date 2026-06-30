@@ -52,7 +52,8 @@ class CanvasGraph():
         # Only allow start and goal nodes to be the same if there is one node
         if canvasNode == self.__goalNode: 
             if len(self.__nodes) == 1: 
-                print("Allow start and goal node to be the same") 
+                canvasNode.setPrevColour(CanvasNode.startGoalColour)
+                canvasNode.setColour(CanvasNode.startGoalColour)
             else: self.__goalNode = None 
         
         # If previous start node -> reset it's colours 
@@ -75,7 +76,8 @@ class CanvasGraph():
         # Only allow start and goal nodes to be the same if there is one node
         if canvasNode == self.__startNode: 
             if len(self.__nodes) == 1: 
-                print("Allow start and goal node to be the same") 
+                canvasNode.setPrevColour(CanvasNode.startGoalColour)
+                canvasNode.setColour(CanvasNode.startGoalColour)
             else: self.__startNode = None 
 
         # Update previous goal nodes colours to default (if there is one)

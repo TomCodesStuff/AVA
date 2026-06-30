@@ -33,6 +33,12 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
         self.__edgeOptionsFrame = None 
         self.__innerNodeFrame = None 
 
+    def disableDeleteNodeButton(self) -> None: 
+        self.__deleteNodeButton.config(state="disabled")
+    
+    def enableDeleteNodeButton(self) -> None: 
+        self.__deleteNodeButton.config(state="active")
+
     def enableNodeSelectionButtons(self) -> None:  
         self.__startNodeButton.config(state="active")
         self.__goalNodeButton.config(state="active")
@@ -60,8 +66,7 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
                                             font = (self.getFont(), self.getFontSize()), 
                                             command=self.getController().deleteNode)
         self.__deleteNodeButton.grid(row = 1, column = 1, pady = (5, 0), padx=(5, 0))  
-        self.addToggleableWidget(self.__deleteNodeButton)  
-    
+       
     def __createAssignStartButton(self) -> None: 
         self.__startNodeButton = tk.Button(self.__innerNodeFrame, text="Set Start.", width=8, relief="solid", 
                                            font = (self.getFont(), self.getFontSize()), 
@@ -228,11 +233,8 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
 
     
     def prepare(self) -> None:    
-        startNode = self.getDataStructure().getStartNode() 
-        goalNode = self.getDataStructure().getGoalNode()
-        
-        if not startNode: self.getController().selectStartNode() 
-        if not goalNode: self.getController().selectGoalNode()
+        self.getController().selectStartNode() 
+        self.getController().selectGoalNode()
 
         print(str(self.getDataStructure()))
 

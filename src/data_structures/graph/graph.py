@@ -74,7 +74,7 @@ class Graph(DataStructure[Node]):
     def __init__(self):
         self.__nodes = []
         self.__startNode = None  
-        self.__endNode = None 
+        self.__goalNode = None 
 
     def addNode(self, node : Node) -> None: 
         if node not in self.__nodes:
@@ -82,16 +82,33 @@ class Graph(DataStructure[Node]):
     
     def removeNode(self, node : Node) -> None: 
         if node in self.__nodes: 
-            self.__nodes.remove(node)
+            self.__nodes.remove(node) 
+        
+        if node == self.__startNode: self.__startNode = None
+        if node == self.__goalNode: self.__goalNode = None
     
-
     def get(self) -> List[Node]: 
         return self.__nodes.copy()
 
-    def size(self) -> int: return len(self.__nodes) 
+    def size(self) -> int: return len(self.__nodes)  
+
+    def setStartNode(self, node : Node) -> None: 
+        if node in self.__nodes: self.__startNode = node
+
+    def getStartNode(self) -> Node|None: return self.__startNode
+
+    def setGoalNode(self, node : Node) -> None: 
+        if node in self.__nodes: self.__goalNode = node
+
+    def getGoalNode(self) -> Node|None: return self.__goalNode
 
     def __str__(self) -> str: 
-        lines = ["Graph:"]
+        startNodeID = self.__nodes.index(self.__startNode) if self.__startNode else "<undefined>"
+        goalNodeID = self.__nodes.index(self.__goalNode) if self.__goalNode else "<undefined>"
+
+        lines = ["Graph:", 
+                 f"Start Node: {startNodeID}",
+                 f"End Node: {goalNodeID}"]
         for i, node in enumerate(self.__nodes): 
             line = f"{i}: "
             for (neighbour, weight) in node.getNeighbours(): 

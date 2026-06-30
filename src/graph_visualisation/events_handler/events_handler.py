@@ -4,7 +4,7 @@ from ..graph_components import CanvasGraph, CanvasNode, CanvasEdge
 from ..tools import * 
 
 class EventsHandler(): 
-    def __init__(self, canvas : Canvas, canvasGraph : CanvasGraph, maxNumNodes : int):
+    def __init__(self, canvas : Canvas, canvasGraph : CanvasGraph, minNumNodes : int, maxNumNodes : int):
         self.__canvas = canvas
         self.__canvasGraph = canvasGraph
                 
@@ -28,8 +28,11 @@ class EventsHandler():
         self.__edgeBeingDrawn = None  
         self.__edgeBeingEdited = None   
 
+        # Minimum Number of nodes 
+        self.__minNumNodes = minNumNodes
+
         # Maximum Number of nodes 
-        self.__maxNumNodes = maxNumNodes
+        self.__maxNumNodes = maxNumNodes 
 
         # Function to show edge options in the GUI
         self.__showEdgeOptions = None  
@@ -87,12 +90,15 @@ class EventsHandler():
         canvasNode.resetDragged()
         canvasNode.setColour(canvasNode.getPrevColour())
 
-    def deleteNode(self, canvasNode : CanvasNode) -> None:  
+    def deleteNode(self, canvasNode : CanvasNode) -> None:   
         if self.__areEventsDisabled or self.__isEdgeBeingEdited: return
         self.__isNodeBeingDeleted = True  
 
         # The event to draw an edge can still trigger so it needs to be deleted
         self.__resetEdgeDrawingEvent(deleteDrawnEdge=True)
+
+        # Don't delete node if minimum number of nodes has been reached 
+        if len(self.__canvasGraph.getCanvasNodes()) <= self.__minNumNodes: return
         
         # Not to thrilled about making a copy here but it's the best option
         for canvasEdge in list(canvasNode.getEdges()):  

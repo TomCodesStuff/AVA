@@ -224,8 +224,18 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
         self.setAlgorithmType(AlgorithmType.TRAVERSAL)
         self.displayAlgorithmOptions()
         self.getController().startInteractiveGraph()
+        self.getController().spawnStarterNodes()
+
     
-    def prepare(self) -> None:   
+    def prepare(self) -> None:    
+        startNode = self.getDataStructure().getStartNode() 
+        goalNode = self.getDataStructure().getGoalNode()
+        
+        if not startNode: self.getController().selectStartNode() 
+        if not goalNode: self.getController().selectGoalNode()
+
+        print(str(self.getDataStructure()))
+
         # If the user is in the middle of editing an edge 
         self.__finishEdgeEdit()
         self.getController().stopInteractiveGraph()  

@@ -4,6 +4,10 @@ if(__name__ == "__main__"):
     print("This is file shouldn't be run on it's own. \nIt should be imported only.")
     exit()
 
+# TODO -> how to handle 0 or 1 nodes on screen?
+
+
+import random
 import math
 from typing import TYPE_CHECKING, TypeVar
 from tkinter import Canvas
@@ -38,10 +42,25 @@ class TraversalController(AlgorithmController[S, M, D]):
         # Correctly set the default screen length for newly created edges 
         CanvasEdge.setDefaultScreenLen(self.__calculateScreenLen(CanvasEdge.getDefaultWeight()))
     
+    def spawnStarterNodes(self) -> None: 
+        if not self.__eventHandler: return 
+
+        # Offset to make sure second node is on screen
+        offset = 5
+        canvasWidth = self.getScreen().getCanvas().winfo_width()
+        canvasHeight = self.getScreen().getCanvas().winfo_height()
+        nodeSize = CanvasNode.defaultSize
+
+        # One node will spawn at default coords (top left canvas)
+        self.__eventHandler.spawnNode(CanvasNode.defaultCoords)
+        # Another node will spawn at bottom-rigth canvas
+        self.__eventHandler.spawnNode((canvasWidth - nodeSize - offset, canvasHeight - nodeSize - offset, 
+                                       canvasWidth - offset, canvasHeight - offset))
+
     def startInteractiveGraph(self) -> None:  
         if self.__eventHandler is None:
             self.createEventHandler(self.getScreen().getCanvas())
-        # self.__createPhysicsThread() 
+        self.__createPhysicsThread() 
         self.startManagedThreads()
         self.__eventHandler.enableAllEvents()
         self.__startCanvasRefreshLoop() 
@@ -121,11 +140,13 @@ class TraversalController(AlgorithmController[S, M, D]):
             canvas.coords(canvasEdge.getCanvasID(), canvasEdge.adjustDirectionArrows())
             canvas.itemconfig(canvasEdge.getCanvasID(), fill=canvasEdge.getColour())
         
-    def createEventHandler(self, canvas : Canvas) -> None: 
-        self.__eventHandler = EventsHandler(canvas, self.__canvasGraph, self.getModel().getMaxNumNodes()) 
+    def createEventHandler(self, canvas : Canvas) -> None:  
+        model = self.getModel()
+        screen = self.getScreen()
+        self.__eventHandler = EventsHandler(canvas, self.__canvasGraph, model.getMinNumNodes(), model.getMaxNumNodes()) 
         # Update screen to show edge options 
-        self.__eventHandler.setShowEdgeOptionsCallback(self.getScreen().showEdgeOptions)
-        self.__eventHandler.setUpdateSelectButtonsCallback(self.getScreen().enableNodeSelectionButtons)
+        self.__eventHandler.setShowEdgeOptionsCallback(screen.showEdgeOptions)
+        self.__eventHandler.setUpdateSelectButtonsCallback(screen.enableNodeSelectionButtons)
 
     # Draws a circle (node) on the canvas 
     def spawnNode(self, coords: tuple=()) -> None: 
@@ -261,5 +282,20 @@ class TraversalController(AlgorithmController[S, M, D]):
         for canvasEdge in self.__canvasGraph.getCanvasEdges(): 
             if canvasEdge.getWeightCanvasText() is not None: 
                 canvas.itemconfig(canvasEdge.getWeightCanvasText().getCanvasID(), state="hidden")
-            
+
+    def selectStartNode(self) -> None: 
+        if not self.__canvasGraph.getCanvasNodes(): return
+        self.__canvasGraph.assignStartNode(random.choice(self.__canvasGraph.getCanvasNodes()))
+    
+    def selectGoalNode(self) -> None:  
+        if not self.__canvasGraph.getCanvasNodes(): return
+        if self.__canvasGraph.getStartNode() is None: self.selectStartNode()
+        startNode = self.__canvasGraph.getStartNode()
+
+        candidateNodes = [x for x in self.__canvasGraph.getCanvasNodes() if x != startNode] 
+        if not candidateNodes: self.__canvasGraph.assignGoalNode(startNode)
+        else: self.__canvasGraph.assignGoalNode(random.choice(candidateNodes))
+
+
+
 # Listen to Paranoid by Black Sabbath

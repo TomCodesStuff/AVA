@@ -28,23 +28,43 @@ class CanvasGraph():
     def deleteCanvasNode(self, canvasNode : CanvasNode) -> None:
         if canvasNode not in self.__nodes: return
         self.__nodes.remove(canvasNode)
+        
+        if canvasNode == self.__startNode: self.__startNode = None
+        if canvasNode == self.__goalNode: self.__goalNode = None
+
         self.__graph.removeNode(canvasNode.getNode())
         self.__decrementNodeIDs(canvasNode.getID())
-        print(str(self.__graph))
-
+     
     def assignStartNode(self, canvasNode : CanvasNode) -> None: 
         if canvasNode not in self.__nodes: return 
-        if self.__startNode: self.__startNode.setColour(CanvasNode.defaultColour)
+        
+        if self.__startNode: 
+            self.__startNode.setColour(CanvasNode.defaultColour)
+            self.__startNode.setPrevColour(CanvasNode.defaultColour)
+        
         canvasNode.setColour(CanvasNode.startColour)
         canvasNode.setPrevColour(CanvasNode.startColour)
-        self.__startNode = canvasNode 
-    
+        
+        self.__startNode = canvasNode  
+        self.__graph.setStartNode(canvasNode.getNode())
+
     def assignGoalNode(self, canvasNode : CanvasNode) -> None: 
         if canvasNode not in self.__nodes: return 
-        if self.__goalNode: self.__goalNode.setColour(CanvasNode.defaultColour)
-        canvasNode.setColour(CanvasNode.goalColour) 
-        canvasNode.setPrevColour(CanvasNode.goalColour)
+        
+        if self.__goalNode and canvasNode != self.__goalNode: 
+            self.__goalNode.setColour(CanvasNode.defaultColour)
+            self.__goalNode.setPrevColour(CanvasNode.defaultColour)
+
+        if canvasNode != self.__startNode:
+            canvasNode.setColour(CanvasNode.goalColour) 
+            canvasNode.setPrevColour(CanvasNode.goalColour)
+            
         self.__goalNode = canvasNode
+        self.__graph.setGoalNode(canvasNode.getNode())
+
+    def getStartNode(self) -> CanvasNode | None: return self.__startNode
+
+    def getGoalNode(self) -> CanvasNode | None: return self.__goalNode
 
     def getLastCreatedNode(self) -> CanvasNode|None: 
         if len(self.__nodes) == 0: return None 

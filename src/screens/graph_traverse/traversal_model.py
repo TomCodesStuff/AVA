@@ -22,6 +22,8 @@ class TraversalModel(AlgorithmModel):
         self.setMinDelay(MIN_DELAY)
         self.setMaxDelay(MAX_DELAY)
 
+        # Mininmum number of nodes that should be on screen
+        self.__minNumNodes = 2
         # Number of nodes that can be on screen at once
         self.__maxNumNodes = 20
         
@@ -49,6 +51,8 @@ class TraversalModel(AlgorithmModel):
 
         # How far away from edge text will be displayed 
         self.__weightTextOffset = 12
+
+    def getMinNumNodes(self) -> int: return self.__minNumNodes
 
     def getMaxNumNodes(self) -> int: return self.__maxNumNodes
 

@@ -30,9 +30,13 @@ class ManagedThread(ABC, threading.Thread):
         if self.isThreadAlive(): print("ERROR: Thread did not terminate in time.")        
         else: print("Thread Terminated :)")  
     
-    def acquirePauseLock(self) -> None: self.__threadPauseLock.acquire()
+    def acquirePauseLock(self) -> None: 
+        print("locked")
+        self.__threadPauseLock.acquire()
     
-    def releasePauseLock(self) -> None: self.__threadPauseLock.release()  
+    def releasePauseLock(self) -> None: 
+        print("Released")
+        self.__threadPauseLock.release()  
     
     def isThreadPaused(self) -> bool: return self.__threadPauseLock.locked() 
     

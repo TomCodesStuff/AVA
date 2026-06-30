@@ -292,8 +292,8 @@ class AlgorithmScreen(Generic[C, M ,D], ScreenInterface):
         # Updates widths
         self.getWindow().update()  
 
-    def __updateStateButton(self) -> None:
-        if self.getController().isAlgorithmPaused():
+    def __updateStateButton(self, isPaused=False) -> None:
+        if isPaused:  
             self.__stateButton.config(text="Resume.", command=self.__resumeAlgorithm) 
         else:
             self.__stateButton.config(text="Pause.", command=self.__pauseAlgorithm)  
@@ -333,7 +333,7 @@ class AlgorithmScreen(Generic[C, M ,D], ScreenInterface):
     # Holds the lock, pausing the algorithm Thread
     def __pauseAlgorithm(self) -> None: 
         self.__controller.pauseAlgorithm()
-        self.__updateStateButton() 
+        self.__updateStateButton(isPaused=True) 
 
     # Call algorithm user has selected
     def __runAlgorithm(self) -> None:   
@@ -357,6 +357,7 @@ class AlgorithmScreen(Generic[C, M ,D], ScreenInterface):
     def __stopAlgorithm(self) -> None:
         self.__controller.stopAlgorithmThread() 
         self.__isAlgorithmRunning = False  
+        self.__updateWidgets()
 
     # Loads the home screen 
     # Ensures any algorithm threads are terminated 

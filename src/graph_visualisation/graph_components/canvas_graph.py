@@ -35,31 +35,56 @@ class CanvasGraph():
         self.__graph.removeNode(canvasNode.getNode())
         self.__decrementNodeIDs(canvasNode.getID())
      
+
+    # NOTE: 
+    # if only one node AND it's the goal node -> assign as start node and goal node
+    # elif passed node is goal node -> unassign goal node
+    #   
+    # if there is a current start node -> reset it's colours 
+
     def assignStartNode(self, canvasNode : CanvasNode) -> None: 
         if canvasNode not in self.__nodes: return 
         
-        if self.__startNode: 
-            self.__startNode.setColour(CanvasNode.defaultColour)
-            self.__startNode.setPrevColour(CanvasNode.defaultColour)
-        
+        # Assign passed node with start colours 
         canvasNode.setColour(CanvasNode.startColour)
         canvasNode.setPrevColour(CanvasNode.startColour)
         
+        # Only allow start and goal nodes to be the same if there is one node
+        if canvasNode == self.__goalNode: 
+            if len(self.__nodes) == 1: 
+                print("Allow start and goal node to be the same") 
+            else: self.__goalNode = None 
+        
+        # If previous start node -> reset it's colours 
+        if self.__startNode: 
+            self.__startNode.setColour(CanvasNode.defaultColour)
+            self.__startNode.setPrevColour(CanvasNode.defaultColour)
+
+        # Assign passed node as start node 
         self.__startNode = canvasNode  
+        # TODO avoid duplicate logic here -> move assignment to when algorithm runs
         self.__graph.setStartNode(canvasNode.getNode())
 
     def assignGoalNode(self, canvasNode : CanvasNode) -> None: 
         if canvasNode not in self.__nodes: return 
         
-        if self.__goalNode and canvasNode != self.__goalNode: 
-            self.__goalNode.setColour(CanvasNode.defaultColour)
-            self.__goalNode.setPrevColour(CanvasNode.defaultColour)
+        # Assign passed node with goal colours
+        canvasNode.setColour(CanvasNode.goalColour) 
+        canvasNode.setPrevColour(CanvasNode.goalColour)
 
-        if canvasNode != self.__startNode:
-            canvasNode.setColour(CanvasNode.goalColour) 
-            canvasNode.setPrevColour(CanvasNode.goalColour)
+        # Only allow start and goal nodes to be the same if there is one node
+        if canvasNode == self.__startNode: 
+            if len(self.__nodes) == 1: 
+                print("Allow start and goal node to be the same") 
+            else: self.__startNode = None 
+
+        # Update previous goal nodes colours to default (if there is one)
+        if self.__goalNode: 
+            self.__goalNode.setColour(CanvasNode.defaultColour)
+            self.__goalNode.setPrevColour(CanvasNode.defaultColour)           
             
         self.__goalNode = canvasNode
+        # TODO remove redundant logic -> maybe a flag 
         self.__graph.setGoalNode(canvasNode.getNode())
 
     def getStartNode(self) -> CanvasNode | None: return self.__startNode

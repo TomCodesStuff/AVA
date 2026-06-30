@@ -1,13 +1,13 @@
 from __future__ import annotations
 from src.data_structures import DataStructure
 from src.enums import EdgeDirection
-from src.graph_visualisation import CanvasNode, CanvasEdge
 from typing import Iterable, List, Tuple
 
 
 class Edge(): 
     def __init__(self, weight : int, colour : str, direction : EdgeDirection):
         self.__colour = colour 
+        self.__defaultColour = colour
         self.__weight = weight 
         self.__direction = direction
         self.__firstNode = None 
@@ -33,13 +33,15 @@ class Edge():
     def getNeighbourNode(self, node : Node) -> Node|None: 
         if node == self.__firstNode: return self.__secondNode 
         if node == self.__secondNode: return self.__firstNode
-        return None 
+        return None  
 
+    def resetColour(self) -> None: self.__colour = self.__defaultColour
 
 # TODO add function to get ID in constructor 
 class Node(): 
     def __init__(self, colour : str):
         self.__colour = colour 
+        self.__defaultColour = colour
         self.__neighbours = {} 
         # Used to reconstruct route when algorithm is complete 
         self.__prevNode = None 
@@ -69,7 +71,17 @@ class Node():
     def setPrevNode(self, node : Node) -> None: 
         if node in self.__neighbours: self.__prevNode = node
 
-    def getPrevNode(self) -> Node: return self.__prevNode 
+    def getPrevNode(self) -> Node: return self.__prevNode  
+
+    def setDefaultColour(self, colour : str) -> None: self.__defaultColour = colour
+
+    def resetColour(self) -> None:  self.__colour = self.__defaultColour 
+    
+    def resetEdgeColour(self, neighbourNode : Node) -> None:
+        if neighbourNode not in self.__neighbours: return 
+        self.__neighbours[neighbourNode].resetColour()
+    
+    def getDefaultColour(self) -> str: return self.__defaultColour
 
 class Graph(DataStructure[Node]): 
     def __init__(self):
@@ -103,11 +115,31 @@ class Graph(DataStructure[Node]):
 
     def getGoalNode(self) -> Node|None: return self.__goalNode
 
+    def resetEdgeColours(self, node : Node) -> None: 
+        for (neighbour, _) in node.getNeighbours():
+            node.resetEdgeColour(neighbour) 
+
+    def resetNodeColours(self) -> None: 
+        for node in self.__nodes: node.resetColour()
+
     def resetColours(self) -> None: 
         for node in self.get(): 
-            node.setColour(CanvasNode.defaultColour) 
-            for (neighbour, _) in node.getNeighbours():
-                node.setEdgeColour(neighbour, CanvasEdge.defaultColour)
+            node.resetColour()
+            self.resetEdgeColours(node)
+    
+    def printRoute(self) -> None: 
+        route = [str(self.__nodes.index(self.__goalNode))]
+
+        crrnt_Node = self.__goalNode.getPrevNode()
+        while(crrnt_Node is not None): 
+            route.append(str(self.__nodes.index(crrnt_Node)))
+            if crrnt_Node == self.__startNode: crrnt_Node = None 
+            else: crrnt_Node = crrnt_Node.getPrevNode()
+
+        route = route[::-1] 
+        if route[0] != self.__startNode: route = ["No route"]
+        
+        print(" -> ".join(route))
 
     def __str__(self) -> str: 
         startNodeID = self.__nodes.index(self.__startNode) if self.__startNode else "<undefined>"

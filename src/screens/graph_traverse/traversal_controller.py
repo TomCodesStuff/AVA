@@ -70,6 +70,7 @@ class TraversalController(AlgorithmController[S, M, D]):
         self.__eventHandler.disableAllEvents() 
         self.__stopCanvasRefreshLoop()
         self.cancelScheduledProcesses()
+        self.__physicsCalculations = None
 
     def __getCanvasCentre(self) -> tuple: 
         canvas = self.getScreen().getCanvas()
@@ -105,6 +106,14 @@ class TraversalController(AlgorithmController[S, M, D]):
     def refreshCanvas(self, refreshColours:bool=False) -> None:     
         latestResults = {} 
         canvas = self.getScreen().getCanvas()
+
+        if refreshColours: 
+            for canvasNode in self.__canvasGraph.getCanvasNodes(): 
+                canvasNode.setColour(canvasNode.getNode().getDefaultColour())
+            
+            for canvasEdge in self.__canvasGraph.getCanvasEdges():
+                canvasEdge.setColour(CanvasEdge.defaultColour)
+
 
         if self.__eventHandler and self.__eventHandler.getEdgeBeingDrawn():  
             edgeBeingDrawn = self.__eventHandler.getEdgeBeingDrawn() 

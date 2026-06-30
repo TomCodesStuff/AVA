@@ -43,9 +43,6 @@ class CanvasNode():
         # ID of the node on the canvas
         self.__canvasID = -1   
 
-        # Buffer to keepm track of previous colour -> useful for hover events 
-        self.__prevColour = CanvasNode.defaultColour
-
         # A set containing references to edges that connects nodes to eachother 
         self.__edges = set()
         # Boolean flag, when a user is moving a node forces are not applied
@@ -81,8 +78,6 @@ class CanvasNode():
     
     def getCanvasText(self) -> CanvasText: return self.__canvasText
     
-    def getPrevColour(self) -> str: return self.__prevColour
-    
     def getNode(self) -> Node: return self.__node 
     
     def isMarkedForDeletion(self) -> bool: return self.__isMarkedForDeletion
@@ -91,8 +86,6 @@ class CanvasNode():
     def setCanvasID(self, canvasID : int) -> None:  self.__canvasID = canvasID
     
     def setColour(self, colour : str) -> None: self.__node.setColour(colour)    
-    
-    def setPrevColour(self, colour : str): self.__prevColour = colour
     
     def getOffset(self) -> int: return (self.__size // 2) + 1 
     

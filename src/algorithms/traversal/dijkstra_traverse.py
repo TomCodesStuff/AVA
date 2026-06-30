@@ -30,29 +30,37 @@ class DijkstraTraverse(Algorithm[Graph]):
     def run(self) -> int:  
         graph = self.getDataStructure()
         startNode = graph.getStartNode()
-        
-        visited_nodes = set()
+    
         unvisitedNodes = {
             node : float("inf") if node != startNode else 0 
             for node in graph.get()
         }
-
-        
-        print(unvisitedNodes)
-        
-        # While there is an unvisited node 
-        while((crrntNode := self.__selectNode(unvisitedNodes)) is not None):  
-            # For each neighbour 
-            for (neighbour, weight) in crrntNode.getNeighbours():  
-                if neighbour in unvisitedNodes and unvisitedNodes[crrntNode] + weight < unvisitedNodes[neighbour]:
-                    unvisitedNodes[neighbour] = unvisitedNodes[crrntNode] + weight 
-                    neighbour.setPrevNode(crrntNode)
-            
-            del unvisitedNodes[crrntNode]
-            visited_nodes.add(crrntNode)
    
-        graph.printRoute()
+        # While there is an unvisited node 
+        while((crrntNode := self.__selectNode(unvisitedNodes)) is not None):   
+            # Reset all colours 
+            graph.resetColours()
+            # Mark current node as red 
+            crrntNode.setColour("red")
 
-        
-        time.sleep(5)
+            # Mark all nodes and edges current loop looks at  
+            for (neighbour, weight) in crrntNode.getNeighbours():
+                if neighbour in unvisitedNodes: 
+                    crrntNode.setEdgeColour(neighbour, "red")
+                    neighbour.setColour("purple")
+                self.tick()
+
+            # For each neighbour    
+            for (neighbour, weight) in crrntNode.getNeighbours():
+                # If new shortest path for a node has been found 
+                if neighbour in unvisitedNodes and unvisitedNodes[crrntNode] + weight < unvisitedNodes[neighbour]:
+                    crrntNode.setEdgeColour(neighbour, "green")
+                    neighbour.resetColour()
+                    unvisitedNodes[neighbour] = unvisitedNodes[crrntNode] + weight 
+                    neighbour.setPrevNode(crrntNode) 
+                self.tick()
+            # Mark node as visisted 
+            del unvisitedNodes[crrntNode]
+            self.tick()
+
         return 0

@@ -39,19 +39,19 @@ class CanvasGraph():
         if canvasNode not in self.__nodes: return 
         
         # Assign passed node with start colours 
-        canvasNode.getNode().setDefaultColour(CanvasNode.startColour)
+        canvasNode.getNode().setBaseColour(CanvasNode.startColour)
         canvasNode.setColour(CanvasNode.startColour)
 
         # Only allow start and goal nodes to be the same if there is one node
         if canvasNode == self.__goalNode: 
             if len(self.__nodes) == 1: 
-                canvasNode.getNode().setDefaultColour(CanvasNode.startGoalColour)
+                canvasNode.getNode().setBaseColour(CanvasNode.startGoalColour)
                 canvasNode.setColour(CanvasNode.startGoalColour)
             else: self.__goalNode = None 
         
         # If previous start node -> reset it's colours 
         if self.__startNode: 
-            self.__startNode.getNode().setDefaultColour(CanvasNode.defaultColour)
+            self.__startNode.getNode().setBaseColour(CanvasNode.defaultColour)
             self.__startNode.setColour(CanvasNode.defaultColour)
 
         # Assign passed node as start node 
@@ -63,19 +63,19 @@ class CanvasGraph():
         if canvasNode not in self.__nodes: return 
         
         # Assign passed node with goal colours
-        canvasNode.getNode().setDefaultColour(CanvasNode.goalColour)
+        canvasNode.getNode().setBaseColour(CanvasNode.goalColour)
         canvasNode.setColour(CanvasNode.goalColour) 
 
         # Only allow start and goal nodes to be the same if there is one node
         if canvasNode == self.__startNode: 
             if len(self.__nodes) == 1: 
-                canvasNode.getNode().setDefaultColour(CanvasNode.startGoalColour)
+                canvasNode.getNode().setBaseColour(CanvasNode.startGoalColour)
                 canvasNode.setColour(CanvasNode.startGoalColour)
             else: self.__startNode = None 
 
         # Update previous goal nodes colours to default (if there is one)
         if self.__goalNode: 
-            self.__goalNode.getNode().setDefaultColour(CanvasNode.defaultColour)
+            self.__goalNode.getNode().setBaseColour(CanvasNode.defaultColour)
             self.__goalNode.setColour(CanvasNode.defaultColour)
           
         self.__goalNode = canvasNode

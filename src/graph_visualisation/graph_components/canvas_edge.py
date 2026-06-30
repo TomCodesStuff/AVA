@@ -144,7 +144,7 @@ class CanvasEdge():
     def getDefaultWeight() -> int: return CanvasEdge.defaultWeight
 
     @staticmethod
-    def getDefaultColour() -> int: return CanvasEdge.defaultColour
+    def getBaseColour() -> int: return CanvasEdge.defaultColour
 
     @staticmethod
     def getEditColour() -> str: return CanvasEdge.editColour

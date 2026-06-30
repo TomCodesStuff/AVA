@@ -7,7 +7,7 @@ class HoverTool():
         canvasNode.setColour(CanvasNode.getHoverColour())
 
     def nodeOnLeave(self, canvasNode : CanvasNode) -> None:
-        canvasNode.setColour(canvasNode.getNode().getDefaultColour())  
+        canvasNode.setColour(canvasNode.getNode().getBaseColour())  
     
     def edgeOnHover(self, canvas : Canvas, canvasEdge : CanvasEdge) -> None:
         canvas.itemconfig(canvasEdge.getCanvasID(), width=CanvasEdge.getHoverSize())

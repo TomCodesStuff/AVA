@@ -89,7 +89,7 @@ class EventsHandler():
     
     def __resetDragged(self, canvasNode : CanvasNode): 
         canvasNode.resetDragged()
-        canvasNode.setColour(canvasNode.getNode().getDefaultColour())
+        canvasNode.setColour(canvasNode.getNode().getBaseColour())
 
     def deleteNode(self, canvasNode : CanvasNode) -> None:   
         if self.__areEventsDisabled or self.__isEdgeBeingEdited: return
@@ -240,7 +240,7 @@ class EventsHandler():
         if self.__edgeBeingEdited: self.__edgeBeingEdited.markForDeletion()
      
     def finishEdgeEdit(self) -> float: 
-        if self.__edgeBeingEdited: self.__edgeBeingEdited.setColour(CanvasEdge.getDefaultColour())
+        if self.__edgeBeingEdited: self.__edgeBeingEdited.setColour(CanvasEdge.getBaseColour())
         self.__edgeBeingEdited = None 
         self.__isEdgeBeingEdited = False
         

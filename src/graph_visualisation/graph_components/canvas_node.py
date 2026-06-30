@@ -138,7 +138,7 @@ class CanvasNode():
     def getDefaultCoords() -> tuple: return CanvasNode.defaultCoords 
 
     @staticmethod 
-    def getDefaultColour() -> str: return CanvasNode.defaultColour 
+    def getBaseColour() -> str: return CanvasNode.defaultColour 
 
     @staticmethod 
     def getHoverColour() -> str: return CanvasNode.hoverColour

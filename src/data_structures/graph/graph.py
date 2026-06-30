@@ -1,6 +1,7 @@
 from __future__ import annotations
 from src.data_structures import DataStructure
 from src.enums import EdgeDirection
+from src.graph_visualisation import CanvasNode, CanvasEdge
 from typing import Iterable, List, Tuple
 
 
@@ -101,6 +102,12 @@ class Graph(DataStructure[Node]):
         if node in self.__nodes: self.__goalNode = node
 
     def getGoalNode(self) -> Node|None: return self.__goalNode
+
+    def resetColours(self) -> None: 
+        for node in self.get(): 
+            node.setColour(CanvasNode.defaultColour) 
+            for (neighbour, _) in node.getNeighbours():
+                node.setEdgeColour(neighbour, CanvasEdge.defaultColour)
 
     def __str__(self) -> str: 
         startNodeID = self.__nodes.index(self.__startNode) if self.__startNode else "<undefined>"

@@ -264,9 +264,6 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
             self.__animationMode = "failure" 
             self.__numFrames = 6
 
-        self.__animationMode = "failure" 
-        self.__numFrames = 6
-
         self.__animationIndex = 0
 
     def __failureAnimationFrame(self) -> None:
@@ -279,9 +276,8 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
         crrntNode = self.__calculatedRoute[self.__animationIndex]
         crrntNode.setColour("green")
         if crrntNode != self.getDataStructure().getStartNode(): 
-            crrntNode.setEdgeColour(self.__calculatedRoute[self.__animationIndex - 1], "green")
-
-
+            self.__calculatedRoute[self.__animationIndex - 1].setEdgeColour(crrntNode, "green")
+            
     def coolAnimationFrame(self) -> None: 
         if self.__animationIndex == self.__numFrames:
             self.endAnimation()

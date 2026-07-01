@@ -47,7 +47,7 @@ class DijkstraTraverse(Algorithm[Graph]):
             for (neighbour, weight) in crrntNode.getNeighbours():
                 if neighbour in unvisitedNodes: 
                     crrntNode.setEdgeColour(neighbour, "red")
-                    neighbour.setColour("purple")
+                    neighbour.setColour("black")
                 self.tick()
 
             # For each neighbour    
@@ -55,12 +55,12 @@ class DijkstraTraverse(Algorithm[Graph]):
                 # If new shortest path for a node has been found 
                 if neighbour in unvisitedNodes and unvisitedNodes[crrntNode] + weight < unvisitedNodes[neighbour]:
                     crrntNode.setEdgeColour(neighbour, "green")
-                    neighbour.resetColour()
                     unvisitedNodes[neighbour] = unvisitedNodes[crrntNode] + weight 
                     neighbour.setPrevNode(crrntNode) 
                 self.tick()
             # Mark node as visisted 
             del unvisitedNodes[crrntNode]
+            
             self.tick()
 
         return 0

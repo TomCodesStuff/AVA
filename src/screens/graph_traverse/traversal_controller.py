@@ -107,7 +107,7 @@ class TraversalController(AlgorithmController[S, M, D]):
         latestResults = {} 
         canvas = self.getScreen().getCanvas()
 
-        if refreshColours: 
+        if refreshColours:  
             for canvasNode in self.__canvasGraph.getCanvasNodes(): 
                 canvasNode.setColour(canvasNode.getNode().getBaseColour())
             

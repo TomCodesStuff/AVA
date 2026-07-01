@@ -19,10 +19,8 @@ M = TypeVar("M", bound="TraversalModel")
 D = TypeVar("D", bound="Graph")
 
 
-# TODO Make sure to hide graph options when algorithm is run 
-
 INITIAL_WEIGHT = 0
-
+TINY_DELAY_MS = 50
 
 class TraversalScreen(AlgorithmScreen[C, M, D]):  
     def __init__(self, window):
@@ -32,6 +30,13 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
         self.__nodeOptionsFrame = None 
         self.__edgeOptionsFrame = None 
         self.__innerNodeFrame = None 
+
+        # Route calculated from running an algorithm, used to determine what animation to play
+        self.__calculatedRoute = None 
+        # Determines what anumation to play
+        self.__animationMode = "failure"  
+        self.__animationIndex = 0
+        self.__numFrames = 3
 
     def disableDeleteNodeButton(self) -> None: 
         self.__deleteNodeButton.config(state="disabled")
@@ -248,10 +253,48 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
         self.getController().hideEdgeWeightText()
         self.getController().startInteractiveGraph()
         
-    def animationSetup(self) -> None: pass 
+    def animationSetup(self) -> None: 
+        self.getDataStructure().resetColours()
+        self.getDataStructure().printRoute()
+        self.__calculatedRoute = self.getDataStructure().reconstructRoute()
+        if self.__calculatedRoute: 
+            self.__animationMode = "success"
+            self.__numFrames = len(self.__calculatedRoute)
+        else: 
+            self.__animationMode = "failure" 
+            self.__numFrames = 6
+
+        self.__animationMode = "failure" 
+        self.__numFrames = 6
+
+        self.__animationIndex = 0
+
+    def __failureAnimationFrame(self) -> None:
+        for node in self.getDataStructure().get(): 
+            node.setColour("red")
+            for (neighbour, _) in node.getNeighbours(): 
+                node.setEdgeColour(neighbour, "red")
     
+    def __successAnimationFrame(self) -> None: 
+        crrntNode = self.__calculatedRoute[self.__animationIndex]
+        crrntNode.setColour("green")
+        if crrntNode != self.getDataStructure().getStartNode(): 
+            crrntNode.setEdgeColour(self.__calculatedRoute[self.__animationIndex - 1], "green")
+
+
     def coolAnimationFrame(self) -> None: 
-        self.endAnimation()
-        pass  
+        if self.__animationIndex == self.__numFrames:
+            self.endAnimation()
+            return
+          
+        if self.__animationMode == "failure": 
+            if self.__animationIndex % 2: self.getController().refreshCanvas(refreshColours=True)
+            else: self.__failureAnimationFrame()  
+        elif self.__animationMode == "success":
+            self.__successAnimationFrame()
+
+
+        self.__animationIndex += 1
+        self.setFrameDelay(1000)
 
 # Listen to Glass Spiders by Hot Milk

@@ -300,7 +300,7 @@ class AlgorithmScreen(Generic[C, M ,D], ScreenInterface):
 
     def __updateRunButton(self) -> None: 
         if self.__isAlgorithmRunning: 
-            self.__runButton.config(text="Stop.", command=self.__stopAlgorithm)
+            self.__runButton.config(text="Stop.", command=lambda: self.algorithmComplete(playAnimation=False))
         else: 
             self.__runButton.config(text="Solve.", command=self.__runAlgorithm)  
 
@@ -357,7 +357,7 @@ class AlgorithmScreen(Generic[C, M ,D], ScreenInterface):
     def __stopAlgorithm(self) -> None:
         self.__controller.stopAlgorithmThread() 
         self.__isAlgorithmRunning = False  
-        self.__updateWidgets()
+        # self.__updateWidgets()
 
     # Loads the home screen 
     # Ensures any algorithm threads are terminated 

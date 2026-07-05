@@ -30,7 +30,9 @@ class DijkstraTraverse(Algorithm[Graph]):
     def run(self) -> int:  
         graph = self.getDataStructure()
         startNode = graph.getStartNode()
-    
+
+        if startNode is None or graph.getGoalNode() is None: return 1 
+
         unvisitedNodes = {
             node : float("inf") if node != startNode else 0 
             for node in graph.get()

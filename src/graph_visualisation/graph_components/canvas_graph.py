@@ -12,7 +12,14 @@ class CanvasGraph():
         self.__nodesToEdges = {} 
 
         self.__startNode = None 
-        self.__goalNode = None 
+        self.__goalNode = None  
+
+        # Minimum Number of nodes 
+        self.__minNumNodes = 2
+        # Maximum Number of nodes 
+        self.__maxNumNodes = 20  
+        # Maximum Numver edges 
+        self.__maxNumEdges = 25
 
     def addCanvasNode(self, canvasNode : CanvasNode) -> None: 
         self.__nodes.append(canvasNode) 
@@ -130,7 +137,13 @@ class CanvasGraph():
     def getCanvasEdges(self) -> List[CanvasEdge]: return self.__edges
 
     def getCanvasNodeAt(self, index : int) -> None: 
-        return self.__nodes[min(index, len(self.__nodes) - 1)]
+        return self.__nodes[min(index, len(self.__nodes) - 1)] 
+
+    def getMinNumNodes(self) -> int: return self.__minNumNodes
+    
+    def getMaxNumNodes(self) -> int: return self.__maxNumNodes
+    
+    def getMaxNumEdges(self) -> int: return self.__maxNumEdges
 
 
 # Listen to Hertz by Amyl and the Sniffers 

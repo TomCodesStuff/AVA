@@ -89,7 +89,6 @@ class CanvasNode():
     def getRequiredPhysicsData(self) -> dict: 
         return {"coords" : list(self.__coords),  "size" : self.__size, "offset" : self.getOffset()}
 
-
     # Setters 
     def setCanvasID(self, canvasID : int) -> None:  self.__canvasID = canvasID
     
@@ -107,9 +106,7 @@ class CanvasNode():
 
         if self.__canvasText:  
             nodeOffset = self.getOffset()
-            self.__canvasText.updateCoords((newDisplayCoords[0] + nodeOffset + 1, 
-                                           newDisplayCoords[1] + nodeOffset + 1))
-
+            self.__canvasText.updateCoords((newDisplayCoords[0] + nodeOffset + 1, newDisplayCoords[1] + nodeOffset + 1))
 
     def updateDisplayedColour(self, newColour : str) -> None: 
         if newColour: self.__displayedColour = newColour
@@ -172,6 +169,5 @@ class CanvasNode():
 
     @staticmethod 
     def decrementNodeIDCounter() -> None: CanvasNode.nodeID -= 1 
-
 
 # Listen to Paralyzer by Finger Eleven     

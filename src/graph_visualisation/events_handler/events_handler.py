@@ -4,7 +4,7 @@ from ..graph_components import CanvasGraph, CanvasNode, CanvasEdge
 from ..tools import * 
 
 class EventsHandler(): 
-    def __init__(self, canvas : Canvas, canvasGraph : CanvasGraph, minNumNodes : int, maxNumNodes : int):
+    def __init__(self, canvas : Canvas, canvasGraph : CanvasGraph):
         self.__canvas = canvas
         self.__canvasGraph = canvasGraph
                 
@@ -26,12 +26,6 @@ class EventsHandler():
 
         self.__edgeBeingDrawn = None  
         self.__edgeBeingEdited = None   
-
-        # Minimum Number of nodes 
-        self.__minNumNodes = minNumNodes
-
-        # Maximum Number of nodes 
-        self.__maxNumNodes = maxNumNodes 
 
         # Function to show edge options in the GUI
         self.__showEdgeOptions = None  
@@ -97,8 +91,8 @@ class EventsHandler():
         # The event to draw an edge can still trigger so it needs to be deleted
         self.__resetEdgeDrawingEvent(deleteDrawnEdge=True)
 
-        # Don't delete node if minimum number of nodes has been reached 
-        if len(self.__canvasGraph.getCanvasNodes()) <= self.__minNumNodes: return
+        # Don't delete node if minimum number of nodes has been reached  
+        if len(self.__canvasGraph.getCanvasNodes()) <= self.__canvasGraph.getMinNumNodes(): return
         
         # Not to thrilled about making a copy here but it's the best option
         for canvasEdge in list(canvasNode.getEdges()):  
@@ -137,7 +131,9 @@ class EventsHandler():
         return self.__areEdgeNodesDifferent(canvasEdge.getFirstCanvasNode(), canvasNode)\
             and not self.__canvasGraph.areNodesConnected((canvasEdge.getFirstCanvasNode(), canvasNode))
 
-    def __handleEdgeDrawing(self, canvasNode : CanvasNode) -> None:
+    def __handleEdgeDrawing(self, canvasNode : CanvasNode) -> None: 
+        if len(self.__canvasGraph.getCanvasEdges()) >= self.__canvasGraph.getMaxNumEdges(): return
+        
         deleteEdge = False
         if self.__isEdgeBeingDrawn:
             if self.__canEdgeBeCreated(self.__edgeBeingDrawn, canvasNode): 
@@ -220,7 +216,8 @@ class EventsHandler():
         self.__canvas.tag_bind(canvasTextID, "<Double-Button-1>", lambda _: self.deleteNode(canvasNode)) 
 
     def spawnNode(self, coords : tuple) -> bool:  
-        if self.__isEdgeBeingDrawn or len(self.__canvasGraph.getCanvasNodes()) >= self.__maxNumNodes: return
+        if self.__isEdgeBeingDrawn or len(self.__canvasGraph.getCanvasNodes()) >= self.__canvasGraph.getMaxNumNodes(): 
+            return
 
         self.__isNodeBeingDeleted = False 
         if not self.__creationTool.canNodeBeSpawned(self.__canvas, coords): return False 
@@ -230,7 +227,7 @@ class EventsHandler():
         self.__addNodeEvents(canvasNode)  
         self.__canvasGraph.addCanvasNode(canvasNode)
 
-        if len(self.__canvasGraph.getCanvasNodes()) > self.__minNumNodes:  
+        if len(self.__canvasGraph.getCanvasNodes()) > self.__canvasGraph.getMinNumNodes():  
             if self.__enableDeleteNodeButton: self.__enableDeleteNodeButton()
         return True   
 

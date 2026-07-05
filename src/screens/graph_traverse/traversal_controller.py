@@ -121,7 +121,7 @@ class TraversalController(AlgorithmController[S, M, D]):
             canvas.delete(canvasNode.getCanvasID())
             canvas.delete(canvasNode.getCanvasText().getCanvasID())
         
-        if len(self.__canvasGraph.getCanvasNodes()) <= self.getModel().getMinNumNodes(): 
+        if len(self.__canvasGraph.getCanvasNodes()) <= self.__canvasGraph.getMinNumNodes(): 
             self.getScreen().disableDeleteNodeButton()
     
 
@@ -205,7 +205,7 @@ class TraversalController(AlgorithmController[S, M, D]):
     def createEventHandler(self, canvas : Canvas) -> None:  
         model = self.getModel()
         screen = self.getScreen()
-        self.__eventHandler = EventsHandler(canvas, self.__canvasGraph, model.getMinNumNodes(), model.getMaxNumNodes()) 
+        self.__eventHandler = EventsHandler(canvas, self.__canvasGraph) 
         
         # Reference to Functions event handler needs to call  
         self.__eventHandler.setShowEdgeOptionsCallback(screen.showEdgeOptions)

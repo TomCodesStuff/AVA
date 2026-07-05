@@ -4,7 +4,6 @@ if(__name__ == "__main__"):
     exit() 
 
 
-import math
 from typing import Tuple
 from .canvas_node import CanvasNode
 from .canvas_text import CanvasText

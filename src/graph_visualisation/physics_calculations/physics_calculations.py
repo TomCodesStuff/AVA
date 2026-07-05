@@ -177,15 +177,13 @@ class PhysicsCalculations():
 
         nodesToForces = {} 
 
+        # Calculate forces applied to each node -> gravity, repulsion
         self.__calculateGravity(nodesSnapshot, nodesToForces)
         self.__calculateNodeRepulsion(nodesSnapshot, nodesToForces)         
         self.__calculateEdgeRestoration(edgesSnapshot, nodesSnapshot, nodesToForces) 
 
-
         nodesToUpdatedCoords = self.__applyForcesToNodes(nodesSnapshot, nodesToForces)
         edgesToUpdatedCoords = self.__applyForcesToEdges(nodesSnapshot, edgesSnapshot, nodesToUpdatedCoords)
-
-        print("Physics thread complete :)")
 
         # Update results after all calculations done 
         self.__calculationResults = [nodesToUpdatedCoords, edgesToUpdatedCoords]

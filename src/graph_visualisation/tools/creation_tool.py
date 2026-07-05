@@ -13,25 +13,25 @@ class CreationTool():
         return True if len(overlapping_nodes) == 0 else False
 
     def createText(self, canvas : Canvas, text : str, textCoords : tuple) -> CanvasText: 
-        canvasText = CanvasText(text, textCoords)
+        canvasText = CanvasText(text, textCoords) 
         canvasID = canvas.create_text(textCoords[0], textCoords[1], text=text, fill="white", font=("Arial", 10, "bold"))
         canvasText.setCanvasID(canvasID)
         return canvasText
     
     def renderNode(self, canvas : Canvas, canvasNode : CanvasNode) -> None: 
         x0, y0, x1, y1 = canvasNode.getCoords() 
-        cx, cy = x0 + canvasNode.getOffset(), y0 + canvasNode.getOffset() 
+        cx, cy = canvasNode.getDisplayCoords()
         nodeCanvasID = canvas.create_oval(x0, y0, x1, y1, outline="black", fill=canvasNode.getColour())
         
-        canvasText = self.createText(canvas, str(canvasNode.getID()), (cx, cy))
+        canvasText = self.createText(canvas, str(canvasNode.getID()), 
+                                    (cx + canvasNode.getOffset(), cy + canvasNode.getOffset()))
         
         canvasNode.setCanvasID(nodeCanvasID) 
         canvasNode.setCanvasText(canvasText)
 
-    def createNode(self, canvasGraph : CanvasGraph, coords : tuple) -> CanvasNode:
+    def createNode(self, coords : tuple) -> CanvasNode:
         if coords == (): coords = CanvasNode.getDefaultCoords()
         canvasNode = CanvasNode(coords)  
-        canvasGraph.addCanvasNode(canvasNode)
         return canvasNode
 
     def renderEdge(self, canvas : Canvas, canvasEdge : CanvasEdge) -> None: 

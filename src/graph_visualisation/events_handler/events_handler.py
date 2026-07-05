@@ -24,7 +24,6 @@ class EventsHandler():
         self.__isSetStartEnabled = False
         self.__isSetGoalEnabled = False 
 
-
         self.__edgeBeingDrawn = None  
         self.__edgeBeingEdited = None   
 
@@ -142,11 +141,11 @@ class EventsHandler():
         deleteEdge = False
         if self.__isEdgeBeingDrawn:
             if self.__canEdgeBeCreated(self.__edgeBeingDrawn, canvasNode): 
-                self.__canvasGraph.addCanvasEdge(self.__edgeBeingDrawn)
                 self.__edgeBeingDrawn.setSecondCanvasNode(canvasNode)  
                 self.__movementTool.connectEdgeToNodes(self.__edgeBeingDrawn)
-                self.__addEdgeEvents(self.__edgeBeingDrawn) 
+                self.__canvasGraph.addCanvasEdge(self.__edgeBeingDrawn)
                 self.__canvasGraph.addEdgeToNodes(self.__edgeBeingDrawn)
+                self.__addEdgeEvents(self.__edgeBeingDrawn) 
                 self.__editEdge(self.__edgeBeingDrawn)
             else: deleteEdge = True
             self.__resetEdgeDrawingEvent(deleteDrawnEdge=deleteEdge)
@@ -220,17 +219,17 @@ class EventsHandler():
         self.__canvas.tag_bind(canvasNode.getCanvasID(), "<Double-Button-1>", lambda _: self.deleteNode(canvasNode)) 
         self.__canvas.tag_bind(canvasTextID, "<Double-Button-1>", lambda _: self.deleteNode(canvasNode)) 
 
-
     def spawnNode(self, coords : tuple) -> bool:  
         if self.__isEdgeBeingDrawn or len(self.__canvasGraph.getCanvasNodes()) >= self.__maxNumNodes: return
 
         self.__isNodeBeingDeleted = False 
         if not self.__creationTool.canNodeBeSpawned(self.__canvas, coords): return False 
         
-        canvasNode = self.__creationTool.createNode(self.__canvasGraph, coords)
+        canvasNode = self.__creationTool.createNode(coords)
         self.__creationTool.renderNode(self.__canvas, canvasNode)
         self.__addNodeEvents(canvasNode)  
-        
+        self.__canvasGraph.addCanvasNode(canvasNode)
+
         if len(self.__canvasGraph.getCanvasNodes()) > self.__minNumNodes:  
             if self.__enableDeleteNodeButton: self.__enableDeleteNodeButton()
         return True   

@@ -1,7 +1,7 @@
 from src.app_window import Window
 from src.enums import ScreenType
 
-WIDTH = 700
+WIDTH = 750
 HEIGHT = 500
 
 if(__name__ == "__main__"):
@@ -12,5 +12,5 @@ if(__name__ == "__main__"):
 else:
     print("This file has no functions to import :(")
     
-# Listen to Walk by Foo Fighters  
+# Listen to Walk  by Foo Fighters  
 # Seriously listen to it, it means a lot to me   

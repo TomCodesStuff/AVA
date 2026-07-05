@@ -41,6 +41,7 @@ class MovementTool():
         eventX, eventY = eventCoords
         newCoords = self.__calculateCoords(eventX, eventY)
         canvasNode.updateCoords(newCoords) 
+        canvasNode.updateDisplayCoords((newCoords[0], newCoords[1]))
 
     def connectEdgeToNodes(self, canvasEdge : CanvasEdge) -> None: 
         startNode, endNode = canvasEdge.getCanvasNodes()

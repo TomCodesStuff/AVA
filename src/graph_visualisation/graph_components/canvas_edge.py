@@ -41,6 +41,9 @@ class CanvasEdge():
 
         # Displays weights next to the edge when algorithm is running
         self.__canvasWeightText = None
+
+        self.__displayedCoords = coords
+        self.__displayedColour = CanvasEdge.defaultColour
         
     # Getters
     def getCanvasID(self): return self.__canvasID
@@ -63,8 +66,19 @@ class CanvasEdge():
 
     def getEdge(self) -> Edge: return self.__edge 
 
-    def getWeightCanvasText(self) -> CanvasText | None: return self.__canvasWeightText
+    def getWeightCanvasText(self) -> CanvasText | None: return self.__canvasWeightText 
+
+    def isMarkedForDeletion(self) -> bool: return self.__isMarkedForDeletion
+
+    def getDisplayCoords(self) -> tuple: return self.__displayedCoords
+
+    def getDisplayColour(self) -> str: return self.__displayedColour
     
+    def getRequiredPhysicsData(self) -> dict: 
+        return {"firstNode" : self.__firstCanvasNode.getCanvasID(), 
+                "secondNode" : self.__secondCanvasNode.getCanvasID(), 
+                "screenlen" : self.__screenLen, 
+                "direction" : self.__edge.getDirection()}
 
     # Setters
     def setWeight(self, weight : int) -> None:  
@@ -106,39 +120,17 @@ class CanvasEdge():
     
     def updateCoords(self, coords : tuple) -> None: 
         if coords: self.__coords = coords  
-    
-    def isMarkedForDeletion(self) -> bool: return self.__isMarkedForDeletion
-    
+        
     def markForDeletion(self) -> None: self.__isMarkedForDeletion = True 
+
+    def updateDisplayCoords(self, newCoords : tuple) -> None: 
+        if newCoords: self.__coords = newCoords
+
+    def updateDisplayColour(self, newColour : str) -> None: 
+        if newColour: self.__displayedColour = newColour
 
     def setCanvasWeightText(self, canvasWeightText : CanvasText) -> None: 
         self.__canvasWeightText = canvasWeightText
-
-    # Stole from ChatGPT, would take me way to long to find an acceptable solution :/
-    # I dislike using AI as I think it's kinda cheating but I'll make an exception to finish this project
-    # Makes arrows indicating edge direction visible rather than just being hidden behind each node
-    def adjustDirectionArrows(self) -> tuple:
-        x0, y0, x1, y1 = self.__coords 
-        r0 = self.__firstCanvasNode.getOffset()
-        r1 = self.__secondCanvasNode.getOffset()
-        dx = x1 - x0 
-        dy = y1 - y0
-
-        dist = math.sqrt(dx ** 2 + dy ** 2)
-        if dist == 0: return (x0, y0, x1, y1)
-
-        adjustedX0, adjustedY0 = x0, y0 
-        adjustedX1, adjustedY1 = x1, y1
-
-        if self.__edge.getDirection() in (EdgeDirection.SECOND_TO_FIRST, EdgeDirection.BIDIRECTIONAL):
-            adjustedX0 = math.ceil(x0 + (dx / dist) * r0)
-            adjustedY0 = math.ceil(y0 + (dy / dist) * r0)
-        if self.__edge.getDirection() in (EdgeDirection.FIRST_TO_SECOND, EdgeDirection.BIDIRECTIONAL):
-            adjustedX1 = math.ceil(x1 - (dx / dist) * r1)
-            adjustedY1 = math.ceil(y1 - (dy / dist) * r1)
-
-        return (adjustedX0, adjustedY0, adjustedX1, adjustedY1)
-
 
     @staticmethod
     def getDefaultWeight() -> int: return CanvasEdge.defaultWeight

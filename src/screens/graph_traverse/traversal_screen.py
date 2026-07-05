@@ -20,7 +20,10 @@ D = TypeVar("D", bound="Graph")
 
 
 INITIAL_WEIGHT = 0
-TINY_DELAY_MS = 50
+DELAY_MS = 500
+SUCCESS = "success"
+FAILURE = "failure"
+FAILURE_ANIMATION_NUM_FRAMES = 6
 
 class TraversalScreen(AlgorithmScreen[C, M, D]):  
     def __init__(self, window):
@@ -34,7 +37,7 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
         # Route calculated from running an algorithm, used to determine what animation to play
         self.__calculatedRoute = None 
         # Determines what anumation to play
-        self.__animationMode = "failure"  
+        self.__animationMode = FAILURE  
         self.__animationIndex = 0
         self.__numFrames = 3
 
@@ -258,11 +261,11 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
         self.getDataStructure().printRoute()
         self.__calculatedRoute = self.getDataStructure().reconstructRoute()
         if self.__calculatedRoute: 
-            self.__animationMode = "success"
+            self.__animationMode = SUCCESS
             self.__numFrames = len(self.__calculatedRoute)
         else: 
-            self.__animationMode = "failure" 
-            self.__numFrames = 6
+            self.__animationMode = FAILURE 
+            self.__numFrames = FAILURE_ANIMATION_NUM_FRAMES
 
         self.__animationIndex = 0
 
@@ -283,14 +286,13 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
             self.endAnimation()
             return
           
-        if self.__animationMode == "failure": 
+        if self.__animationMode == FAILURE: 
             if self.__animationIndex % 2: self.getController().refreshCanvas(refreshColours=True)
             else: self.__failureAnimationFrame()  
-        elif self.__animationMode == "success":
+        elif self.__animationMode == SUCCESS:
             self.__successAnimationFrame()
 
-
         self.__animationIndex += 1
-        self.setFrameDelay(1000)
+        self.setFrameDelay(DELAY_MS)
 
 # Listen to Glass Spiders by Hot Milk

@@ -26,6 +26,7 @@ M = TypeVar("M", bound="TraversalModel")
 D = TypeVar("D", bound="Graph")
 
 SIXTY_FPS_IN_MS = 16
+MOVEMENT_THRESHOLD = 1
 
 class TraversalController(AlgorithmController[S, M, D]):
     def __init__(self, screen : S, model : M, dataStructure : D):
@@ -58,8 +59,7 @@ class TraversalController(AlgorithmController[S, M, D]):
                                        canvasWidth - offset, canvasHeight - offset))
 
     def startInteractiveGraph(self) -> None:  
-        if self.__eventHandler is None:
-            self.createEventHandler(self.getScreen().getCanvas())
+        if self.__eventHandler is None: self.createEventHandler(self.getScreen().getCanvas())
         self.__createPhysicsThread() 
         self.startManagedThreads()
         self.__eventHandler.enableAllEvents()
@@ -67,7 +67,8 @@ class TraversalController(AlgorithmController[S, M, D]):
     
     def stopInteractiveGraph(self) -> None:
         self.stopManagedThreads() 
-        self.__eventHandler.disableAllEvents() 
+        self.__eventHandler.disableAllEvents()
+        self.__cancelCanvasRefreshLoop = True 
         self.__stopCanvasRefreshLoop()
         self.cancelScheduledProcesses()
         self.__physicsCalculations = None
@@ -76,11 +77,31 @@ class TraversalController(AlgorithmController[S, M, D]):
         canvas = self.getScreen().getCanvas()
         return (canvas.winfo_width() // 2, canvas.winfo_height() // 2)
 
+    def __applyPositionChanges(self) -> None: 
+        if self.__physicsCalculations is None: return  
+        
+        nodesToUpdatedCoords, edgesToUpdatedCoords = self.__physicsCalculations.getLatestResults()          
+        
+        for canvasNode in self.__canvasGraph.getCanvasNodes():  
+            if canvasNode.getCanvasID() in nodesToUpdatedCoords and not canvasNode.isBeingDragged():
+                canvasNode.updateCoords(nodesToUpdatedCoords[canvasNode.getCanvasID()]) 
+        
+        for canvasEdge in self.__canvasGraph.getCanvasEdges():  
+            if canvasEdge.getFirstCanvasNode().isBeingDragged() or canvasEdge.getSecondCanvasNode().isBeingDragged(): 
+                x0, y0, _, _ = canvasEdge.getFirstCanvasNode().getCoords() 
+                r0 = canvasEdge.getFirstCanvasNode().getOffset()
+                x1, y1, _, _ = canvasEdge.getSecondCanvasNode().getCoords()
+                r1 = canvasEdge.getSecondCanvasNode().getOffset()
+                canvasEdge.updateCoords((x0 + r0, y0 + r0, x1 + r1, y1 + r1))
+            elif canvasEdge.getCanvasID() in edgesToUpdatedCoords: 
+                canvasEdge.updateCoords(edgesToUpdatedCoords[canvasEdge.getCanvasID()])
+
     def __canvasRefreshLoop(self) -> None:   
-        if self.__cancelCanvasRefreshLoop: return
+        if self.__cancelCanvasRefreshLoop: return 
+        self.__applyPositionChanges()
         self.refreshCanvas() 
         self.getScreen().getWindow().scheduleFunctionExecution(self.__canvasRefreshLoop, SIXTY_FPS_IN_MS)
-
+   
     def __deleteMarkedGraphItems(self) -> None:   
         canvas = self.getScreen().getCanvas()
 
@@ -102,56 +123,85 @@ class TraversalController(AlgorithmController[S, M, D]):
         
         if len(self.__canvasGraph.getCanvasNodes()) <= self.getModel().getMinNumNodes(): 
             self.getScreen().disableDeleteNodeButton()
-  
-    def refreshCanvas(self, refreshColours:bool=False) -> None:     
-        latestResults = {} 
-        canvas = self.getScreen().getCanvas()
+    
 
-        if refreshColours:  
-            for canvasNode in self.__canvasGraph.getCanvasNodes(): 
-                canvasNode.setColour(canvasNode.getNode().getBaseColour())
+    def __resetGraphColours(self) -> None: 
+        for canvasNode in self.__canvasGraph.getCanvasNodes(): 
+            canvasNode.setColour(canvasNode.getNode().getBaseColour())
             
-            for canvasEdge in self.__canvasGraph.getCanvasEdges():
-                canvasEdge.setColour(CanvasEdge.defaultColour)
+        for canvasEdge in self.__canvasGraph.getCanvasEdges():
+            canvasEdge.setColour(CanvasEdge.defaultColour)
 
+    def __shouldCanvasNodeBeMoved(self, canvasNode : CanvasNode) -> bool: 
+        if self.isAlgorithmRunning(): return False 
+        if canvasNode.isBeingDragged(): return True
 
-        if self.__eventHandler and self.__eventHandler.getEdgeBeingDrawn():  
+        x0, y0, _, _ = canvasNode.getCoords() 
+        vX, vY, = canvasNode.getDisplayCoords()
+
+        rX0 = round(x0)
+        rY0 = round(y0)
+
+        if abs(vX - rX0) < MOVEMENT_THRESHOLD and abs(vY - rY0) < MOVEMENT_THRESHOLD: return False 
+
+        canvasNode.updateDisplayCoords((rX0, rY0))        
+        return True
+    
+    def __shouldCanvasEdgeBeMoved(self, canvasEdge : CanvasEdge) -> None: 
+        if self.isAlgorithmRunning(): return False 
+        if canvasEdge.getFirstCanvasNode().isBeingDragged(): return True
+        if canvasEdge.getSecondCanvasNode().isBeingDragged(): return True
+
+        x0, y0, x1, y1 = canvasEdge.getCoords()
+        vX0, vY0, vX1, vY1 = canvasEdge.getDisplayCoords()
+
+        if abs(x0 - vX0) < MOVEMENT_THRESHOLD and abs(y0 - vY0) < MOVEMENT_THRESHOLD: return False
+        if abs(x1 - vX1) < MOVEMENT_THRESHOLD and abs(y1 - vY1) < MOVEMENT_THRESHOLD: return False
+        
+        canvasEdge.updateDisplayCoords(canvasEdge.getCoords())
+        return True
+
+    # TODO fix crashes (tried and failed, idc)
+    def refreshCanvas(self, refreshColours:bool=False) -> None:   
+        canvas = self.getScreen().getCanvas()
+        if refreshColours: self.__resetGraphColours()
+        
+        # Draw intermediate egde that is following mouse
+        if self.__eventHandler:
             edgeBeingDrawn = self.__eventHandler.getEdgeBeingDrawn() 
-            if edgeBeingDrawn.getCanvasID() is not None: 
+            if edgeBeingDrawn and edgeBeingDrawn.getCanvasID() is not None:  
                 canvas.coords(edgeBeingDrawn.getCanvasID(), edgeBeingDrawn.getCoords()) 
-               
-        if self.__physicsCalculations is not None: 
-            latestResults = self.__physicsCalculations.getLatestResults()
 
         # Delete any marked Nodes and Edges (might stop race conditions/crashes)
         self.__deleteMarkedGraphItems()
 
-        for canvasNode in self.__canvasGraph.getCanvasNodes():  
-            if canvasNode.getCanvasID() in latestResults:
-                canvasNode.applyForces(latestResults[canvasNode.getCanvasID()])
+        for canvasNode in self.__canvasGraph.getCanvasNodes(): 
+            if self.__shouldCanvasNodeBeMoved(canvasNode):
 
-            x0, y0, _, _ = canvasNode.getCoords()
-            # NOTE might need changing to .coords here(?)
-            canvas.moveto(canvasNode.getCanvasID(), round(x0), round(y0))
-            canvas.itemconfig(canvasNode.getCanvasID(), fill=canvasNode.getColour())  
+                x0, y0 = canvasNode.getDisplayCoords() 
+                canvas.moveto(canvasNode.getCanvasID(), x0, y0)                 
 
-            canvasText = canvasNode.getCanvasText()
-            x0, y0 = canvasText.getCoords()
-            canvas.coords(canvasText.getCanvasID(), x0, y0)
-            canvas.itemconfig(canvasText.getCanvasID(), text=canvasText.getText())
-
-        
-        for canvasEdge in self.__canvasGraph.getCanvasEdges(): 
-            firstNode, secondNode = canvasEdge.getCanvasNodes() 
-            x0, y0, _, _ = firstNode.getCoords() 
-            x1, y1, _, _ = secondNode.getCoords()    
-
-            canvasEdge.updateCoords((x0 + firstNode.getOffset(), y0 + firstNode.getOffset(), 
-                                     x1 + secondNode.getOffset(), y1 + secondNode.getOffset())) 
+                canvasText = canvasNode.getCanvasText()
+                cX0, cY0 = canvasText.getCoords()
+                canvas.coords(canvasText.getCanvasID(), cX0, cY0)  
+                
+            if canvasNode.getColour() != canvasNode.getDisplayedColour():
+                canvas.itemconfig(canvasNode.getCanvasID(), fill=canvasNode.getColour())  
+                canvasNode.updateDisplayedColour(canvasNode.getColour())
             
-            canvas.coords(canvasEdge.getCanvasID(), canvasEdge.adjustDirectionArrows())
-            canvas.itemconfig(canvasEdge.getCanvasID(), fill=canvasEdge.getColour())
+            canvasNodeText = canvasNode.getCanvasText()
+            if canvasNodeText.getText() != str(canvasNode.getID()):
+                canvasNodeText.updateText(canvasNode.getID())
+                canvas.itemconfig(canvasNodeText.getCanvasID(), text=canvasNodeText.getText())
         
+        for canvasEdge in self.__canvasGraph.getCanvasEdges():  
+            if self.__shouldCanvasEdgeBeMoved(canvasEdge):
+                canvas.coords(canvasEdge.getCanvasID(), canvasEdge.getCoords()) 
+             
+            if canvasEdge.getDisplayColour() != canvasEdge.getColour():
+                canvas.itemconfig(canvasEdge.getCanvasID(), fill=canvasEdge.getColour())
+                canvasEdge.updateDisplayColour(canvasEdge.getColour())
+
     def createEventHandler(self, canvas : Canvas) -> None:  
         model = self.getModel()
         screen = self.getScreen()
@@ -249,8 +299,10 @@ class TraversalController(AlgorithmController[S, M, D]):
         dx = x1 - x0
         dy = y1 - y0
         
+        length = math.sqrt(dx ** 2 + dy ** 2)
+        if length == 0: return(midX, midY)
+        
         # Normalise vector -> so we move the correct amount of pixels away 
-        length = math.sqrt(dx*dx + dy*dy)
         ux = dx / length
         uy = dy / length
 
@@ -322,6 +374,5 @@ class TraversalController(AlgorithmController[S, M, D]):
             else: self.__canvasGraph.assignGoalNode(random.choice(candidateNodes)) 
         # Set goal node in Graph data structure
         self.getDataStructure().setGoalNode(self.__canvasGraph.getGoalNode().getNode())
-
 
 # Listen to Paranoid by Black Sabbath

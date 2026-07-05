@@ -35,13 +35,17 @@ class CanvasNode():
         self.__node = Node(CanvasNode.defaultColour)
         # X-Y Coordindates of the node on screen
         self.__coords = coords
+        
+        self._displayCoords = (round(coords[0]), round(coords[1]))
+        self.__displayedColour = CanvasNode.defaultColour
+        
         # Size of the node 
         self.__size = CanvasNode.defaultSize
         # Text displayed in centre of node 
         self.__canvasText = None
         
         # ID of the node on the canvas
-        self.__canvasID = -1   
+        self.__canvasID = None   
 
         # A set containing references to edges that connects nodes to eachother 
         self.__edges = set()
@@ -53,11 +57,7 @@ class CanvasNode():
 
     # Updates the coordinates of the node to be accurate to the coordinates on screen
     def updateCoords(self, coords : tuple) -> None: 
-        if not coords: return
-        x0, y0, _, _ = coords
-        self.__coords = coords
-        # Update text so it follows node 
-        self.__canvasText.updateCoords((x0 + self.getOffset(), y0 + self.getOffset()))
+        if coords: self.__coords = coords
 
     # Getters 
     def getCanvasID(self) -> int: return self.__canvasID 
@@ -80,19 +80,40 @@ class CanvasNode():
     
     def getNode(self) -> Node: return self.__node 
     
-    def isMarkedForDeletion(self) -> bool: return self.__isMarkedForDeletion
-    
+    def isMarkedForDeletion(self) -> bool: return self.__isMarkedForDeletion 
+
+    def getDisplayCoords(self) -> tuple: return self._displayCoords 
+
+    def getDisplayedColour(self) -> str: return self.__displayedColour
+
+    def getRequiredPhysicsData(self) -> dict: 
+        return {"coords" : list(self.__coords),  "size" : self.__size, "offset" : self.getOffset()}
+
+
     # Setters 
     def setCanvasID(self, canvasID : int) -> None:  self.__canvasID = canvasID
     
     def setColour(self, colour : str) -> None: self.__node.setColour(colour)    
     
-    def getOffset(self) -> int: return (self.__size // 2) + 1 
+    def getOffset(self) -> int: return self.__size // 2
     
     def setCanvasText(self, canvasText : CanvasText) -> None: self.__canvasText = canvasText  
     
-    def markForDeletion(self) -> None: self.__isMarkedForDeletion = True
-    
+    def markForDeletion(self) -> None: self.__isMarkedForDeletion = True 
+
+    def updateDisplayCoords(self, newDisplayCoords : tuple) -> None: 
+        if not newDisplayCoords: return
+        self._displayCoords = newDisplayCoords 
+
+        if self.__canvasText:  
+            nodeOffset = self.getOffset()
+            self.__canvasText.updateCoords((newDisplayCoords[0] + nodeOffset + 1, 
+                                           newDisplayCoords[1] + nodeOffset + 1))
+
+
+    def updateDisplayedColour(self, newColour : str) -> None: 
+        if newColour: self.__displayedColour = newColour
+
     # Adds a CanvasEdge Object to the list 
     def addEdge(self, canvasEdge : CanvasEdge) -> None: 
         self.__edges.add(canvasEdge) 

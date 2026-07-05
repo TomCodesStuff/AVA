@@ -9,7 +9,7 @@ from src.screens.algorithm_base import AlgorithmModel
 
 
 RESOLUTION = 1
-MIN_DELAY = 1
+MIN_DELAY = 10
 MAX_DELAY = 1000
 
 
@@ -33,8 +33,8 @@ class TraversalModel(AlgorithmModel):
         self.__maxWeight = 100  
 
         # Minimum and Maximum on screen size for edges
-        self.__edgeMinScreenLen = 100
-        self.__edgeMaxScreenLen = 200
+        self.__edgeMinScreenLen = 85
+        self.__edgeMaxScreenLen = 250
 
         screenLenRange = self.__edgeMaxScreenLen - self.__edgeMinScreenLen
         edgeWeightRange = self.__maxWeight - self.__minWeight

@@ -96,8 +96,25 @@ def run(self) -> int:
 
 <i> Correctly creating the `run()` method. </i>
 
+## 5. Delaying Execution. 
 
-## 5. Data Structure Class. 
+Delays need to invoked frequently during the execution of an algorithm as it allows for users to see each step of an algorithm. <br> 
+Without these delays the algorithms would finish too quickly and any updates to the GUI will be too fast to see.
+
+There are two dedicated methods to invoke a delay which are outlined below:
+
+```python 
+    self.tick()
+    self.briefTick()
+```
+
+<i> Provided tick methods used to delay algorithm execution. </i> 
+
+The amount of time algorithms are delayed for when calling `self.tick()` is defined by the users during runtime. <br>
+The delay caused by calling `self.briefTick()` is half a second (500 ms). 
+
+
+## 6. Data Structure Class. 
 
 Algorithms interact with the project through a data structure class. <br> 
 The data structure class and its helper methods  differ depending on the algorithm type. <br>

@@ -67,3 +67,5 @@ class DijkstraTraverse(Algorithm[Graph]):
             self.tick()
 
         return 0
+
+# Listen to Pictures of you by The Cure

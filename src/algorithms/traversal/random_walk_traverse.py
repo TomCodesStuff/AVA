@@ -33,12 +33,10 @@ class RandomWalkTraverse(Algorithm[Graph]):
             # Set colour of edge connecting node to prior node red 
             prevNode = crrntNode.getPrevNode() 
             if prevNode is not None: prevNode.setEdgeColour(crrntNode, "red")
-            # Mark node as  visited
+            # Mark node as visited
             visitedNodes.add(crrntNode)            
 
-
             neighbours = []
-            # Add all unvisited neighbours to the stacl 
             for (neighbour, _) in crrntNode.getNeighbours(): 
                 if neighbour not in visitedNodes: 
                     neighbour.setPrevNode(crrntNode)

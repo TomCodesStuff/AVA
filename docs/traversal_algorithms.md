@@ -34,6 +34,7 @@ Space Complexity: O(V)
 V -> Number of nodes <br>
 E -> Number egdes 
 
+---
 ### Depth First Search: 
 
 #### Algorithm Steps:
@@ -55,6 +56,7 @@ Space Complexity: O(V)
 V -> Number of nodes <br>
 E -> Number egdes 
 
+--- 
 ### Dijkstra's Shortest Path: 
 
 #### Algorithm Steps:
@@ -79,6 +81,7 @@ Space Complexity: O(V)
 V -> Number of nodes <br>
 E -> Number egdes 
 
+---
 ### Random Walk: 
 
 #### Algorithm Steps:
@@ -109,5 +112,7 @@ This algorithm is an avoidant random walk to prevent the algorithm from executin
 where the goal node is unreachable. A true random walk would not have a visited nodes set and would continue <br> 
 randomly selecting nodes until finding the goal node is found.  
 
+---
+Go to [README.md](../README.md)
 
 <!-- Listen to Dry your eyes by The Streets  -->

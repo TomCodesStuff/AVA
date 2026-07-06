@@ -17,11 +17,11 @@ class UniformCostTraverse(Algorithm[Graph]):
     def getName(self) -> str: 
         return "Uniform Cost Search" 
 
-    def __selectNode(self, nodeToCurrentCost : dict) -> Tuple[Node,int]: 
+    def __selectNode(self, priorityQueue : dict) -> Tuple[Node,int]: 
         selected_node = None 
         shortest_distance = float("inf")
 
-        for (node, distance) in nodeToCurrentCost.items(): 
+        for (node, distance) in priorityQueue.items(): 
             if distance < shortest_distance: 
                 selected_node = node 
                 shortest_distance = distance 
@@ -36,10 +36,10 @@ class UniformCostTraverse(Algorithm[Graph]):
         if startNode is None or graph.getGoalNode() is None: return 1 
 
         visitedNodes = {}
-        nodeToCurrentCost = {startNode : 0}
+        priorityQueue = {startNode : 0}
         goalFound = False
 
-        crrntNode, crrntCost = self.__selectNode(nodeToCurrentCost)
+        crrntNode, crrntCost = self.__selectNode(priorityQueue)
         while (crrntNode is not None and not goalFound): 
             # Reset all colours 
             graph.resetColours()
@@ -58,15 +58,15 @@ class UniformCostTraverse(Algorithm[Graph]):
                 totalCost = crrntCost + weight 
                 if neighbour not in visitedNodes or totalCost < visitedNodes[neighbour]: 
                     visitedNodes[neighbour] = totalCost
-                    nodeToCurrentCost[neighbour] = totalCost
+                    priorityQueue[neighbour] = totalCost
                     crrntNode.setEdgeColour(neighbour, "green")
                     neighbour.setPrevNode(crrntNode)
             self.tick()   
 
             if crrntNode == goalNode: goalFound = True
 
-            del nodeToCurrentCost[crrntNode]
-            crrntNode, crrntCost = self.__selectNode(nodeToCurrentCost)
+            del priorityQueue[crrntNode]
+            crrntNode, crrntCost = self.__selectNode(priorityQueue)
 
         return 0
 

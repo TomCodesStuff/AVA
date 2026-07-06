@@ -6,15 +6,17 @@ if(__name__ == "__main__"):
 
 
 from src.algorithms import Algorithm 
-from src.data_structures import Graph, Node
+from src.data_structures import Graph
 
-class DepthFirstTraverse(Algorithm[Graph]):
+ 
+class BreadthFirstTraverse(Algorithm[Graph]):
     # Constructor
     def __init__(self):
         super().__init__() 
     
     def getName(self) -> str: 
-        return "Depth First" 
+        return "Breadth First" 
+
 
     def run(self) -> int:  
         graph = self.getDataStructure()
@@ -24,15 +26,16 @@ class DepthFirstTraverse(Algorithm[Graph]):
         if startNode is None or goalNode is None: return 1 
         
         visitedNodes = set()
-        nodeStack = [startNode]
+        nodeQueue = [startNode]
         goalNodeFound = False
 
         # Whilst there are unvisited nodes or goal has not been found
-        while nodeStack and not goalNodeFound:
+        while nodeQueue and not goalNodeFound:
             # Remove last node from the stack
-            crrntNode = nodeStack.pop() 
+            # This is pretty much the only change from depth_first_search.py :)
+            crrntNode = nodeQueue.pop(0) 
             crrntNode.setColour("red")
-            
+                      
             # Set colour of edge connecting node to prior node red 
             prevNode = crrntNode.getPrevNode() 
             if prevNode is not None: prevNode.setEdgeColour(crrntNode, "red")
@@ -44,9 +47,9 @@ class DepthFirstTraverse(Algorithm[Graph]):
 
             # Add all unvisited neighbours to the stacl 
             for (neighbour, _) in crrntNode.getNeighbours(): 
-                if neighbour not in visitedNodes and neighbour not in nodeStack: 
+                if neighbour not in visitedNodes and neighbour not in nodeQueue: 
                     neighbour.setPrevNode(crrntNode)
-                    nodeStack.append(neighbour) 
+                    nodeQueue.append(neighbour) 
                     crrntNode.setEdgeColour(neighbour, "orange")
             self.tick()
 
@@ -58,4 +61,4 @@ class DepthFirstTraverse(Algorithm[Graph]):
 
         return 0
     
-# Listen to A letter to Elise by The Cure
+# Listen to Still into you by Paramore

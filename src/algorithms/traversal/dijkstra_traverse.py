@@ -47,7 +47,7 @@ class DijkstraTraverse(Algorithm[Graph]):
             crrntNode.setColour("red")
 
             # Mark all nodes and edges current loop looks at  
-            for (neighbour, weight) in crrntNode.getNeighbours():
+            for (neighbour, _) in crrntNode.getNeighbours():
                 if neighbour in unvisitedNodes: 
                     crrntNode.setEdgeColour(neighbour, "red")
                 else: crrntNode.setEdgeColour(neighbour, "orange")

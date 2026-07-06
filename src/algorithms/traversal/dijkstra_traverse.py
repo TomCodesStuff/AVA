@@ -4,7 +4,7 @@ if(__name__ == "__main__"):
     print("This is file shouldn't be run on it's own. \nIt should be imported only.")
     exit()
 
-import time 
+
 from src.algorithms import Algorithm 
 from src.data_structures import Graph, Node
 

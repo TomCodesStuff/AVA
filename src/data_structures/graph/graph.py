@@ -37,7 +37,6 @@ class Edge():
 
     def resetColour(self) -> None: self.__colour = self.__baseColour
 
-# TODO add function to get ID in constructor 
 class Node(): 
     def __init__(self, colour : str):
         self.__colour = colour 
@@ -166,12 +165,9 @@ class Graph(DataStructure[Node]):
 
         # Reverse list to get route in correct order
         route = route[::-1] 
-        print(route)
         # If start node is not present at start of route a valid route was not found 
-        if route[0] != str(self.__nodes.index(self.__startNode)):
-            route = ["No route"]
-        
-        print(" -> ".join(route)) 
+        if route[0] != str(self.__nodes.index(self.__startNode)): print("No route") 
+        else: print(" -> ".join(route)) 
 
     def __str__(self) -> str: 
         startNodeID = self.__nodes.index(self.__startNode) if self.__startNode else "<undefined>"

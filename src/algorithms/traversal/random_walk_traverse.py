@@ -4,17 +4,17 @@ if(__name__ == "__main__"):
     print("This is file shouldn't be run on it's own. \nIt should be imported only.")
     exit()
 
-
+import random 
 from src.algorithms import Algorithm 
 from src.data_structures import Graph
 
-class DepthFirstTraverse(Algorithm[Graph]):
+class RandomWalkTraverse(Algorithm[Graph]):
     # Constructor
     def __init__(self):
         super().__init__() 
     
     def getName(self) -> str: 
-        return "Depth First" 
+        return "Random Walk" 
 
     def run(self) -> int:  
         graph = self.getDataStructure()
@@ -24,29 +24,25 @@ class DepthFirstTraverse(Algorithm[Graph]):
         if startNode is None or goalNode is None: return 1 
         
         visitedNodes = set()
-        nodeStack = [startNode]
+        crrntNode = startNode
         goalNodeFound = False
 
         # Whilst there are unvisited nodes or goal has not been found
-        while nodeStack and not goalNodeFound:
-            # Remove last node from the stack
-            crrntNode = nodeStack.pop() 
+        while crrntNode is not None and not goalNodeFound:
             crrntNode.setColour("red")
-            
             # Set colour of edge connecting node to prior node red 
             prevNode = crrntNode.getPrevNode() 
             if prevNode is not None: prevNode.setEdgeColour(crrntNode, "red")
-            
-            # Can end loop if the goal has been reached 
-            if crrntNode == goalNode: goalNodeFound = True
-
+            # Mark node as  visited
             visitedNodes.add(crrntNode)            
 
+
+            neighbours = []
             # Add all unvisited neighbours to the stacl 
             for (neighbour, _) in crrntNode.getNeighbours(): 
-                if neighbour not in visitedNodes and neighbour not in nodeStack: 
+                if neighbour not in visitedNodes: 
                     neighbour.setPrevNode(crrntNode)
-                    nodeStack.append(neighbour) 
+                    neighbours.append(neighbour) 
                     crrntNode.setEdgeColour(neighbour, "orange")
             self.tick()
 
@@ -56,6 +52,11 @@ class DepthFirstTraverse(Algorithm[Graph]):
                     crrntNode.resetEdgeColour(neighbour)
             self.briefTick()
 
+            if crrntNode == goalNode: goalNodeFound = True
+
+            if not neighbours: crrntNode = None 
+            else: crrntNode = random.choice(neighbours)
+
         return 0
     
-# Listen to A letter to Elise by The Cure
+# Listen to Waste a moment by Kings of Leon

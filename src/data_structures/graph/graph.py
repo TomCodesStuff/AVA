@@ -42,11 +42,26 @@ class Node():
         self.__colour = colour 
         self.__baseColour = colour
         self.__neighbours = {} 
+        # Used in A*, heuristic will be euclidian distance of node from goal node 
+        self.__heuristicValue = 0
         # Used to reconstruct route when algorithm is complete 
         self.__prevNode = None 
 
+
+    # Getters 
+
     def getColour(self) -> str: return self.__colour 
     
+    def getNeighbours(self) -> List[Tuple[Node, int]]: 
+        return [(neighbourNode, edge.getWeight()) for neighbourNode, edge in self.__neighbours.items()] 
+    
+    def getPrevNode(self) -> Node: return self.__prevNode  
+    
+    def getBaseColour(self) -> str: return self.__baseColour 
+
+    def getHeuristicValue(self) -> int: return self.__heuristicValue
+    
+    # Setters
     def setColour(self, colour : str) -> None:  
         if colour: self.__colour = colour 
     
@@ -60,9 +75,6 @@ class Node():
         if neighbourNode in self.__neighbours: 
             del self.__neighbours[neighbourNode]
     
-    def getNeighbours(self) -> List[Tuple[Node, int]]: 
-        return [(neighbourNode, edge.getWeight()) for neighbourNode, edge in self.__neighbours.items()] 
-
     def setEdgeColour(self, neighbourNode : Node, colour : str) -> None: 
         if neighbourNode in self.__neighbours and colour: 
             self.__neighbours[neighbourNode].setColour(colour) 
@@ -70,18 +82,18 @@ class Node():
     def setPrevNode(self, node : Node) -> None: 
         self.__prevNode = node
 
-    def getPrevNode(self) -> Node: return self.__prevNode  
-
     def setBaseColour(self, colour : str) -> None: self.__baseColour = colour
 
     def resetColour(self) -> None:  self.__colour = self.__baseColour 
     
     def resetEdgeColour(self, neighbourNode : Node) -> None:
         if neighbourNode not in self.__neighbours: return 
-        self.__neighbours[neighbourNode].resetColour()
+        self.__neighbours[neighbourNode].resetColour() 
     
-    def getBaseColour(self) -> str: return self.__baseColour
-
+    def setHeuristicValue(self, newHeuristicDistance : int) -> None: 
+        if newHeuristicDistance: self.__heuristicValue = newHeuristicDistance
+    
+    
 class Graph(DataStructure[Node]): 
     def __init__(self):
         self.__nodes = []

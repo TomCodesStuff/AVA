@@ -375,4 +375,25 @@ class TraversalController(AlgorithmController[S, M, D]):
         # Set goal node in Graph data structure
         self.getDataStructure().setGoalNode(self.__canvasGraph.getGoalNode().getNode())
 
+    def generateHeuristics(self) -> None: 
+        if self.__canvasGraph.getGoalNode() is None: return 
+
+        goalCanvasNode = self.__canvasGraph.getGoalNode() 
+        x0, y0 , _, _ = goalCanvasNode.getCoords() 
+        offset = goalCanvasNode.getOffset()
+        goalCentreX, goalCentreY = x0 + offset, y0 + offset
+
+        for canvasNode in self.__canvasGraph.getCanvasNodes():
+            x0, y0, _, _ = canvasNode.getCoords() 
+            offset = canvasNode.getOffset()
+            nodeCentreX, nodeCentreY = x0 + offset, y0 + offset 
+            # Calculate euclidean distance 
+            euclideanDist = math.hypot(nodeCentreX - goalCentreX, nodeCentreY - goalCentreY)
+            # Set Heuristic distance in Node object -> rounding down to keep heuristics whole numbers
+            canvasNode.getNode().setHeuristicValue(math.floor(euclideanDist))
+
+
+
+
+
 # Listen to Paranoid by Black Sabbath

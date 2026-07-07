@@ -243,13 +243,21 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
     def prepare(self) -> None:    
         self.getController().selectStartNode() 
         self.getController().selectGoalNode()
+        # Used for debugging
+        # print(str(self.getDataStructure()))
 
-        print(str(self.getDataStructure()))
-
-        # If the user is in the middle of editing an edge 
+        # Finish current edge edit (if there is one)
         self.__finishEdgeEdit()
-        self.getController().stopInteractiveGraph()  
+
+        # Stop physics thread
+        self.getController().stopInteractiveGraph()   
+        # Show text next to each egde displaying the weight
         self.getController().showEdgeWeightText()
+        # Upate heuristic values for each node  
+        self.getController().generateHeuristics() 
+
+        for x in self.getDataStructure().get(): 
+            print(x.getHeuristicValue())
 
     
     def complete(self) -> None:

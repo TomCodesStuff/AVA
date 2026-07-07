@@ -18,13 +18,13 @@ class AStarTraverse(Algorithm[Graph]):
 
     def __selectNode(self, unvisitedNodes : dict) -> Node|None: 
         selected_node = None 
-        lowest_f_cost = float("inf")
+        lowestFCost = float("inf")
 
         # (Node, (g(n), f(n)))
-        for (node, (_, f_cost)) in unvisitedNodes.items(): 
-            if f_cost < lowest_f_cost: 
+        for (node, (_, fCost)) in unvisitedNodes.items(): 
+            if fCost < lowestFCost: 
                 selected_node = node 
-                lowest_f_cost = f_cost
+                lowestFCost = fCost
         
         return selected_node
 

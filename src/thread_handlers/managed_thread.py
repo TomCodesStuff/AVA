@@ -31,11 +31,9 @@ class ManagedThread(ABC, threading.Thread):
         else: print("Thread Terminated :)")  
     
     def acquirePauseLock(self) -> None: 
-        print("locked")
         self.__threadPauseLock.acquire()
     
     def releasePauseLock(self) -> None: 
-        print("Released")
         self.__threadPauseLock.release()  
     
     def isThreadPaused(self) -> bool: return self.__threadPauseLock.locked() 

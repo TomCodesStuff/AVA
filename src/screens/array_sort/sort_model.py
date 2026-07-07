@@ -8,8 +8,8 @@ from src.screens.array_algorithm import ArrayAlgorithmModel
 from src.enums import SortDirection
 
 TEN_MS = 10 
-ONE_SECOND = 1000
-DELAY_RESOLUTION = 1
+ONE_THOUSAND_MS = 1000
+DELAY_RESOLUTION = 5
 
 class SortModel(ArrayAlgorithmModel):
     def __init__(self):
@@ -20,7 +20,7 @@ class SortModel(ArrayAlgorithmModel):
         self.setDelayToMilliseconds()
         self.setResolution(DELAY_RESOLUTION)
         self.setMinDelay(TEN_MS)
-        self.setMaxDelay(ONE_SECOND)
+        self.setMaxDelay(ONE_THOUSAND_MS)
 
     # Toggles the sort setting between and ascending and descending
     def toggleSortDirection(self):

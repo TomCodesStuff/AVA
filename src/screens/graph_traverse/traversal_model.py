@@ -8,7 +8,7 @@ if(__name__ == "__main__"):
 from src.screens.algorithm_base import AlgorithmModel
 
 
-RESOLUTION = 1
+RESOLUTION = 5
 MIN_DELAY = 10
 MAX_DELAY = 1000
 

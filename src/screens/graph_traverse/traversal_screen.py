@@ -255,10 +255,6 @@ class TraversalScreen(AlgorithmScreen[C, M, D]):
         self.getController().showEdgeWeightText()
         # Upate heuristic values for each node  
         self.getController().generateHeuristics() 
-
-        for x in self.getDataStructure().get(): 
-            print(x.getHeuristicValue())
-
     
     def complete(self) -> None:
         self.getController().hideEdgeWeightText()

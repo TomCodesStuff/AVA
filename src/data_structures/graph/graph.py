@@ -136,7 +136,6 @@ class Graph(DataStructure[Node]):
         for node in self.__nodes: 
             node.setPrevNode(None) 
     
-
     def reconstructRoute(self) -> None:
         # Guard in case start or goal nodes are even None 
         if self.__startNode is None or self.__goalNode is None: return
@@ -160,7 +159,6 @@ class Graph(DataStructure[Node]):
         self.__resetRoute()
         # Return route if start node has been traced back to, else None
         return route if route[0] == self.__startNode else []
-
 
     def printRoute(self) -> None:  
         # Start from goal node

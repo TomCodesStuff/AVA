@@ -29,4 +29,4 @@ class BogoSort(Algorithm[SortArray]):
             self.tick()
         return 0
 
-# Listen to Times like these by the Foo Fighters
+# Listen to Overcome by Nothing But Thieves

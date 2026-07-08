@@ -53,5 +53,5 @@ class SearchScreen(ArrayAlgorithmScreen[C, M, D]):
         self.__createTargetAdjuster()
 
 
-# Wretches and Kings by Linkin Park      
+# Listen to Wretches and Kings by Linkin Park      
            

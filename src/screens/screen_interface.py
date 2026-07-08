@@ -23,5 +23,4 @@ class ScreenInterface(ABC):
     def getWindow(self) -> Window: 
         return self.__window
 
-
 # Listen to Runnin' Wild by Airbourne

@@ -71,5 +71,4 @@ class SortScreen(ArrayAlgorithmScreen[C, M, D]):
         self.displayAlgorithmOptions()
         self.__createSortOptionButtons()
 
-
 # Listen to Minority by Green Day

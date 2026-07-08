@@ -57,5 +57,4 @@ class MovementTool():
         event_x, event_y = eventCoords
         canvasEdge.updateCoords((x0 + nodeOffset, y0 + nodeOffset, event_x, event_y)) 
 
-
 # Listen to Friday I'm In Love by The Cure

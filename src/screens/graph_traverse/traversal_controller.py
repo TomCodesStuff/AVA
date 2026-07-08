@@ -392,8 +392,4 @@ class TraversalController(AlgorithmController[S, M, D]):
             # Set Heuristic distance in Node object -> rounding down to keep heuristics whole numbers
             canvasNode.getNode().setHeuristicValue(math.floor(euclideanDist))
 
-
-
-
-
 # Listen to Paranoid by Black Sabbath

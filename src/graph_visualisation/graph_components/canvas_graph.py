@@ -145,5 +145,4 @@ class CanvasGraph():
     
     def getMaxNumEdges(self) -> int: return self.__maxNumEdges
 
-
 # Listen to Hertz by Amyl and the Sniffers 

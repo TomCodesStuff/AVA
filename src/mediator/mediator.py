@@ -48,5 +48,4 @@ class Mediator():
     def tick(self) -> None:  
         self.__handleTick(self.getDelay())
 
-
 # Listen to Weak by Skunk Anansie

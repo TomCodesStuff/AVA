@@ -190,5 +190,4 @@ class PhysicsCalculations():
         
     def getLatestResults(self) -> dict: return self.__calculationResults.copy()
 
-
 # Listen to Yesterday by The Beatles  

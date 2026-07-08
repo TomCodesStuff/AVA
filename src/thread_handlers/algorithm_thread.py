@@ -47,5 +47,4 @@ class AlgorithmThread(ManagedThread):
     def threadOnEnd(self) -> None: 
         self.__algorithm = None
 
-    
 # Listen to Disarm by The Smashing Pumpkins

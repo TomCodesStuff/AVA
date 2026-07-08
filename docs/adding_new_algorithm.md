@@ -17,7 +17,8 @@ When creating a new algorithm file, it must be found in the correct directory an
 The directory the new algorithm must be found will differ per algorithm type and are listed below:
 
 - Searching Algorithms -> <b> /algorithms/searching/ </b> <br>
-- Sorting Algorithms -> <b> /algorithms/sorting/ </b> 
+- Sorting Algorithms -> <b> /algorithms/sorting/ </b> <br>
+- Tarversal Algorithms -> <b> /algorithms/traversal/ </b> 
 
 ### 1.2 File Name 
 
@@ -27,6 +28,8 @@ New algorithm files must follow the naming convention as defined by algorithm ty
     \- (e.g. linear_search.py, binary_search.py, etc.) 
 - Sorting Algorithms -> <b> algorithm_name_sort.py. </b> <br> 
     \- (e.g. bubble_sort.py, insertion_sort.py, etc.) 
+- Traversal Algorithms -> <b> algorithm_name_traverse.py. </b> <br> 
+    \- (e.g. dijkstra_traverse.py, depth_first_search.py, etc.) 
 
 
 ## 2. Class Formatting 
@@ -42,6 +45,8 @@ New algorithm classes must follow the class naming convention as defined by algo
     \- (e.g. LinearSearch, BinarySearch, etc.) 
 - Sorting Algorithms -> <b> AlgorithmNameSort. </b> <br> 
     \- (e.g. BubbleSort, InsertionSort, etc.)   
+- Traversal Algorithms -> <b> AlgorithmNameTraverse. </b> <br> 
+    \- (e.g. DijkstraTraverse, DepthFirstTraverse, etc.)   
 
 
 ## 3. Algorithm Parent Class. 
@@ -49,7 +54,7 @@ New algorithm classes must follow the class naming convention as defined by algo
 Each new algorithm class must inherit from the `Algorithm` parent class. <br>
 The `Algorithm` class provides several helper methods required for each algorithm 
 to interface correctly with the project. <br>
-Documentation for the `Algorithm` class can be found here.  
+Documentation for the `Algorithm` class can be found [here](./algorithm.md).  
 
 Once the `Algorithm` class has correctly been imported and inherited, it's constructor must be called. 
 The steps for importing, inheriting and calling the constructor are outlined below via code snippet.
@@ -83,10 +88,14 @@ def __init__(self):
 The project executes algorithms by calling the `run()` method. <br>
 Therefore, new algorithms must implement the `run()` method in order to be recognised by the project. <br>
 If a new algorithm succesfully inherits from the `Algorithm` base class, this method is defined as abstract. <br> 
-As such the algorithm class can not be instantiated until the `run()` method is implemented.
+As such the algorithm class can not be instantiated until the `run()` method is implemented. <br>
 
-The Code Snippet to create the `run()` method is provided below.
 
+Another abstract method is defined in the `Algorithm` class which is `getName()`. <br>
+The string returned by the `getName()` method is what AVA displays to the user during algorithm selection. <br>
+As with the `run()` method if `getName*()` is not defined the algorithm class can not be instantiated.   
+
+The Code Snippets to create the `run()` and `getName()` methods are provided below.
 
 ### 4.1 Creating The run() Method 
 ```python 
@@ -95,6 +104,14 @@ def run(self) -> int:
 ```
 
 <i> Correctly creating the `run()` method. </i>
+
+### 4.2 Creating The getName() Method 
+```python 
+def getName(self) -> str:
+    return "Bogo Sort"
+```
+
+<i> Correctly creating the `getName()` method. Bogo Sort is once again used as an example </i>
 
 ## 5. Delaying Execution. 
 

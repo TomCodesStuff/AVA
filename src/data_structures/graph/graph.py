@@ -199,3 +199,4 @@ class Graph(DataStructure[Node]):
     def __iter__(self) -> Iterable: 
         return iter(self.get())
     
+# Listen to I'm no okay (I promise) by My Chemical Romance

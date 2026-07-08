@@ -30,5 +30,4 @@ class SortController(ArrayAlgorithmController[S, M, D]):
         # Disables the button that called the function and enables the currently disabled button
         self.getScreen().toggleSortDirection()
 
-
 # Listen to ALICE COOPER'S POOL HOUSE by Hot Milk

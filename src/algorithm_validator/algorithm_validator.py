@@ -110,5 +110,4 @@ class AlgorithmValidator():
         if algorithmName not in self.__algorithmsByType[algorithmType.value]: return None 
         return self.__algorithmsByType[algorithmType.value][algorithmName]
 
-
 # Listen to Last Nite By The Strokes

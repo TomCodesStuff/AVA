@@ -46,6 +46,5 @@ class InsertionSort(Algorithm[SortArray]):
                 self.tick()
         
         return 0 
-
-                     
+                   
 # Listen to Highway to Hell by ACDC

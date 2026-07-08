@@ -95,7 +95,5 @@ class QuickSort(Algorithm[SortArray]):
             array.setAt(index, array.getAt(index + 1))
             index+=1  
         array.setAt(index, value)  
-      
-
-                     
-# Listen to Times like these by the Foo Fighters
+                 
+# Listen LosT by Being Me The Horizon

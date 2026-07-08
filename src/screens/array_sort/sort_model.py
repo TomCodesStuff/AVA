@@ -4,7 +4,7 @@ if(__name__ == "__main__"):
     print("This is file shouldn't be run on it's own. \nIt should be imported only.")
     exit()
 
-from ..array_algorithm import ArrayAlgorithmModel
+from src.screens.array_algorithm import ArrayAlgorithmModel
 from src.enums import SortDirection
 
 TEN_MS = 10 

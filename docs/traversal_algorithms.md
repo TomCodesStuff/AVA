@@ -7,12 +7,57 @@ For each algorithm, instructional steps are provided which can be followed to pr
 
 | Algorithm                                                 |
 | --------------------------------------------------------- |
+| [A* Search](#a-search)                                    |
 | [Breadth First Search](#breadth-first-search)             |
 | [Depth First Sort](#depth-first-search)                   | 
 | [Dijkstra's Shortest Path](#dijkstras-shortest-path)      |
 | [Random Walk](#random-walk)                               |
 
 ---
+### A* Search
+
+#### Algorithm Steps:
+
+1. Set variable `unvisitedNodes = {node : 0 if node = startNode else infinty for each node}`
+2. Set variable `goalFound = false`
+3. while `unvisitedNodes.isNotEmpty()` and `not goalFound`
+4. Set variable `currentNode = node with lowest f score`
+5. Set variable `currentNodeCost = unvisitedNodes[currentNode]` 
+6. `unvisitedNodes.delete(currentNode)`
+7. for each `neighbour` in `currentNode`
+8. Set variable `newCost` = `currentNodeCost + neighbour.getWeight()`
+9. if `unvisitedNodes.get(neighbour)` and `newCost < unvisitedNodes[neighbour]` <br>
+    \- Set `unvisitedNodes[neighbour] = newCost` <br>
+    \- `neighbour.setPredecessor(currentNode)`
+10. if `currentNode = startNode`
+    \- Set `goalFound = True`
+
+
+#### F-Score 
+
+When selecting the next node to expand the A* search algorithm selects the node with the smallest f-score (f(n)). <br>
+The f-score for each node is derived with the formula below:
+
+$$f(n) = g(n) + h(n)$$
+
+Where:
+ - g(n) -> cost of the path from the start node to node n 
+ - h(n) -> the estimated cost of node n to the goal node. <br>
+
+The heuristic value for each node is calculated using the [euclidan distance](https://en.wikipedia.org/wiki/Euclidean_distance) of node n to the goal node.  
+
+
+#### Time-Space Complexities: 
+
+Time complexity: O(b<sup>d</sup>)<br>
+Space Complexity: O(V)
+
+b -> Branching factor <br>
+d -> Solution depth <br>
+E -> Number edges 
+
+---
+
 ### Breadth First Search: 
 
 #### Algorithm Steps:

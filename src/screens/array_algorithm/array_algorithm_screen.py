@@ -56,7 +56,7 @@ class ArrayAlgorithmScreen(AlgorithmScreen[C, M, D]):
     def __sortArray(self) -> None:
         self.getDataStructure().sort()
         self.getController().refreshCanvas() 
-    
+        
     # Shuffles and displays the array
     def __shuffleArray(self) -> None:
         self.getDataStructure().shuffle()

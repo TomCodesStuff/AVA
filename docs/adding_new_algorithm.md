@@ -117,11 +117,12 @@ The delay caused by calling `self.briefTick()` is half a second (500 ms).
 ## 6. Data Structure Class. 
 
 Algorithms interact with the project through a data structure class. <br> 
-The data structure class and its helper methods  differ depending on the algorithm type. <br>
+The data structure class and its helper methods differ depending on the algorithm type. <br>
 The specific data structure for each algorithm type are outlined below:
 
 - Searching Algorithms -> <b> [Search Array.](./search_array.md) </b> <br> 
 - Sorting Algorithms -> <b> [Sort Array.](./sort_array.md) </b> 
+- Traversal Algorithms -> <b> [Graph.](./graph.md) </b> 
 
 ---
 

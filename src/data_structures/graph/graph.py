@@ -13,10 +13,19 @@ class Edge():
         self.__firstNode = None 
         self.__secondNode = None 
 
+    # Getters
     def getWeight(self) -> int: return self.__weight    
+
     def getColour(self) -> str: return self.__colour
+    
     def getDirection(self) -> EdgeDirection: return self.__direction
     
+    def getNeighbourNode(self, node : Node) -> Node|None: 
+        if node == self.__firstNode: return self.__secondNode 
+        if node == self.__secondNode: return self.__firstNode
+        return None  
+    
+    # Setters
     def setColour(self, colour : str) -> None:  
         if colour: self.__colour = colour  
     
@@ -30,11 +39,6 @@ class Edge():
 
     def setSecondNode(self, node: Node) -> Node: self.__secondNode = node 
 
-    def getNeighbourNode(self, node : Node) -> Node|None: 
-        if node == self.__firstNode: return self.__secondNode 
-        if node == self.__secondNode: return self.__firstNode
-        return None  
-
     def resetColour(self) -> None: self.__colour = self.__baseColour
 
 class Node(): 
@@ -47,9 +51,7 @@ class Node():
         # Used to reconstruct route when algorithm is complete 
         self.__prevNode = None 
 
-
     # Getters 
-
     def getColour(self) -> str: return self.__colour 
     
     def getNeighbours(self) -> List[Tuple[Node, int]]: 
@@ -136,7 +138,7 @@ class Graph(DataStructure[Node]):
         for node in self.__nodes: 
             node.setPrevNode(None) 
     
-    def reconstructRoute(self) -> None:
+    def reconstructRoute(self) -> List[Node]:
         # Guard in case start or goal nodes are even None 
         if self.__startNode is None or self.__goalNode is None: return
 
@@ -157,7 +159,7 @@ class Graph(DataStructure[Node]):
 
         # Reset prevNode attribute in nodes to None 
         self.__resetRoute()
-        # Return route if start node has been traced back to, else None
+        # Return route if start node has been traced back to, else an empty list as no route has been found
         return route if route[0] == self.__startNode else []
 
     def printRoute(self) -> None:  

@@ -66,7 +66,7 @@ Space Complexity: O(1)
 1. for i in range(0, array.length())
 2. Set a variable `swapped = False`
 3. for j in range(0, array.length() - i - 1) 
-4. if isSwapNeeded(arrsy[j], array[j + 1]): <br>
+4. if isSwapNeeded(array[j], array[j + 1]): <br>
     \- swap(array[j], array[j + 1]). <br> 
     \- Set `swapped = True`
 6. if swapped == False: Array is sorted, return 0

@@ -48,7 +48,6 @@ class SearchController(ArrayAlgorithmController[S, M, D]):
     # Guarantees target is in the array
     def __targetIn(self) -> int: 
        # Randomly chooses element from array
-       return self.getDataStructure().get()[23]
        return random.choice(self.getDataStructure().get())
 
     # Guarantees target is not in array

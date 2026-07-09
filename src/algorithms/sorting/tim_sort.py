@@ -86,7 +86,7 @@ class TimSort(Algorithm[SortArray]):
                 right = min(n - 1, left + (2 * mergeSize) - 1)
                 if mid < right: 
                     self.__mergeSubArrays(left, mid, right) 
-            mergeSize << 1  
+            mergeSize <<= 1  
         return 0 
  
 # Listen to No Surprises by Radiohead

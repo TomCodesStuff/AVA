@@ -15,7 +15,7 @@ class Array(DataStructure[int]):
 
     # Returns the array
     def get(self) -> List[int]: 
-        return self.__array.copy()
+        return self.__array
 
     def getBarColours(self) -> List[str]:
         return self.__barColours

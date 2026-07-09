@@ -30,6 +30,20 @@ Created by Tom. I hope you enjoy AVA as much as I enjoyed making it.
 
 ---
 
+## Running AVA 
+
+AVA has been built using standard Python libraries only. <br>
+Only a working Python installation is required. <br>
+    \- <b>Recommended Python Version:</b> [3.13+](https://www.python.org/downloads/release/python-3130/) <br>
+    \- <b>Minimum Python Version:</b> [3.10](https://www.python.org/downloads/release/python-3100/) 
+
+
+To run AVA, execute the following command:
+
+```python 
+    python main.py
+```
+
 ## Additional Documentation
 
 | Documentation                                                          | 

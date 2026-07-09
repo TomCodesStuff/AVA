@@ -53,7 +53,7 @@ class CocktailShakerSort(Algorithm[SortArray]):
             # Decrement end 
             end -= 1
             # Iterate between indexes end - 1 and start + 1
-            for i in range(end - 1, max(start - 1, 0), -1):
+            for i in range(end - 1, max(start - 1, -1), -1):
                 array.resetBarColours()
                 array.setColourAt(i, "red")  
                 self.tick()
